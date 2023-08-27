@@ -12,7 +12,7 @@ return {
         popup_border_style = "rounded",
       })
 
-      vim.keymap.set("n", "<leader>tt", ":Neotree toggle<CR>")
-      vim.keymap.set("n", "<leader>t.", ":Neotree reveal<CR>")
+      vim.keymap.set("n", "<leader>tt", "<cmd>Neotree toggle<CR>", {})
+      vim.keymap.set("n", "<leader>t.", "<cmd>Neotree reveal<CR>", {})
     end
 }
