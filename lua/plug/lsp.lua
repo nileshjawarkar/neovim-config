@@ -20,9 +20,9 @@ return {
    },
    config = function()
       local req_servers = {
-         'pyright', 'clangd',
-         'tsserver', 'cssls', 'dockerls', 'html', 'bashls',
-         'jsonls', 'yamlls', 'lua_ls', 'emmet_ls'
+         'clangd', 'tsserver',
+         'bashls', 'jsonls',
+         'yamlls', 'lua_ls',
       }
 
       require("mason").setup()

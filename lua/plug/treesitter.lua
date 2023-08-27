@@ -3,9 +3,9 @@ return {
    config = function()
       require 'nvim-treesitter.configs'.setup {
          ensure_installed = {
-            "c", "lua", "rust", "cpp", "java",
-            "css", "dockerfile", "html", "javascript",
-            "json", "make", "python", "yaml", "norg",
+            "c", "lua", "cpp", "java",
+            "css", "html", "javascript",
+            "json", "make", "yaml",
          },
          sync_install = false,
          indent = {
