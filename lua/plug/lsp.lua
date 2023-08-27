@@ -3,10 +3,20 @@ return {
    dependencies = {
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
+
+      -- completion
       'hrsh7th/nvim-cmp', -- Autocompletion plugin
       'hrsh7th/cmp-nvim-lsp', -- LSP source for nvim-cmp
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
+
+      -- snippet
       'saadparwaiz1/cmp_luasnip', -- Snippets source for nvim-cmp
       'L3MON4D3/LuaSnip', -- Snippets plugin
+
+      -- format
+      'onsails/lspkind.nvim'
    },
    config = function()
       local req_servers = {
@@ -18,7 +28,6 @@ return {
       require("mason").setup()
       local mason_config = require("mason-lspconfig")
       mason_config.setup({ ensure_installed = req_servers, })
-
 
       local lsp_config = require('lspconfig')
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -96,6 +105,10 @@ return {
                luasnip.lsp_expand(args.body)
             end,
          },
+         window = {
+            completion = cmp.config.window.bordered(),
+            documentation = cmp.config.window.bordered(),
+         },
          mapping = cmp.mapping.preset.insert({
             ['<C-u>'] = cmp.mapping.scroll_docs(-4), -- Up
             ['<C-d>'] = cmp.mapping.scroll_docs(4), -- Down
@@ -124,10 +137,44 @@ return {
                end
             end, { 'i', 's' }),
          }),
-         sources = {
-            { name = 'nvim_lsp' },
-            { name = 'luasnip' },
-         },
+
+         sources = cmp.config.sources({
+               { name = 'nvim_lsp' },
+               { name = 'luasnip' },
+            }, {
+               { name = 'buffer', keyword_length = 3 },
+         }),
       }
+
+      -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+      cmp.setup.cmdline({ '/', '?' }, {
+         mapping = cmp.mapping.preset.cmdline(),
+         sources = {
+            { name = 'buffer', keyword_length = 3 }
+         }
+      })
+
+      -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+      cmp.setup.cmdline(':', {
+         mapping = cmp.mapping.preset.cmdline(),
+         sources = cmp.config.sources({
+            { name = 'path' }
+         }, {
+            { name = 'cmdline' }
+         })
+      })
+
+      local lspkind = require('lspkind')
+      cmp.setup {
+        formatting = {
+          format = lspkind.cmp_format({
+            mode = 'symbol', -- show only symbol annotations
+            maxwidth = 50,
+            ellipsis_char = '...',
+          })
+        }
+      }
+
    end
 }
+
