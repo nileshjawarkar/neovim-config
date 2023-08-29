@@ -15,6 +15,7 @@ return {
                },
             },
             set_env = { ['COLORTERM'] = 'truecolor' },
+            path_display = { truncate = 1 },
          },
 
          pickers = {
