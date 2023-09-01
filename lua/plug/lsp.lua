@@ -15,28 +15,27 @@ return {
 		"saadparwaiz1/cmp_luasnip", -- Snippets source for nvim-cmp
 		"L3MON4D3/LuaSnip", -- Snippets plugin
 
-		-- formater
-		"mhartington/formatter.nvim",
-
-		-- format
+		-- help format
 		"onsails/lspkind.nvim",
 	},
 	config = function()
 		local req_servers = {
 			"clangd",
+			"pyright",
 			"tsserver",
 			"bashls",
 			"jsonls",
 			"yamlls",
+			"jdtls",
 			"lua_ls",
 		}
 
 		require("mason").setup()
 		local mason_config = require("mason-lspconfig")
-		mason_config.setup({ ensure_installed = req_servers })
-
 		local lsp_config = require("lspconfig")
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+		mason_config.setup({ ensure_installed = req_servers })
 		mason_config.setup_handlers({
 			function(server_name)
 				lsp_config[server_name].setup({
@@ -178,60 +177,6 @@ return {
 					maxwidth = 50,
 					ellipsis_char = "...",
 				}),
-			},
-		})
-
-		-- Utilities for creating configurations
-		local util = require("formatter.util")
-
-		-- Provides the Format, FormatWrite, FormatLock, and FormatWriteLock commands
-		require("formatter").setup({
-			-- Enable or disable logging
-			logging = true,
-			-- Set the log level
-			log_level = vim.log.levels.WARN,
-			-- All formatter configurations are opt-in
-			filetype = {
-
-            c = {},
-            cpp = {},
-				-- Formatter configurations for filetype "lua" go here
-				-- and will be executed in order
-				lua = {
-					-- "formatter.filetypes.lua" defines default configurations for the
-					-- "lua" filetype
-					require("formatter.filetypes.lua").stylua,
-
-					-- You can also define your own configuration
-					function()
-						-- Supports conditional formatting
-						if util.get_current_buffer_file_name() == "special.lua" then
-							return nil
-						end
-
-						-- Full specification of configurations is down below and in Vim help
-						-- files
-						return {
-							exe = "stylua",
-							args = {
-								"--search-parent-directories",
-								"--stdin-filepath",
-								util.escape_path(util.get_current_buffer_file_path()),
-								"--",
-								"-",
-							},
-							stdin = true,
-						}
-					end,
-				},
-
-				-- Use the special "*" filetype for defining formatter configurations on
-				-- any filetype
-				["*"] = {
-					-- "formatter.filetypes.any" defines default configurations for any
-					-- filetype
-					require("formatter.filetypes.any").remove_trailing_whitespace,
-				},
 			},
 		})
 	end,
