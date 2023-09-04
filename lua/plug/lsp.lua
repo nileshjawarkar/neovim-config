@@ -63,10 +63,10 @@ return {
 
       -- Global mappings.
       -- See `:help vim_diagnostic.*` for documentation on any of the below functions
-      vim_keymap.set("n", "<space>e", vim_diagnostic.open_float)
+      vim_keymap.set("n", "<leader>e", vim_diagnostic.open_float)
       vim_keymap.set("n", "[d", vim_diagnostic.goto_prev)
       vim_keymap.set("n", "]d", vim_diagnostic.goto_next)
-      vim_keymap.set("n", "<space>q", vim_diagnostic.setloclist)
+      vim_keymap.set("n", "<leader>q", vim_diagnostic.setloclist)
 
       -- Use LspAttach autocommand to only map the following keys
       -- after the language server attaches to the current buffer
@@ -84,20 +84,20 @@ return {
             vim_keymap.set("n", "K", vim_lsp.buf.hover, opts)
             vim_keymap.set("n", "gi", vim_lsp.buf.implementation, opts)
             vim_keymap.set("n", "<C-k>", vim_lsp.buf.signature_help, opts)
-            vim_keymap.set("n", "<space>wa", vim_lsp.buf.add_workspace_folder, opts)
-            vim_keymap.set("n", "<space>wr", vim_lsp.buf.remove_workspace_folder, opts)
-            vim_keymap.set("n", "<space>wl", function()
+            vim_keymap.set("n", "<leader>wa", vim_lsp.buf.add_workspace_folder, opts)
+            vim_keymap.set("n", "<leader>wr", vim_lsp.buf.remove_workspace_folder, opts)
+            vim_keymap.set("n", "<leader>wl", function()
                print(vim.inspect(vim_lsp.buf.list_workspace_folders()))
             end, opts)
-            vim_keymap.set("n", "<space>D", vim_lsp.buf.type_definition, opts)
-            vim_keymap.set("n", "<space>rn", vim_lsp.buf.rename, opts)
-            vim_keymap.set({ "n", "v" }, "<space>ca", vim_lsp.buf.code_action, opts)
+            vim_keymap.set("n", "<leader>D", vim_lsp.buf.type_definition, opts)
+            vim_keymap.set("n", "<leader>rn", vim_lsp.buf.rename, opts)
+            vim_keymap.set({ "n", "v" }, "<leader>ca", vim_lsp.buf.code_action, opts)
             vim_keymap.set("n", "gr", require("telescope.builtin").lsp_references, opts)
-            -- vim_keymap.set("n", "<space>F", function()
+            -- vim_keymap.set("n", "<leader>F", function()
             --     vim_lsp.buf.format({ async = true })
             -- end, opts)
 
-            vim_keymap.set("n", "<space>F", "<cmd>GuardFmt<CR>", opts)
+            vim_keymap.set("n", "<leader>F", "<cmd>GuardFmt<CR>", opts)
          end,
       })
 
@@ -120,7 +120,7 @@ return {
             ["<C-u>"] = cmp.mapping.scroll_docs(-4), -- Up
             ["<C-d>"] = cmp.mapping.scroll_docs(4), -- Down
             -- C-b (back) C-f (forward) for snippet placeholder navigation.
-            ["<C-Space>"] = cmp.mapping.complete(),
+            ["<C-leader>"] = cmp.mapping.complete(),
             ["<CR>"] = cmp.mapping.confirm({
                behavior = cmp.ConfirmBehavior.Replace,
                select = true,
