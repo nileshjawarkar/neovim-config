@@ -96,8 +96,6 @@ return {
             -- vim_keymap.set("n", "<leader>F", function()
             --     vim_lsp.buf.format({ async = true })
             -- end, opts)
-
-            vim_keymap.set("n", "<leader>F", "<cmd>GuardFmt<CR>", opts)
          end,
       })
 

@@ -1,25 +1,57 @@
 return {
-	"nvimdev/guard.nvim",
+	"mhartington/formatter.nvim",
 	config = function()
-		local ft = require("guard.filetype")
-		ft("c"):fmt("clang-format")
-		ft("cpp"):fmt("clang-format")
-		ft("java"):fmt("google-java-format")
-		ft("lua"):fmt("stylua")
-		ft("json"):fmt("prettier")
-		ft("yaml"):fmt("prettier")
-		ft("css"):fmt("prettier")
-		ft("html"):fmt("prettier")
-		ft("js"):fmt("prettier")
-		ft("md"):fmt("prettier")
-		ft("scss"):fmt("prettier")
-		ft("less"):fmt("prettier")
+		-- local util = require "formatter.util"
+		require("formatter").setup({
+			logging = true,
+			log_level = vim.log.levels.WARN,
+			filetype = {
+				lua = {
+					require("formatter.filetypes.lua").stylua,
+				},
 
-		require("guard").setup({
-			-- the only options for the setup function
-			-- fmt_on_save = true,
-			-- Use lsp if no formatter was defined for this filetype
-			lsp_as_default_formatter = false,
+				c = {
+					{
+						exe = "clang-format",
+						args = { "--style=Microsoft" },
+						stdin = true,
+					},
+				},
+
+				cpp = {
+					{
+						exe = "clang-format",
+						args = { "--style=Microsoft" },
+						stdin = true,
+					},
+				},
+
+				java = {
+					{
+						exe = "clang-format",
+						args = { '--style="{BasedOnStyle: Google, IndentWidth: 4}"', "--assume-filename=.java" },
+						stdin = true,
+					},
+				},
+
+				json = {
+					require("formatter.filetypes.json").prettier,
+				},
+
+				yaml = {
+					require("formatter.filetypes.yaml").prettier,
+				},
+
+				js = {
+					require("formatter.filetypes.javascript").prettier,
+				},
+
+				["*"] = {
+					require("formatter.filetypes.any").remove_trailing_whitespace,
+				},
+			},
 		})
+
+		vim.keymap.set("n", "<leader>F", "<cmd>Format<CR>", {})
 	end,
 }
