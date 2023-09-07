@@ -19,7 +19,7 @@ opt.hlsearch = false
 opt.ignorecase = true -- ignore case when searching
 opt.smartcase = true -- if you include mixed case in your search, assumes you want case-sensitive
 
-opt.inccommand = 'nosplit'
+opt.inccommand = "nosplit"
 
 -- cursor line
 opt.cursorline = true -- highlight the current cursor line
@@ -47,17 +47,14 @@ opt.swapfile = false
 
 opt.mouse = ""
 
-
 -- open completion menu even for single item
 -- do not auto insert items from completion menu
 -- @warning - preview is removed. when it's on, default lsp opens a vertical tab
-opt.completeopt = 'menuone,noinsert,noselect'
+opt.completeopt = "menuone,noinsert,noselect"
 
 -- stop showing the current mode
 opt.showmode = false
 -- stop showing the current line and cursor position in the status bar
 opt.ruler = false
 
-opt.inccommand = 'nosplit'
-
-
+opt.inccommand = "nosplit"
