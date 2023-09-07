@@ -42,8 +42,24 @@ return {
 					require("formatter.filetypes.yaml").prettier,
 				},
 
-				js = {
+				javascript = {
 					require("formatter.filetypes.javascript").prettier,
+				},
+
+				typescript = {
+					require("formatter.filetypes.typescript").prettier,
+				},
+
+				html = {
+					require("formatter.filetypes.html").prettier,
+				},
+
+				css = {
+					require("formatter.filetypes.css").prettier,
+				},
+
+				markdown = {
+					require("formatter.filetypes.markdown").prettier,
 				},
 
 				["*"] = {
