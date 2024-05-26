@@ -8,7 +8,6 @@ return {
     config = function()
         local neogit = require('neogit')
         neogit.setup({})
-        -- vim.keymap.set("n", "<leader>gg", "<cmd>Neogit<CR>", {})
         vim.keymap.set("n", "<leader>gg", neogit.open, {})
     end,
 }
