@@ -12,7 +12,7 @@ return {
 			popup_border_style = "rounded",
 		})
 
-		vim.keymap.set("n", "<leader>tt", "<cmd>Neotree toggle<CR>", {})
-		vim.keymap.set("n", "<leader>tl", "<cmd>Neotree reveal<CR>", {})
+		vim.keymap.set("n", "<leader>tt", "<cmd>Neotree toggle<CR>", {desc = "Toggle view"})
+		vim.keymap.set("n", "<leader>tl", "<cmd>Neotree reveal<CR>", {desc = "Locate current file"})
 	end,
 }

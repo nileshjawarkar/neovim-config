@@ -68,6 +68,6 @@ return {
 			},
 		})
 
-		vim.keymap.set("n", "<leader>F", "<cmd>Format<CR>", {})
+		vim.keymap.set("n", "<leader>F", "<cmd>Format<CR>", {desc = "Format code"})
 	end,
 }
