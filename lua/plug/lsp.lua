@@ -61,7 +61,7 @@ return {
 
 		local keymap = vim.keymap
 		local diagnostics = vim.diagnostic
-		local vlb = vim.lsp.buf
+		local vim_lbuf = vim.lsp.buf
 		local vim_api = vim.api
 
 		-- Use LspAttach autocommand to only map the following keys
@@ -74,27 +74,27 @@ return {
 
 				local lsp_buildin = require("telescope.builtin")
 				local opts = { buffer = ev.buf, desc = "" }
-				keymap.set("n", "<leader>Wa", vlb.add_workspace_folder, opts)
-				keymap.set("n", "<leader>Wr", vlb.remove_workspace_folder, opts)
+				keymap.set("n", "<leader>Wa", vim_lbuf.add_workspace_folder, opts)
+				keymap.set("n", "<leader>Wr", vim_lbuf.remove_workspace_folder, opts)
 				keymap.set("n", "<leader>Wl", function()
-					print(vim.inspect(vlb.list_workspace_folders()))
+					print(vim.inspect(vim_lbuf.list_workspace_folders()))
 				end, opts)
-				keymap.set("n", "gD", vlb.declaration, opts)
-				keymap.set("n", "gd", vlb.definition, opts)
-				keymap.set("n", "gi", vlb.implementation, opts)
+				keymap.set("n", "gD", vim_lbuf.declaration, opts)
+				keymap.set("n", "gd", vim_lbuf.definition, opts)
+				keymap.set("n", "gi", vim_lbuf.implementation, opts)
 				keymap.set("n", "gr", lsp_buildin.lsp_references, opts)
 
 				keymap.set("n", "<leader>go", lsp_buildin.lsp_document_symbols, { desc = "List document symbols" })
-				keymap.set("n", "<leader>gg", vlb.hover, { buffer = ev.buf, desc = "Hover" })
-				keymap.set("n", "<leader>gd", vlb.definition, { buffer = ev.buf, desc = "Go to definition" })
-				keymap.set("n", "<leader>gD", vlb.declaration, { buffer = ev.buf, desc = "Go to declaration" })
-				keymap.set("n", "<leader>gi", vlb.implementation, { buffer = ev.buf, desc = "Go to implementation" })
-				keymap.set("n", "<leader>gt", vlb.type_definition, { buffer = ev.buf, desc = "Go to type definition" })
+				keymap.set("n", "<leader>gg", vim_lbuf.hover, { buffer = ev.buf, desc = "Hover" })
+				keymap.set("n", "<leader>gd", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition" })
+				keymap.set("n", "<leader>gD", vim_lbuf.declaration, { buffer = ev.buf, desc = "Go to declaration" })
+				keymap.set("n", "<leader>gi", vim_lbuf.implementation, { buffer = ev.buf, desc = "Go to implementation" })
+				keymap.set("n", "<leader>gt", vim_lbuf.type_definition, { buffer = ev.buf, desc = "Go to type definition" })
 				keymap.set("n", "<leader>gr", lsp_buildin.lsp_references, { buffer = ev.buf, desc = "List references" })
-				keymap.set("n", "<leader>gs", vlb.signature_help, { buffer = ev.buf, desc = "Signature help" })
-				keymap.set("n", "<leader>gR", vlb.rename, { buffer = ev.buf, desc = "Rename" })
-				keymap.set({ "n", "v" }, "<leader>ga", vlb.code_action, { buffer = ev.buf, desc = "Code actions" })
-				keymap.set("i", "<C-Space>", vlb.completion, { buffer = ev.buf, desc = "Code completion" })
+				keymap.set("n", "<leader>gs", vim_lbuf.signature_help, { buffer = ev.buf, desc = "Signature help" })
+				keymap.set("n", "<leader>gR", vim_lbuf.rename, { buffer = ev.buf, desc = "Rename" })
+				keymap.set({ "n", "v" }, "<leader>ga", vim_lbuf.code_action, { buffer = ev.buf, desc = "Code actions" })
+				keymap.set("i", "<C-Space>", vim_lbuf.completion, { buffer = ev.buf, desc = "Code completion" })
 				keymap.set("n", "<leader>gl", diagnostics.open_float, { buffer = ev.buf, desc = "Show diagnostics" })
 				keymap.set("n", "<leader>gp", diagnostics.goto_prev, { buffer = ev.buf, desc = "Previous diagnostics" })
 				keymap.set("n", "<leader>gn", diagnostics.goto_next, { buffer = ev.buf, desc = "Next diagnostics" })
@@ -197,5 +197,13 @@ return {
 				}),
 			},
 		})
+
+        -- Globally configure all LSP floating preview popups (like hover, signature help, etc)
+        local open_floating_preview = vim.lsp.util.open_floating_preview
+        function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+          opts = opts or {}
+          opts.border = opts.border or "rounded" -- Set border to rounded
+          return open_floating_preview(contents, syntax, opts, ...)
+        end
 	end,
 }
