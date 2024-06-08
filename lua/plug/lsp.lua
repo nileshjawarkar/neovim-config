@@ -20,14 +20,17 @@ return {
 	},
 	config = function()
 		local req_servers = {
+			"lua_ls",
 			"clangd",
 			"pyright",
-			"tsserver",
 			"bashls",
 			"jsonls",
 			"yamlls",
 			"jdtls",
-			"lua_ls",
+			"tsserver",
+            "quick_lint_js",
+            "html",
+            "cssls"
 		}
 
 		require("mason").setup()
@@ -56,17 +59,10 @@ return {
 			end,
 		})
 
-		local vim_keymap = vim.keymap
-		local vim_diagnostic = vim.diagnostic
-		local vim_lsp = vim.lsp
+		local keymap = vim.keymap
+		local diagnostics = vim.diagnostic
+        local vlb = vim.lsp.buf
 		local vim_api = vim.api
-
-		-- Global mappings.
-		-- See `:help vim_diagnostic.*` for documentation on any of the below functions
-		vim_keymap.set("n", "<leader>e", vim_diagnostic.open_float)
-		vim_keymap.set("n", "[d", vim_diagnostic.goto_prev)
-		vim_keymap.set("n", "]d", vim_diagnostic.goto_next)
-		vim_keymap.set("n", "<leader>q", vim_diagnostic.setloclist)
 
 		-- Use LspAttach autocommand to only map the following keys
 		-- after the language server attaches to the current buffer
@@ -76,26 +72,33 @@ return {
 				-- Enable completion triggered by <c-x><c-o>
 				vim.bo[ev.buf].omnifunc = "v:lua.vim_lsp.omnifunc"
 
-				-- Buffer local mappings.
-				-- See `:help vim_lsp.*` for documentation on any of the below functions
-				local opts = { buffer = ev.buf }
-				vim_keymap.set("n", "gD", vim_lsp.buf.declaration, opts)
-				vim_keymap.set("n", "gd", vim_lsp.buf.definition, opts)
-				vim_keymap.set("n", "K", vim_lsp.buf.hover, opts)
-				vim_keymap.set("n", "gi", vim_lsp.buf.implementation, opts)
-				vim_keymap.set("n", "<C-k>", vim_lsp.buf.signature_help, opts)
-				vim_keymap.set("n", "<leader>wa", vim_lsp.buf.add_workspace_folder, opts)
-				vim_keymap.set("n", "<leader>wr", vim_lsp.buf.remove_workspace_folder, opts)
-				vim_keymap.set("n", "<leader>wl", function()
-					print(vim.inspect(vim_lsp.buf.list_workspace_folders()))
+                local lsp_buildin = require("telescope.builtin")
+				local opts = { buffer = ev.buf, desc = "" }
+				keymap.set("n", "<leader>Wa", vlb.add_workspace_folder, opts)
+				keymap.set("n", "<leader>Wr", vlb.remove_workspace_folder, opts)
+				keymap.set("n", "<leader>Wl", function()
+					print(vim.inspect(vlb.list_workspace_folders()))
 				end, opts)
-				vim_keymap.set("n", "<leader>D", vim_lsp.buf.type_definition, opts)
-				vim_keymap.set("n", "<leader>rn", vim_lsp.buf.rename, opts)
-				vim_keymap.set({ "n", "v" }, "<leader>ca", vim_lsp.buf.code_action, opts)
-				vim_keymap.set("n", "gr", require("telescope.builtin").lsp_references, opts)
-				-- vim_keymap.set("n", "<leader>F", function()
-				--     vim_lsp.buf.format({ async = true })
-				-- end, opts)
+				keymap.set("n", "gD", vlb.declaration, opts)
+				keymap.set("n", "gd", vlb.definition, opts)
+				keymap.set("n", "gi", vlb.implementation, opts)
+				keymap.set("n", "gr", lsp_buildin.lsp_references, opts)
+
+		        keymap.set("n", "<leader>go", lsp_buildin.lsp_document_symbols, { desc = "List document symbols" })
+                keymap.set("n", "<leader>gg", vlb.hover, { buffer = ev.buf, desc = "Hover" })
+                keymap.set("n", "<leader>gd", vlb.definition, { buffer = ev.buf, desc = "Go to definition" })
+                keymap.set("n", "<leader>gD", vlb.declaration, { buffer = ev.buf, desc = "Go to declaration" })
+                keymap.set("n", "<leader>gi", vlb.implementation, { buffer = ev.buf, desc = "Go to implementation" })
+                keymap.set("n", "<leader>gt", vlb.type_definition, { buffer = ev.buf, desc = "Go to type definition" })
+                keymap.set("n", "<leader>gr", lsp_buildin.lsp_references, { buffer = ev.buf, desc = "List references" })
+                keymap.set("n", "<leader>gs", vlb.signature_help, { buffer = ev.buf, desc = "Signature help" })
+                keymap.set("n", "<leader>gR", vlb.rename, { buffer = ev.buf, desc = "Rename" })
+                keymap.set({"n", "v"}, "<leader>ga", vlb.code_action, { buffer = ev.buf, desc = "Code actions" })
+                keymap.set("i", "<C-Space>", vlb.completion, { buffer = ev.buf, desc = "Code completion" })
+                keymap.set("n", "<leader>gl", diagnostics.open_float, { buffer = ev.buf, desc = "Show diagnostics" })
+                keymap.set("n", "<leader>gp", diagnostics.goto_prev, { buffer = ev.buf, desc = "Previous diagnostics" })
+                keymap.set("n", "<leader>gn", diagnostics.goto_next, { buffer = ev.buf, desc = "Next diagnostics" })
+
 			end,
 		})
 

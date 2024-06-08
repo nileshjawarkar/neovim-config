@@ -6,6 +6,9 @@ return {
     vim.o.timeoutlen = 550
     local wk = require("which-key")
     wk.setup({
+       plugins = {
+           registers = false,
+       },
         window = {
             border = "single", -- none, single, double, shadow
             position = "bottom", -- bottom, top
@@ -29,10 +32,13 @@ return {
                 name = "Telescope", -- optional group name
             },
             t = {
-                name = "File tree"
+                name = "File tree",
             },
             g = {
-                name = "Git"
+                name = "Lsp",
+            },
+            W = {
+                name = "Workspace",
             },
             ["w"] = "which_key_ignore",
             ["e"] = "which_key_ignore",
