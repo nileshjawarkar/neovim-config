@@ -99,6 +99,18 @@ return {
                 keymap.set("n", "<leader>gp", diagnostics.goto_prev, { buffer = ev.buf, desc = "Previous diagnostics" })
                 keymap.set("n", "<leader>gn", diagnostics.goto_next, { buffer = ev.buf, desc = "Next diagnostics" })
 
+                -- Filetype-specific keymaps (these can be done in the ftplugin directory instead if you prefer)
+                -- keymap.set("n", "<leader>gO", function()
+                --     if vim.bo.filetype == "java" then
+                --         require("jdtls").organize_imports()
+                --     end
+                -- end, { desc = "Organize imports" })
+
+                -- keymap.set("n", "<leader>gu", function()
+                --     if vim.bo.filetype == "java" then
+                --         require("jdtls").update_projects_config()
+                --     end
+                -- end, { desc = "Update project config" })
 			end,
 		})
 
