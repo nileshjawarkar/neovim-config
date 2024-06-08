@@ -28,9 +28,9 @@ return {
 			"yamlls",
 			"jdtls",
 			"tsserver",
-            "quick_lint_js",
-            "html",
-            "cssls"
+			"quick_lint_js",
+			"html",
+			"cssls",
 		}
 
 		require("mason").setup()
@@ -61,7 +61,7 @@ return {
 
 		local keymap = vim.keymap
 		local diagnostics = vim.diagnostic
-        local vlb = vim.lsp.buf
+		local vlb = vim.lsp.buf
 		local vim_api = vim.api
 
 		-- Use LspAttach autocommand to only map the following keys
@@ -72,7 +72,7 @@ return {
 				-- Enable completion triggered by <c-x><c-o>
 				vim.bo[ev.buf].omnifunc = "v:lua.vim_lsp.omnifunc"
 
-                local lsp_buildin = require("telescope.builtin")
+				local lsp_buildin = require("telescope.builtin")
 				local opts = { buffer = ev.buf, desc = "" }
 				keymap.set("n", "<leader>Wa", vlb.add_workspace_folder, opts)
 				keymap.set("n", "<leader>Wr", vlb.remove_workspace_folder, opts)
@@ -84,33 +84,36 @@ return {
 				keymap.set("n", "gi", vlb.implementation, opts)
 				keymap.set("n", "gr", lsp_buildin.lsp_references, opts)
 
-		        keymap.set("n", "<leader>go", lsp_buildin.lsp_document_symbols, { desc = "List document symbols" })
-                keymap.set("n", "<leader>gg", vlb.hover, { buffer = ev.buf, desc = "Hover" })
-                keymap.set("n", "<leader>gd", vlb.definition, { buffer = ev.buf, desc = "Go to definition" })
-                keymap.set("n", "<leader>gD", vlb.declaration, { buffer = ev.buf, desc = "Go to declaration" })
-                keymap.set("n", "<leader>gi", vlb.implementation, { buffer = ev.buf, desc = "Go to implementation" })
-                keymap.set("n", "<leader>gt", vlb.type_definition, { buffer = ev.buf, desc = "Go to type definition" })
-                keymap.set("n", "<leader>gr", lsp_buildin.lsp_references, { buffer = ev.buf, desc = "List references" })
-                keymap.set("n", "<leader>gs", vlb.signature_help, { buffer = ev.buf, desc = "Signature help" })
-                keymap.set("n", "<leader>gR", vlb.rename, { buffer = ev.buf, desc = "Rename" })
-                keymap.set({"n", "v"}, "<leader>ga", vlb.code_action, { buffer = ev.buf, desc = "Code actions" })
-                keymap.set("i", "<C-Space>", vlb.completion, { buffer = ev.buf, desc = "Code completion" })
-                keymap.set("n", "<leader>gl", diagnostics.open_float, { buffer = ev.buf, desc = "Show diagnostics" })
-                keymap.set("n", "<leader>gp", diagnostics.goto_prev, { buffer = ev.buf, desc = "Previous diagnostics" })
-                keymap.set("n", "<leader>gn", diagnostics.goto_next, { buffer = ev.buf, desc = "Next diagnostics" })
+				keymap.set("n", "<leader>go", lsp_buildin.lsp_document_symbols, { desc = "List document symbols" })
+				keymap.set("n", "<leader>gg", vlb.hover, { buffer = ev.buf, desc = "Hover" })
+				keymap.set("n", "<leader>gd", vlb.definition, { buffer = ev.buf, desc = "Go to definition" })
+				keymap.set("n", "<leader>gD", vlb.declaration, { buffer = ev.buf, desc = "Go to declaration" })
+				keymap.set("n", "<leader>gi", vlb.implementation, { buffer = ev.buf, desc = "Go to implementation" })
+				keymap.set("n", "<leader>gt", vlb.type_definition, { buffer = ev.buf, desc = "Go to type definition" })
+				keymap.set("n", "<leader>gr", lsp_buildin.lsp_references, { buffer = ev.buf, desc = "List references" })
+				keymap.set("n", "<leader>gs", vlb.signature_help, { buffer = ev.buf, desc = "Signature help" })
+				keymap.set("n", "<leader>gR", vlb.rename, { buffer = ev.buf, desc = "Rename" })
+				keymap.set({ "n", "v" }, "<leader>ga", vlb.code_action, { buffer = ev.buf, desc = "Code actions" })
+				keymap.set("i", "<C-Space>", vlb.completion, { buffer = ev.buf, desc = "Code completion" })
+				keymap.set("n", "<leader>gl", diagnostics.open_float, { buffer = ev.buf, desc = "Show diagnostics" })
+				keymap.set("n", "<leader>gp", diagnostics.goto_prev, { buffer = ev.buf, desc = "Previous diagnostics" })
+				keymap.set("n", "<leader>gn", diagnostics.goto_next, { buffer = ev.buf, desc = "Next diagnostics" })
+				keymap.set("n", "<leader>gf", function()
+					lsp_buildin.treesitter({ default_text = ":field:" })
+				end, { desc = "Treesitter find" })
 
-                -- Filetype-specific keymaps (these can be done in the ftplugin directory instead if you prefer)
-                -- keymap.set("n", "<leader>gO", function()
-                --     if vim.bo.filetype == "java" then
-                --         require("jdtls").organize_imports()
-                --     end
-                -- end, { desc = "Organize imports" })
+				-- Filetype-specific keymaps (these can be done in the ftplugin directory instead if you prefer)
+				-- keymap.set("n", "<leader>gO", function()
+				--     if vim.bo.filetype == "java" then
+				--         require("jdtls").organize_imports()
+				--     end
+				-- end, { desc = "Organize imports" })
 
-                -- keymap.set("n", "<leader>gu", function()
-                --     if vim.bo.filetype == "java" then
-                --         require("jdtls").update_projects_config()
-                --     end
-                -- end, { desc = "Update project config" })
+				-- keymap.set("n", "<leader>gu", function()
+				--     if vim.bo.filetype == "java" then
+				--         require("jdtls").update_projects_config()
+				--     end
+				-- end, { desc = "Update project config" })
 			end,
 		})
 
