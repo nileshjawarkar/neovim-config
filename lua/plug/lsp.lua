@@ -3,6 +3,10 @@ return {
 	dependencies = {
 		"williamboman/mason.nvim",
 		"williamboman/mason-lspconfig.nvim",
+        { "mfussenegger/nvim-jdtls", ft = 'java'},
+        -- Auto-Install LSPs, linters, formatters, debuggers
+        -- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim
+        { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
 
 		-- completion
 		"hrsh7th/nvim-cmp", -- Autocompletion plugin
@@ -34,6 +38,14 @@ return {
 		}
 
 		require("mason").setup()
+        require('mason-tool-installer').setup({
+            ensure_installed = {
+                "clang-format",
+                -- 'java-debug-adapter',
+                -- 'java-test',
+            },
+        })
+
 		local mason_config = require("mason-lspconfig")
 		local lsp_config = require("lspconfig")
 		local capabilities = require("cmp_nvim_lsp").default_capabilities()
@@ -41,9 +53,11 @@ return {
 		mason_config.setup({ ensure_installed = req_servers })
 		mason_config.setup_handlers({
 			function(server_name)
-				lsp_config[server_name].setup({
-					capabilities = capabilities,
-				})
+                if server_name ~= "jdtls" then
+                    lsp_config[server_name].setup({
+                        capabilities = capabilities,
+                    })
+                end
 			end,
 			["lua_ls"] = function()
 				lsp_config.lua_ls.setup({
@@ -73,16 +87,15 @@ return {
 				vim.bo[ev.buf].omnifunc = "v:lua.vim_lsp.omnifunc"
 
 				local lsp_buildin = require("telescope.builtin")
-				local opts = { buffer = ev.buf, desc = "" }
-				keymap.set("n", "<leader>Wa", vim_lbuf.add_workspace_folder, opts)
-				keymap.set("n", "<leader>Wr", vim_lbuf.remove_workspace_folder, opts)
+				keymap.set("n", "<leader>Wa", vim_lbuf.add_workspace_folder, { buffer = ev.buf, desc = "Add workspace folder" })
+				keymap.set("n", "<leader>Wr", vim_lbuf.remove_workspace_folder, { buffer = ev.buf, desc = "Remove workspace folder" })
 				keymap.set("n", "<leader>Wl", function()
 					print(vim.inspect(vim_lbuf.list_workspace_folders()))
-				end, opts)
-				keymap.set("n", "gD", vim_lbuf.declaration, opts)
-				keymap.set("n", "gd", vim_lbuf.definition, opts)
-				keymap.set("n", "gi", vim_lbuf.implementation, opts)
-				keymap.set("n", "gr", lsp_buildin.lsp_references, opts)
+				end, { buffer = ev.buf, desc = "List workspace folders" })
+				keymap.set("n", "gD", vim_lbuf.declaration, { buffer = ev.buf, desc = "Go to declaration" })
+				keymap.set("n", "gd", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition" })
+				keymap.set("n", "gi", vim_lbuf.implementation, { buffer = ev.buf, desc = "Go to implementation" })
+				keymap.set("n", "gr", lsp_buildin.lsp_references, { buffer = ev.buf, desc = "List references" })
 
 				keymap.set("n", "<leader>go", lsp_buildin.lsp_document_symbols, { desc = "List document symbols" })
 				keymap.set("n", "<leader>gg", vim_lbuf.hover, { buffer = ev.buf, desc = "Hover" })
@@ -95,25 +108,11 @@ return {
 				keymap.set("n", "<leader>gR", vim_lbuf.rename, { buffer = ev.buf, desc = "Rename" })
 				keymap.set({ "n", "v" }, "<leader>ga", vim_lbuf.code_action, { buffer = ev.buf, desc = "Code actions" })
 				keymap.set("i", "<C-Space>", vim_lbuf.completion, { buffer = ev.buf, desc = "Code completion" })
-				keymap.set("n", "<leader>gl", diagnostics.open_float, { buffer = ev.buf, desc = "Show diagnostics" })
-				keymap.set("n", "<leader>gp", diagnostics.goto_prev, { buffer = ev.buf, desc = "Previous diagnostics" })
-				keymap.set("n", "<leader>gn", diagnostics.goto_next, { buffer = ev.buf, desc = "Next diagnostics" })
-				keymap.set("n", "<leader>gf", function()
-					lsp_buildin.treesitter({ default_text = ":field:" })
-				end, { desc = "Treesitter find" })
+                keymap.set("n", "<leader>gf", function() vim.lsp.buf.format({async = true}) end, { buffer = ev.buf, desc = "Format code" } )
 
-				-- Filetype-specific keymaps (these can be done in the ftplugin directory instead if you prefer)
-				-- keymap.set("n", "<leader>gO", function()
-				--     if vim.bo.filetype == "java" then
-				--         require("jdtls").organize_imports()
-				--     end
-				-- end, { desc = "Organize imports" })
-
-				-- keymap.set("n", "<leader>gu", function()
-				--     if vim.bo.filetype == "java" then
-				--         require("jdtls").update_projects_config()
-				--     end
-				-- end, { desc = "Update project config" })
+				keymap.set("n", "<leader>dl", diagnostics.open_float, { buffer = ev.buf, desc = "Show diagnostics" })
+				keymap.set("n", "<leader>dp", diagnostics.goto_prev, { buffer = ev.buf, desc = "Previous diagnostics" })
+				keymap.set("n", "<leader>dn", diagnostics.goto_next, { buffer = ev.buf, desc = "Next diagnostics" })
 			end,
 		})
 

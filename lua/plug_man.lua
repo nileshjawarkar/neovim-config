@@ -13,7 +13,6 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	{ import = "plug" },
-	-- {import = "plug.lsp"}
 }, {
 	install = {
 		colorscheme = { "tokyonight" },
