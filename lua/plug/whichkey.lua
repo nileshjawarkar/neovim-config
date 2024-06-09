@@ -43,6 +43,9 @@ return {
             g = {
                 name = "Lsp",
             },
+            j = {
+                name = "JUnit Test",
+            },
             W = {
                 name = "Workspace",
             },

@@ -9,7 +9,7 @@ return {
         { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
 
         -- completion
-        "hrsh7th/nvim-cmp", -- Autocompletion plugin
+        "hrsh7th/nvim-cmp",     -- Autocompletion plugin
         "hrsh7th/cmp-nvim-lsp", -- LSP source for nvim-cmp
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
@@ -17,7 +17,7 @@ return {
 
         -- snippet
         "saadparwaiz1/cmp_luasnip", -- Snippets source for nvim-cmp
-        "L3MON4D3/LuaSnip",   -- Snippets plugin
+        "L3MON4D3/LuaSnip",         -- Snippets plugin
 
         -- help format
         "onsails/lspkind.nvim",
@@ -41,10 +41,12 @@ return {
         require('mason-tool-installer').setup({
             ensure_installed = {
                 "clang-format",
-                -- 'java-debug-adapter',
-                -- 'java-test',
+                -- "java-debug-adapter",
+                "java-test",
             },
         })
+
+        vim.api.nvim_command('MasonToolsInstall')
 
         local mason_config = require("mason-lspconfig")
         local lsp_config = require("lspconfig")
@@ -99,7 +101,7 @@ return {
                 keymap.set("n", "gi", vim_lbuf.implementation, { buffer = ev.buf, desc = "Go to implementation" })
                 keymap.set("n", "gr", lsp_buildin.lsp_references, { buffer = ev.buf, desc = "List references" })
 
-                keymap.set("n", "<leader>go", lsp_buildin.lsp_document_symbols, { desc = "List document symbols" })
+                keymap.set("n", "<leader>gl", lsp_buildin.lsp_document_symbols, { desc = "List document symbols" })
                 keymap.set("n", "<leader>gg", vim_lbuf.hover, { buffer = ev.buf, desc = "Hover" })
                 keymap.set("n", "<leader>gd", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition" })
                 keymap.set("n", "<leader>gD", vim_lbuf.declaration, { buffer = ev.buf, desc = "Go to declaration" })
@@ -137,7 +139,7 @@ return {
             },
             mapping = cmp.mapping.preset.insert({
                 ["<C-u>"] = cmp.mapping.scroll_docs(-4), -- Up
-                ["<C-d>"] = cmp.mapping.scroll_docs(4), -- Down
+                ["<C-d>"] = cmp.mapping.scroll_docs(4),  -- Down
                 -- C-b (back) C-f (forward) for snippet placeholder navigation.
                 ["<C-leader>"] = cmp.mapping.complete(),
                 ["<CR>"] = cmp.mapping.confirm({
