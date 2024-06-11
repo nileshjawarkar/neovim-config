@@ -42,7 +42,7 @@ return {
             ensure_installed = {
                 "clang-format",
                 -- "java-debug-adapter",
-                "java-test",
+                -- "java-test",
             },
         })
 

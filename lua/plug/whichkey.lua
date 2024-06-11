@@ -34,24 +34,14 @@ return {
             show_keys = false, -- show the currently pressed key and its label as a message in the command line
         })
         wk.register({
-            f = {
-                name = "Telescope",
-            },
-            t = {
-                name = "File tree",
-            },
-            g = {
-                name = "Lsp",
-            },
-            j = {
-                name = "JUnit Test",
-            },
-            W = {
-                name = "Workspace",
-            },
-            ["w"] = "which_key_ignore",
+            f = { name = "Telescope", },
+            t = { name = "File tree", },
+            g = { name = "Lsp", },
+            j = { name = "JUnit test", },
+            W = { name = "Workspace", },
+            w = { name = "Window split", },
+            q = { name = "Quickfix list", },
             ["e"] = "which_key_ignore",
-            ["q"] = "which_key_ignore",
         }, {
             prefix = "<leader>"
         })
