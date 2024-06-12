@@ -14,7 +14,7 @@ return {
                 position = "bottom",      -- bottom, top
                 margin = { 1, 0, 0, 0 },  -- extra window margin [top, right, bottom, left]. When between 0 and 1, will be treated as a percentage of the screen size.
                 padding = { 1, 1, 1, 1 }, -- extra window padding [top, right, bottom, left]
-                winblend = 5,             -- value between 0-100 0 for fully opaque and 100 for fully transparent
+                winblend = 0,             -- value between 0-100 0 for fully opaque and 100 for fully transparent
                 zindex = 1000,            -- positive value to position WhichKey above other floating windows.
             },
             layout = {
@@ -37,8 +37,7 @@ return {
             f = { name = "Telescope", },
             t = { name = "File tree", },
             g = { name = "Lsp", },
-            j = { name = "JUnit test", },
-            W = { name = "Workspace", },
+            W = { name = "Workspaces", },
             w = { name = "Window split", },
             q = { name = "Quickfix list", },
             ["e"] = "which_key_ignore",
