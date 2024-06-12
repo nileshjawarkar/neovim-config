@@ -30,6 +30,7 @@ return {
             "bashls",
             "jsonls",
             "yamlls",
+            "dockerls",
             "jdtls",
             "tsserver",
             "quick_lint_js",
