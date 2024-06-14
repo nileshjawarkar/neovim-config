@@ -3,10 +3,10 @@ return {
     dependencies = {
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
-        { "mfussenegger/nvim-jdtls",                  ft = 'java' },
+        { "mfussenegger/nvim-jdtls", ft = 'java' },
         -- Auto-Install LSPs, linters, formatters, debuggers
         -- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim
-        { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
 
         -- completion
         "hrsh7th/nvim-cmp",     -- Autocompletion plugin
@@ -18,6 +18,7 @@ return {
         -- snippet
         "saadparwaiz1/cmp_luasnip", -- Snippets source for nvim-cmp
         "L3MON4D3/LuaSnip",         -- Snippets plugin
+        "rafamadriz/friendly-snippets",
 
         -- help format
         "onsails/lspkind.nvim",
@@ -56,23 +57,37 @@ return {
         mason_config.setup({ ensure_installed = req_servers })
         mason_config.setup_handlers({
             function(server_name)
-                if server_name ~= "jdtls" then
+                if server_name == "yamlls" then
+                    lsp_config[server_name].setup({
+                        capabilities = capabilities,
+                        settings = {
+                            yaml = {
+                                format = {
+                                    enable = true,
+                                    singleQuote = false,
+                                    bracketSpacing = true
+                                },
+                                validate = false,
+                                completion = true,
+                            },
+                        },
+                    })
+                elseif server_name == "lua_ls" then
+                    lsp_config[server_name].setup({
+                        capabilities = capabilities,
+                        settings = {
+                            Lua = {
+                                diagnostics = {
+                                    globals = { "vim" },
+                                },
+                            },
+                        },
+                    })
+                elseif server_name ~= "jdtls" then
                     lsp_config[server_name].setup({
                         capabilities = capabilities,
                     })
                 end
-            end,
-            ["lua_ls"] = function()
-                lsp_config.lua_ls.setup({
-                    capabilities = capabilities,
-                    settings = {
-                        Lua = {
-                            diagnostics = {
-                                globals = { "vim" },
-                            },
-                        },
-                    },
-                })
             end,
         })
 
@@ -124,6 +139,7 @@ return {
         })
 
         -- luasnip setup
+        require("luasnip.loaders.from_vscode").lazy_load();
         local luasnip = require("luasnip")
 
         -- nvim-cmp setup
@@ -171,7 +187,7 @@ return {
                 { name = "nvim_lsp" },
                 { name = "luasnip" },
             }, {
-                { name = "buffer", keyword_length = 3 },
+                { name = "buffer", keyword_length = 2 },
             }),
         })
 
@@ -179,7 +195,7 @@ return {
         cmp.setup.cmdline({ "/", "?" }, {
             mapping = cmp.mapping.preset.cmdline(),
             sources = {
-                { name = "buffer", keyword_length = 3 },
+                { name = "buffer", keyword_length = 2 },
             },
         })
 
