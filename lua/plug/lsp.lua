@@ -141,9 +141,13 @@ return {
         -- luasnip setup
         local luasnip = require("luasnip")
         local snippet_loader = require("luasnip.loaders.from_vscode")
-        local data_path = vim.fn.stdpath("data")
         snippet_loader.lazy_load();
-        snippet_loader.lazy_load({ paths = { data_path .. "/snippets" } })
+        ----------------------------------
+        -- Users snippets from data dir : Not working
+        ----------------------------------
+        -- local data_path = vim.fn.stdpath("data")
+        -- snippet_loader.lazy_load({ paths = { data_path .. "/snippets" } })
+
         require("snippets")
 
         -- nvim-cmp setup
