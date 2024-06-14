@@ -1,0 +1,1 @@
+-- require("snippets.lua_lang_example")

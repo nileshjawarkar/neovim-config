@@ -139,7 +139,11 @@ return {
         })
 
         -- luasnip setup
-        require("luasnip.loaders.from_vscode").lazy_load();
+        local snippet_loader = require("luasnip.loaders.from_vscode")
+        snippet_loader.lazy_load();
+        require("snippets")
+        -- snippet_loader.lazy_load({ paths = { "snippets" } })
+
         local luasnip = require("luasnip")
 
         -- nvim-cmp setup
