@@ -43,6 +43,7 @@ return {
         require('mason-tool-installer').setup({
             ensure_installed = {
                 "clang-format",
+                "prettier",
                 -- "java-debug-adapter",
                 -- "java-test",
             },
