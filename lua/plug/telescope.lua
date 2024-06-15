@@ -47,3 +47,4 @@ return {
         vim.keymap.set("n", "<leader>f.", builtin.current_buffer_fuzzy_find, { desc = "Fuzzy find in current file" })
     end,
 }
+

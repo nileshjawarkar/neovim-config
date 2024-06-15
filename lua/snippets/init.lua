@@ -1,1 +1,2 @@
--- require("snippets.lua_lang_example")
+require("snippets.lua_lang")
+require("snippets.bootstrap")
