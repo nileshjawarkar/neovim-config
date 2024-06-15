@@ -44,6 +44,7 @@ return {
             ensure_installed = {
                 "clang-format",
                 "prettier",
+                "emmet-language-server",
                 -- "java-debug-adapter",
                 -- "java-test",
             },
