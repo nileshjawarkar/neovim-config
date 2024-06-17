@@ -142,19 +142,32 @@ return {
 
         -- luasnip setup
         local luasnip = require("luasnip")
+        luasnip.config.set_config {
+            history = true,
+            updateevents = "TextChanged,TextChangedI",
+            override_builtin = true,
+        }
+
         local snippet_loader = require("luasnip.loaders.from_vscode")
         snippet_loader.lazy_load();
         ----------------------------------
-        -- Users snippets from data dir : Not working
+        -- load users snippets
         ----------------------------------
-        -- local data_path = vim.fn.stdpath("data")
-        -- snippet_loader.lazy_load({ paths = { data_path .. "/snippets" } })
-
-        require("snippets")
+        for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/snippets/*.lua", true)) do
+            loadfile(ft_path)()
+        end
 
         -- nvim-cmp setup
         local cmp = require("cmp")
+        local lspkind = require("lspkind")
         cmp.setup({
+            formatting = {
+                format = lspkind.cmp_format({
+                    mode = "symbol", -- show only symbol annotations
+                    maxwidth = 50,
+                    ellipsis_char = "...",
+                }),
+            },
             snippet = {
                 expand = function(args)
                     luasnip.lsp_expand(args.body)
@@ -165,28 +178,31 @@ return {
                 documentation = cmp.config.window.bordered(),
             },
             mapping = cmp.mapping.preset.insert({
-                ["<C-u>"] = cmp.mapping.scroll_docs(-4), -- Up
-                ["<C-d>"] = cmp.mapping.scroll_docs(4),  -- Down
-                -- C-b (back) C-f (forward) for snippet placeholder navigation.
-                ["<C-leader>"] = cmp.mapping.complete(),
                 ["<CR>"] = cmp.mapping.confirm({
                     behavior = cmp.ConfirmBehavior.Replace,
                     select = true,
                 }),
-                ["<Tab>"] = cmp.mapping(function(fallback)
+                ["<C-n>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
-                        cmp.select_next_item()
+                        cmp.select_next_item({ behavior = cmp.SelectBehavior.Insert })
                     elseif luasnip.expand_or_jumpable() then
                         luasnip.expand_or_jump()
                     else
                         fallback()
                     end
                 end, { "i", "s" }),
-                ["<S-Tab>"] = cmp.mapping(function(fallback)
+                ["<C-p>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
-                        cmp.select_prev_item()
+                        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Insert })
                     elseif luasnip.jumpable(-1) then
                         luasnip.jump(-1)
+                    else
+                        fallback()
+                    end
+                end, { "i", "s" }),
+                ["<C-l>"] = cmp.mapping(function(fallback)
+                    if luasnip.choice_active() then
+                        luasnip.change_choice(1)
                     else
                         fallback()
                     end
@@ -219,16 +235,6 @@ return {
             }),
         })
 
-        local lspkind = require("lspkind")
-        cmp.setup({
-            formatting = {
-                format = lspkind.cmp_format({
-                    mode = "symbol", -- show only symbol annotations
-                    maxwidth = 50,
-                    ellipsis_char = "...",
-                }),
-            },
-        })
 
         -- Globally configure all LSP floating preview popups (like hover, signature help, etc)
         local open_floating_preview = vim.lsp.util.open_floating_preview

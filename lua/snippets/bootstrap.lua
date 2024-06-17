@@ -24,7 +24,7 @@ ls.add_snippets("html", {
          <script src="js/script.js"></script>
      </body>
      </html>
-     ]], { i(1) }
+     ]], { i(0) }
     )),
     s("bs_navbar", fmt([[
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -43,17 +43,17 @@ ls.add_snippets("html", {
     </div>
   </div>
 </nav>
-    ]], { i(1), })),
+    ]], { i(0), })),
     s("bs_nav_item", fmt([[
 <li class="nav-item">
-  <a class="nav-link" href="#">Link</a>
+  <a class="nav-link" href="#">{}</a>
 </li>
-    ]], {})),
+    ]], {i(0), })),
     s("bs_nav_item_disabled", fmt([[
 <li class="nav-item">
-  <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+  <a class="nav-link disabled" aria-disabled="true">{}</a>
 </li>
-    ]], {})),
+    ]], { i(0), })),
     s("bs_nav_item_dropdown", fmt([[
 <li class="nav-item dropdown">
   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -67,4 +67,68 @@ ls.add_snippets("html", {
   </ul>
 </li>
     ]], {})),
+    s("bs_container", fmt([[
+<div class="{}">{}</div>
+    ]], {
+        c(1, { t("container"),
+            t("container-sm"),
+            t("container-md"),
+            t("container-lg"),
+            t("container-xl"),
+            t("container-xxl"),
+            t("container-fluid"),
+        }),
+        i(0)
+    })),
+    s("bs_row", {
+        t("<div class=\"row\">"),
+        i(0),
+        t("</div>")
+    }),
+    s("bs_col", {
+        t("<div class=\""),
+        c(1, {
+            t("col"),
+            t("col-"),
+            t("col-sm-"),
+            t("col-md-"),
+            t("col-lg-"),
+            t("col-xl-"),
+            t("col-xxl-"),
+        }),
+        t("\">"),
+        i(0),
+        t("</div>"),
+    }),
+    s("bs_dropdown", fmt([[
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    {}
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#">Action</a></li>
+    <li><a class="dropdown-item" href="#">Another action</a></li>
+    <li><a class="dropdown-item" href="#">Something else here</a></li>
+  </ul>
+</div>
+    ]], {i(0, "Dropdown Name"), })),
+    s("bs_form", fmt([[
+ <form>
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1">
+  </div>
+  <div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+  </div>
+  {}
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>   
+    ]], { i(0) })),
 })
