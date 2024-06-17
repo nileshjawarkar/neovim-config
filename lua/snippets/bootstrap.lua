@@ -131,4 +131,32 @@ ls.add_snippets("html", {
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>   
     ]], { i(0) })),
+    s("bs_form_item", fmt([[
+<div class="mb-3">
+    <label for="{forid}" class="form-label">{label}</label>
+    <input type="{type}" class="form-control" id="{id}">
+</div>
+{nextline}
+    ]], {
+       label = i(1, "Label"),
+       type = i(2, "text"),
+       id = i(3, "id"),
+       forid = r(3),
+       nextline = i(0)
+    })),
+    s("bs_card", fmt([[
+<div class="card" style="width: 18rem;">
+  <img src="..." class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{title}</h5>
+    <p class="card-text">{desc}</p>
+    <a href="{link}" class="btn btn-primary">{label}</a>
+  </div>
+</div>
+    ]], {
+        title = i(1, "Card Title"),
+        desc = i(2, "Descriptive text"),
+        link = i(3, "#"),
+        label = i(0, "Click here"),
+    })),
 })
