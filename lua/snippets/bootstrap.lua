@@ -48,7 +48,7 @@ ls.add_snippets("html", {
 <li class="nav-item">
   <a class="nav-link" href="#">{}</a>
 </li>
-    ]], {i(0), })),
+    ]], { i(0), })),
     s("bs_nav_item_disabled", fmt([[
 <li class="nav-item">
   <a class="nav-link disabled" aria-disabled="true">{}</a>
@@ -111,7 +111,7 @@ ls.add_snippets("html", {
     <li><a class="dropdown-item" href="#">Something else here</a></li>
   </ul>
 </div>
-    ]], {i(0, "Dropdown Name"), })),
+    ]], { i(0, "Dropdown Name"), })),
     s("bs_form", fmt([[
  <form>
   <div class="mb-3">
@@ -129,7 +129,7 @@ ls.add_snippets("html", {
   </div>
   {}
   <button type="submit" class="btn btn-primary">Submit</button>
-</form>   
+</form>
     ]], { i(0) })),
     s("bs_form_item", fmt([[
 <div class="mb-3">
@@ -138,11 +138,11 @@ ls.add_snippets("html", {
 </div>
 {nextline}
     ]], {
-       label = i(1, "Label"),
-       type = i(2, "text"),
-       id = i(3, "id"),
-       forid = r(3),
-       nextline = i(0)
+        label = i(1, "Label"),
+        type = i(2, "text"),
+        id = i(3, "id"),
+        forid = r(3),
+        nextline = i(0)
     })),
     s("bs_card", fmt([[
 <div class="card" style="width: 18rem;">

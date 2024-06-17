@@ -1,6 +1,7 @@
 return {
     "neovim/nvim-lspconfig",
     dependencies = {
+        "folke/lazydev.nvim",
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
         { "mfussenegger/nvim-jdtls", ft = 'java' },
@@ -24,6 +25,7 @@ return {
         "onsails/lspkind.nvim",
     },
     config = function()
+        require("lazydev").setup({})
         local req_servers = {
             "lua_ls",
             "clangd",

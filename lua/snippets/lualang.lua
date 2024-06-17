@@ -1,17 +1,8 @@
 local ls = require("luasnip")
-
 local s = ls.snippet
--- local sn = ls.snippet_node
 local t = ls.text_node
 local i = ls.insert_node
 local f = ls.function_node
--- local c = ls.choice_node
--- local d = ls.dynamic_node
--- local r = ls.restore_node
-
-local function copy(args)
-	return args[1]
-end
 
 ls.add_snippets("lua", {
 	s("lf", {
@@ -22,11 +13,14 @@ ls.add_snippets("lua", {
 		t({ "", "end" }),
 	}),
 
-	s("lreq", {
+	s("lrequire", {
 		t("local "),
-		f(copy, 1),
+		f(function (import_name)
+            local parts = vim.split(import_name[1][1], ".", {plain = true})
+            return parts[#parts] or ""
+		end, {1}),
 		t(" = require(\""),
-		i(1),
+		i(1, "import.name"),
 		t("\")"),
 		i(0)
 	})
