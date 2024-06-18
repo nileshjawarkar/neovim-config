@@ -4,17 +4,15 @@ return {
         "folke/lazydev.nvim",
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
-        { "mfussenegger/nvim-jdtls", ft = 'java' },
-        -- Auto-Install LSPs, linters, formatters, debuggers
-        -- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim
         "WhoIsSethDaniel/mason-tool-installer.nvim",
+        { "mfussenegger/nvim-jdtls", ft = 'java' },
 
         -- completion
-        "hrsh7th/nvim-cmp",     -- Autocompletion plugin
         "hrsh7th/cmp-nvim-lsp", -- LSP source for nvim-cmp
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
+        "hrsh7th/nvim-cmp",     -- Autocompletion plugin
 
         -- snippet
         "saadparwaiz1/cmp_luasnip", -- Snippets source for nvim-cmp
@@ -47,8 +45,6 @@ return {
                 "clang-format",
                 "prettier",
                 "emmet-language-server",
-                -- "java-debug-adapter",
-                -- "java-test",
             },
         })
 
@@ -169,6 +165,7 @@ return {
                     maxwidth = 50,
                     ellipsis_char = "...",
                 }),
+                expandable_indicator = true,
             },
             snippet = {
                 expand = function(args)
