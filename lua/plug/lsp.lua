@@ -113,7 +113,6 @@ return {
         vim_api.nvim_create_autocmd("LspAttach", {
             group = vim_api.nvim_create_augroup("UserLspConfig", {}),
             callback = function(ev)
-
                 -- Load user snippets
                 -----------------------
                 load_snippets(vim.bo.filetype)
