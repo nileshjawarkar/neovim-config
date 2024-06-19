@@ -12,7 +12,7 @@ return {
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
-        "hrsh7th/nvim-cmp",     -- Autocompletion plugin
+        "hrsh7th/nvim-cmp", -- Autocompletion plugin
 
         -- snippet
         "saadparwaiz1/cmp_luasnip", -- Snippets source for nvim-cmp
@@ -91,16 +91,39 @@ return {
             end,
         })
 
-        local keymap = vim.keymap
-        local diagnostics = vim.diagnostic
-        local vim_lbuf = vim.lsp.buf
         local vim_api = vim.api
+
+        -- load snippet during lsp-attach event
+        --------------------------------------
+        local function load_snippets(file_type)
+            local custo_snippet_path = vim.fn.stdpath("data") .. "/snippets/"
+            local snippet_path = "lua/snippets/"
+            for _, ft_path1 in ipairs(vim_api.nvim_get_runtime_file(snippet_path .. file_type .. "*.lua", true)) do
+                loadfile(ft_path1)()
+            end
+            local data_snippets = vim.split(vim.fn.glob(custo_snippet_path .. file_type .. "*.lua"), '\n',
+                { trimempty = true })
+            for _, ft_path2 in ipairs(data_snippets) do
+                loadfile(ft_path2)()
+            end
+        end
 
         -- Use LspAttach autocommand to only map the following keys
         -- after the language server attaches to the current buffer
         vim_api.nvim_create_autocmd("LspAttach", {
             group = vim_api.nvim_create_augroup("UserLspConfig", {}),
             callback = function(ev)
+
+                -- Load user snippets
+                -----------------------
+                load_snippets(vim.bo.filetype)
+
+                -- Define key bindings
+                ----------------------
+                local keymap = vim.keymap
+                local diagnostics = vim.diagnostic
+                local vim_lbuf = vim.lsp.buf
+
                 -- Enable completion triggered by <c-x><c-o>
                 vim.bo[ev.buf].omnifunc = "v:lua.vim_lsp.omnifunc"
 
@@ -148,12 +171,6 @@ return {
 
         local snippet_loader = require("luasnip.loaders.from_vscode")
         snippet_loader.lazy_load();
-        ----------------------------------
-        -- load users snippets
-        ----------------------------------
-        for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("lua/snippets/*.lua", true)) do
-            loadfile(ft_path)()
-        end
 
         -- nvim-cmp setup
         local cmp = require("cmp")
@@ -234,13 +251,14 @@ return {
             }),
         })
 
-
-        -- Globally configure all LSP floating preview popups (like hover, signature help, etc)
-        local open_floating_preview = vim.lsp.util.open_floating_preview
-        function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
-            opts = opts or {}
-            opts.border = opts.border or "rounded" -- Set border to rounded
-            return open_floating_preview(contents, syntax, opts, ...)
+        local t = function()
+            local open_floating_preview = vim.lsp.util.open_floating_preview
+            return function(contents, syntax, opts, ...)
+                opts = opts or {}
+                opts.border = opts.border or "rounded" -- Set border to rounded
+                return open_floating_preview(contents, syntax, opts, ...)
+            end
         end
+        vim.lsp.util.open_floating_preview = t()
     end,
 }
