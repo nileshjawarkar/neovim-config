@@ -95,18 +95,26 @@ return {
 
         -- load snippet during lsp-attach event
         --------------------------------------
-        local function load_snippets(file_type)
+        local load_snippets = (function()
             local custo_snippet_path = vim.fn.stdpath("data") .. "/snippets/"
-            local snippet_path = "lua/snippets/"
-            for _, ft_path1 in ipairs(vim_api.nvim_get_runtime_file(snippet_path .. file_type .. "*.lua", true)) do
-                loadfile(ft_path1)()
+            local init_file_types = {}
+            return function(file_type)
+                -- local is_available = false
+                local snippet_path = "lua/snippets/"
+                if init_file_types[file_type] == nil then
+                    for _, ft_path1 in ipairs(vim_api.nvim_get_runtime_file(snippet_path .. file_type .. "*.lua", true)) do
+                        loadfile(ft_path1)()
+                        -- is_available = true
+                    end
+                    for _, ft_path2 in ipairs(vim.split(vim.fn.glob(custo_snippet_path .. file_type .. "*.lua"), '\n', { trimempty = true })) do
+                        loadfile(ft_path2)()
+                        -- is_available = true
+                    end
+                    init_file_types[file_type] = true
+                end
+                -- if (is_available == true) then print("Initialised snippets for \"" .. file_type .. "\"") end
             end
-            local data_snippets = vim.split(vim.fn.glob(custo_snippet_path .. file_type .. "*.lua"), '\n',
-                { trimempty = true })
-            for _, ft_path2 in ipairs(data_snippets) do
-                loadfile(ft_path2)()
-            end
-        end
+        end)()
 
         -- Use LspAttach autocommand to only map the following keys
         -- after the language server attaches to the current buffer
