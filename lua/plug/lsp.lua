@@ -24,24 +24,20 @@ return {
     },
     config = function()
         require("lazydev").setup({})
-        local req_servers = {
-            "lua_ls",
-            "clangd",
-            "pyright",
-            "bashls",
-            "jsonls",
-            "yamlls",
-            "dockerls",
-            "jdtls",
-            "tsserver",
-            "quick_lint_js",
-            "html",
-            "cssls",
-        }
-
         require("mason").setup()
         require('mason-tool-installer').setup({
             ensure_installed = {
+                "lua_ls",
+                "clangd",
+                "pyright",
+                "bashls",
+                "jsonls",
+                "yamlls",
+                "dockerls",
+                "jdtls",
+                "tsserver",
+                "quick_lint_js",
+                "cssls",
                 "clang-format",
                 "prettier",
                 "emmet-language-server",
@@ -53,8 +49,6 @@ return {
         local mason_config = require("mason-lspconfig")
         local lsp_config = require("lspconfig")
         local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-        mason_config.setup({ ensure_installed = req_servers })
         mason_config.setup_handlers({
             function(server_name)
                 if server_name == "yamlls" then
@@ -91,35 +85,29 @@ return {
             end,
         })
 
-        local vim_api = vim.api
-
         -- load snippet during lsp-attach event
         --------------------------------------
         local load_snippets = (function()
             local custo_snippet_path = vim.fn.stdpath("data") .. "/snippets/"
             local init_file_types = {}
             return function(file_type)
-                -- local is_available = false
                 local snippet_path = "lua/snippets/"
                 if init_file_types[file_type] == nil then
-                    for _, ft_path1 in ipairs(vim_api.nvim_get_runtime_file(snippet_path .. file_type .. "*.lua", true)) do
+                    for _, ft_path1 in ipairs(vim.api.nvim_get_runtime_file(snippet_path .. file_type .. "*.lua", true)) do
                         loadfile(ft_path1)()
-                        -- is_available = true
                     end
                     for _, ft_path2 in ipairs(vim.split(vim.fn.glob(custo_snippet_path .. file_type .. "*.lua"), '\n', { trimempty = true })) do
                         loadfile(ft_path2)()
-                        -- is_available = true
                     end
                     init_file_types[file_type] = true
                 end
-                -- if (is_available == true) then print("Initialised snippets for \"" .. file_type .. "\"") end
             end
         end)()
 
         -- Use LspAttach autocommand to only map the following keys
         -- after the language server attaches to the current buffer
-        vim_api.nvim_create_autocmd("LspAttach", {
-            group = vim_api.nvim_create_augroup("UserLspConfig", {}),
+        vim.api.nvim_create_autocmd("LspAttach", {
+            group = vim.api.nvim_create_augroup("UserLspConfig", {}),
             callback = function(ev)
                 -- Load user snippets
                 -----------------------
@@ -258,14 +246,13 @@ return {
             }),
         })
 
-        local t = function()
+        vim.lsp.util.open_floating_preview = (function()
             local open_floating_preview = vim.lsp.util.open_floating_preview
             return function(contents, syntax, opts, ...)
                 opts = opts or {}
-                opts.border = opts.border or "rounded" -- Set border to rounded
+                opts.border = "rounded"
                 return open_floating_preview(contents, syntax, opts, ...)
             end
-        end
-        vim.lsp.util.open_floating_preview = t()
+        end)()
     end,
 }

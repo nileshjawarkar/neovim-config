@@ -105,9 +105,9 @@ local config = {
             eclipse = {
                 downloadSources = true,
             },
-            configuration = {
-                updateBuildConfiguration = "interactive",
-            },
+            -- configuration = {
+            --     updateBuildConfiguration = "interactive",
+            -- },
             maven = {
                 downloadSources = true,
             },
