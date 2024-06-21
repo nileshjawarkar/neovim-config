@@ -2,11 +2,10 @@ vim.g.mapleader = " "
 
 local keymap = vim.keymap
 
--- Window split management
-keymap.set("n", "<leader>wv", "<C-w>v", { noremap = true, silent = true, desc = "vertically" })
-keymap.set("n", "<leader>ws", "<C-w>s", { noremap = true, silent = true, desc = "horizontally" })
-keymap.set("n", "<leader>w=", "<C-w>=", { noremap = true, silent = true, desc = "Make it equal" })
-keymap.set("n", "<leader>wx", ":close<CR>", { noremap = true, silent = true, desc = "Close" })
+-- Window management
+keymap.set("n", "<leader>wv", "<C-w>v", { noremap = true, silent = true, desc = "Split vertically" })
+keymap.set("n", "<leader>ws", "<C-w>s", { noremap = true, silent = true, desc = "Split horizontally" })
+keymap.set("n", "<leader>wq", ":close<CR>", { noremap = true, silent = true, desc = "Close" })
 keymap.set("n", "<leader>wh", "<C-w>h", { noremap = true, silent = true, desc = "Move right" })
 keymap.set("n", "<leader>wl", "<C-w>l", { noremap = true, silent = true, desc = "Move left" })
 keymap.set("n", "<leader>wj", "<C-w>j", { noremap = true, silent = true, desc = "Move down" })
