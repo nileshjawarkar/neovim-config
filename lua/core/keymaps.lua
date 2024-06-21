@@ -15,8 +15,7 @@ keymap.set("n", "<leader>w-", "<cmd>vertical resize -10<cr>", { noremap = true, 
 
 -- Utillity key binding
 keymap.set("n", "<M-c>", '<cmd>let @+ = expand("%:p")<CR>', { desc = "Copy file path"})
-keymap.set("n", "<M-\\>", vim.api.nvim_replace_termcodes("<c-\\><c-n>", true, true, true), { desc = "Exit terminal mode"})
-
+keymap.set("t", "<M-\\>", vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, true, true), { desc = "Exit terminal mode"})
 
 -- Quick list management
 -- Info : For telescope C+q add search results to quick list.
