@@ -7,6 +7,17 @@ keymap.set("n", "<leader>wv", "<C-w>v", { noremap = true, silent = true, desc = 
 keymap.set("n", "<leader>ws", "<C-w>s", { noremap = true, silent = true, desc = "horizontally" })
 keymap.set("n", "<leader>w=", "<C-w>=", { noremap = true, silent = true, desc = "Make it equal" })
 keymap.set("n", "<leader>wx", ":close<CR>", { noremap = true, silent = true, desc = "Close" })
+keymap.set("n", "<leader>wh", "<C-w>h", { noremap = true, silent = true, desc = "Move right" })
+keymap.set("n", "<leader>wl", "<C-w>l", { noremap = true, silent = true, desc = "Move left" })
+keymap.set("n", "<leader>wj", "<C-w>j", { noremap = true, silent = true, desc = "Move down" })
+keymap.set("n", "<leader>wk", "<C-w>k", { noremap = true, silent = true, desc = "Move up" })
+keymap.set("n", "<leader>w=", "<cmd>vertical resize +10<cr>", { noremap = true, silent = true, desc = "Increase width" })
+keymap.set("n", "<leader>w-", "<cmd>vertical resize -10<cr>", { noremap = true, silent = true, desc = "Decrease width" })
+
+-- Utillity key binding
+keymap.set("n", "<M-c>", '<cmd>let @+ = expand("%:p")<CR>', { desc = "Copy file path"})
+keymap.set("n", "<M-\\>", vim.api.nvim_replace_termcodes("<c-\\><c-n>", true, true, true), { desc = "Exit terminal mode"})
+
 
 -- Quick list management
 -- Info : For telescope C+q add search results to quick list.

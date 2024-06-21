@@ -40,6 +40,7 @@ return {
             W = { name = "Workspaces", },
             w = { name = "Window split", },
             q = { name = "Quickfix list", },
+            u = { name = "Utility functions", },
             ["e"] = "which_key_ignore",
         }, {
             prefix = "<leader>"
