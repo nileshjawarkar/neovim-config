@@ -46,8 +46,10 @@ return {
 
         vim.api.nvim_command('MasonToolsInstall')
 
-        local mason_config = require("mason-lspconfig")
+
         local lsp_config = require("lspconfig")
+        local mason_config = require("mason-lspconfig")
+
         local capabilities = require("cmp_nvim_lsp").default_capabilities()
         mason_config.setup_handlers({
             function(server_name)
@@ -157,12 +159,6 @@ return {
 
         -- luasnip setup
         local luasnip = require("luasnip")
-        luasnip.config.set_config {
-            history = true,
-            updateevents = "TextChanged,TextChangedI",
-            override_builtin = true,
-        }
-
         local snippet_loader = require("luasnip.loaders.from_vscode")
         snippet_loader.lazy_load();
 
@@ -170,6 +166,9 @@ return {
         local cmp = require("cmp")
         local lspkind = require("lspkind")
         cmp.setup({
+            completion = {
+               completeopt = "menu,menuone,preview,noselect",
+            },
             formatting = {
                 format = lspkind.cmp_format({
                     mode = "symbol", -- show only symbol annotations
@@ -229,6 +228,7 @@ return {
             sources = cmp.config.sources({
                 { name = "nvim_lsp" },
                 { name = "luasnip" },
+                { name = "path" },
             }, {
                 { name = "buffer", keyword_length = 3 },
             }),
@@ -251,6 +251,12 @@ return {
                 { name = "cmdline" },
             }),
         })
+
+        -- UI setup : Added rounded border
+        -------------------------------------
+        require('lspconfig.ui.windows').default_options = {
+          border = "rounded",
+        }
 
         vim.lsp.util.open_floating_preview = (function()
             local open_floating_preview = vim.lsp.util.open_floating_preview
