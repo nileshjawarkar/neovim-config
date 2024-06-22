@@ -103,7 +103,6 @@ return {
                 end
             end
         end)()
-
         -- Use LspAttach autocommand to only map the following keys
         -- after the language server attaches to the current buffer
         vim.api.nvim_create_autocmd("LspAttach", {
@@ -201,8 +200,8 @@ return {
                 ["<C-n>"] = cmp.mapping(function(fallback)
                     if cmp.visible() then
                         cmp.select_next_item()
-                    elseif luasnip.locally_jumpable(1) then
-                        luasnip.jump(1)
+                    elseif luasnip.expand_or_jumpable() then
+                        luasnip.expand_or_jump()
                     else
                         fallback()
                     end

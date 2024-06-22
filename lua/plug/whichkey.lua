@@ -38,7 +38,7 @@ return {
             t = { name = "File tree", },
             g = { name = "Lsp", },
             W = { name = "Workspaces", },
-            w = { name = "Window split", },
+            w = { name = "Window", },
             q = { name = "Quickfix list", },
             u = { name = "Utility functions", },
             ["e"] = "which_key_ignore",
