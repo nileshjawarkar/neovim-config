@@ -43,14 +43,12 @@ return {
                 "emmet-language-server",
             },
         })
-
         vim.api.nvim_command('MasonToolsInstall')
-
 
         local lsp_config = require("lspconfig")
         local mason_config = require("mason-lspconfig")
-
         local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
         mason_config.setup_handlers({
             function(server_name)
                 if server_name == "yamlls" then
@@ -105,6 +103,14 @@ return {
                 end
             end
         end)()
+
+        -- Setup keymap for diagnostics
+        ---------------------------------
+        local diagnostics = vim.diagnostic
+        vim.keymap.set("n", "<leader>dl", diagnostics.open_float, { desc = "Show diagnostics" })
+        vim.keymap.set("n", "<leader>dp", diagnostics.goto_prev, { desc = "Previous diagnostics" })
+        vim.keymap.set("n", "<leader>dn", diagnostics.goto_next, { desc = "Next diagnostics" })
+
         -- Use LspAttach autocommand to only map the following keys
         -- after the language server attaches to the current buffer
         vim.api.nvim_create_autocmd("LspAttach", {
@@ -116,44 +122,38 @@ return {
 
                 -- Define key bindings
                 ----------------------
-                local keymap = vim.keymap
-                local diagnostics = vim.diagnostic
                 local vim_lbuf = vim.lsp.buf
 
                 -- Enable completion triggered by <c-x><c-o>
                 vim.bo[ev.buf].omnifunc = "v:lua.vim_lsp.omnifunc"
 
                 local lsp_buildin = require("telescope.builtin")
-                keymap.set("n", "<leader>Wa", vim_lbuf.add_workspace_folder,
+                vim.keymap.set("n", "<leader>Wa", vim_lbuf.add_workspace_folder,
                     { buffer = ev.buf, desc = "Add workspace folder" })
-                keymap.set("n", "<leader>Wr", vim_lbuf.remove_workspace_folder,
+                vim.keymap.set("n", "<leader>Wr", vim_lbuf.remove_workspace_folder,
                     { buffer = ev.buf, desc = "Remove workspace folder" })
-                keymap.set("n", "<leader>Wl", function()
+                vim.keymap.set("n", "<leader>Wl", function()
                     print(vim.inspect(vim_lbuf.list_workspace_folders()))
                 end, { buffer = ev.buf, desc = "List workspace folders" })
-                keymap.set("n", "gD", vim_lbuf.declaration, { buffer = ev.buf, desc = "Go to declaration" })
-                keymap.set("n", "gd", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition" })
-                keymap.set("n", "gi", vim_lbuf.implementation, { buffer = ev.buf, desc = "Go to implementation" })
-                keymap.set("n", "gr", lsp_buildin.lsp_references, { buffer = ev.buf, desc = "List references" })
+                vim.keymap.set("n", "gD", vim_lbuf.declaration, { buffer = ev.buf, desc = "Go to declaration" })
+                vim.keymap.set("n", "gd", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition" })
+                vim.keymap.set("n", "gi", vim_lbuf.implementation, { buffer = ev.buf, desc = "Go to implementation" })
+                vim.keymap.set("n", "gr", lsp_buildin.lsp_references, { buffer = ev.buf, desc = "List references" })
 
-                keymap.set("n", "<leader>gl", lsp_buildin.lsp_document_symbols, { desc = "List document symbols" })
-                keymap.set("n", "<leader>gg", vim_lbuf.hover, { buffer = ev.buf, desc = "Hover" })
-                keymap.set("n", "<leader>gd", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition" })
-                keymap.set("n", "<leader>gD", vim_lbuf.declaration, { buffer = ev.buf, desc = "Go to declaration" })
-                keymap.set("n", "<leader>gi", vim_lbuf.implementation, { buffer = ev.buf, desc = "Go to implementation" })
-                keymap.set("n", "<leader>gt", vim_lbuf.type_definition,
+                vim.keymap.set("n", "<leader>gl", lsp_buildin.lsp_document_symbols, { desc = "List document symbols" })
+                vim.keymap.set("n", "<leader>gg", vim_lbuf.hover, { buffer = ev.buf, desc = "Hover" })
+                vim.keymap.set("n", "<leader>gd", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition" })
+                vim.keymap.set("n", "<leader>gD", vim_lbuf.declaration, { buffer = ev.buf, desc = "Go to declaration" })
+                vim.keymap.set("n", "<leader>gi", vim_lbuf.implementation, { buffer = ev.buf, desc = "Go to implementation" })
+                vim.keymap.set("n", "<leader>gt", vim_lbuf.type_definition,
                     { buffer = ev.buf, desc = "Go to type definition" })
-                keymap.set("n", "<leader>gr", lsp_buildin.lsp_references, { buffer = ev.buf, desc = "List references" })
-                keymap.set("n", "<leader>gs", vim_lbuf.signature_help, { buffer = ev.buf, desc = "Signature help" })
-                keymap.set("n", "<leader>gR", vim_lbuf.rename, { buffer = ev.buf, desc = "Rename" })
-                keymap.set({ "n", "v" }, "<leader>ga", vim_lbuf.code_action, { buffer = ev.buf, desc = "Code actions" })
-                keymap.set("i", "<C-Space>", vim_lbuf.completion, { buffer = ev.buf, desc = "Code completion" })
-                keymap.set("n", "<leader>gf", function() vim.lsp.buf.format({ async = true }) end,
+                vim.keymap.set("n", "<leader>gr", lsp_buildin.lsp_references, { buffer = ev.buf, desc = "List references" })
+                vim.keymap.set("n", "<leader>gs", vim_lbuf.signature_help, { buffer = ev.buf, desc = "Signature help" })
+                vim.keymap.set("n", "<leader>gR", vim_lbuf.rename, { buffer = ev.buf, desc = "Rename" })
+                vim.keymap.set({ "n", "v" }, "<leader>ga", vim_lbuf.code_action, { buffer = ev.buf, desc = "Code actions" })
+                vim.keymap.set("n", "<leader>gf", function() vim.lsp.buf.format({ async = true }) end,
                     { buffer = ev.buf, desc = "Format code" })
 
-                keymap.set("n", "<leader>dl", diagnostics.open_float, { buffer = ev.buf, desc = "Show diagnostics" })
-                keymap.set("n", "<leader>dp", diagnostics.goto_prev, { buffer = ev.buf, desc = "Previous diagnostics" })
-                keymap.set("n", "<leader>dn", diagnostics.goto_next, { buffer = ev.buf, desc = "Next diagnostics" })
             end,
         })
 
@@ -234,7 +234,9 @@ return {
             }),
         })
 
-        -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+        -- CMD completion setup
+        ---------------------------
+        -- 1) Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
         cmp.setup.cmdline({ "/", "?" }, {
             mapping = cmp.mapping.preset.cmdline(),
             sources = {
@@ -242,7 +244,7 @@ return {
             },
         })
 
-        -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+        -- 2) Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
         cmp.setup.cmdline(":", {
             mapping = cmp.mapping.preset.cmdline(),
             sources = cmp.config.sources({
@@ -253,11 +255,14 @@ return {
         })
 
         -- UI setup : Added rounded border
-        -------------------------------------
+        -- 1) Add border to lsp popup windows
+        ------------------------------------
         require('lspconfig.ui.windows').default_options = {
           border = "rounded",
         }
 
+        -- 2) Add border to popup window for signature
+        ----------------------------------------------
         vim.lsp.util.open_floating_preview = (function()
             local open_floating_preview = vim.lsp.util.open_floating_preview
             return function(contents, syntax, opts, ...)
