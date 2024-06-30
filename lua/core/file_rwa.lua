@@ -76,6 +76,7 @@ return {
                 flush = file.flush,
             }
             callback(afile)
+            file.close()
             return true
         end
         return false
