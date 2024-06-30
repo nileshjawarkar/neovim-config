@@ -5,12 +5,23 @@ local i = ls.insert_node
 local f = ls.function_node
 
 ls.add_snippets("lua", {
-	s("lf", {
-		t("local function "),
-		i(1, "fun_name"),
-		t({"()", "\t"}),
-		i(0),
+	s("lfun", {
+        t("local "),
+        i(1, "name"),
+        t(" = function("),
+        i(2, "args"),
+        t({ ")", "\t"}),
+        i(0),
+        t({ "", "end" }),
+	}),
+
+	s("fun", {
+		t("function("),
+        i(1, "args"),
+		t({")", "\t"}),
+		i(2),
 		t({ "", "end" }),
+        i(0),
 	}),
 
 	s("lrequire", {
