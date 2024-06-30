@@ -68,10 +68,6 @@ return {
         local file = open_file(filename, "a+")
         if file ~= nil and callback ~= nil then
             local afile = {
-                close = file.close,
-                seek_start = file.seek_start,
-                seek_end = file.seek_end,
-                seek_from_cur = file.seek_from_cur,
                 write = file.write,
                 flush = file.flush,
             }
