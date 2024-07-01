@@ -31,6 +31,13 @@ local function open_file(filename, mode)
     }
 end
 
+local is_dir = function(dirname)
+    if 1 == vim.fn.isdirectory(dirname) then
+        return true
+    end
+    return false
+end
+
 return {
     read_from = function(filename, callback)
         local file = open_file(filename, "r")
@@ -77,5 +84,29 @@ return {
         end
         return false
     end,
+    create_dir = function(dirname)
+        if 1 == vim.fn.mkdir(dirname, "p") then
+            return true
+        end
+        return false
+    end,
+    rm_rf = function(dirname)
+        if 0 == vim.fn.delete(dirname, "rf") then
+            return true
+        end
+        return false
+    end,
+    is_dir = is_dir,
+    read_dir = function(dirname, callback)
+        if is_dir(dirname) then
+            local file_list = {}
+            for _, ft_path in ipairs(vim.split(vim.fn.glob(dirname .. "/*"), '\n', { trimempty = true })) do
+                table.insert(file_list, ft_path)
+            end
+            callback(file_list)
+            return true
+        end
+        return false
+    end
 }
 
