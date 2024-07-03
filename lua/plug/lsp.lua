@@ -1,3 +1,11 @@
+local function rm_jdtls_ws()
+    local data_path = vim.fn.stdpath("data")
+    local sys = require("core.util.sys")
+    local fs = require("core.util.file")
+    local project_name = sys.get_cur_dir()
+    fs.rm_rf(data_path .. '/workspace/jdtls/' .. project_name)
+end
+
 return {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -23,6 +31,8 @@ return {
         "onsails/lspkind.nvim",
     },
     config = function()
+        rm_jdtls_ws()
+
         require("lazydev").setup({})
         require("mason").setup()
         require('mason-tool-installer').setup({
@@ -85,6 +95,7 @@ return {
             end,
         })
 
+
         -- load snippet during lsp-attach event
         --------------------------------------
         local load_snippets = (function()
@@ -144,16 +155,18 @@ return {
                 vim.keymap.set("n", "<leader>gg", vim_lbuf.hover, { buffer = ev.buf, desc = "Hover" })
                 vim.keymap.set("n", "<leader>gd", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition" })
                 vim.keymap.set("n", "<leader>gD", vim_lbuf.declaration, { buffer = ev.buf, desc = "Go to declaration" })
-                vim.keymap.set("n", "<leader>gi", vim_lbuf.implementation, { buffer = ev.buf, desc = "Go to implementation" })
+                vim.keymap.set("n", "<leader>gi", vim_lbuf.implementation,
+                    { buffer = ev.buf, desc = "Go to implementation" })
                 vim.keymap.set("n", "<leader>gt", vim_lbuf.type_definition,
                     { buffer = ev.buf, desc = "Go to type definition" })
-                vim.keymap.set("n", "<leader>gr", lsp_buildin.lsp_references, { buffer = ev.buf, desc = "List references" })
+                vim.keymap.set("n", "<leader>gr", lsp_buildin.lsp_references,
+                    { buffer = ev.buf, desc = "List references" })
                 vim.keymap.set("n", "<leader>gs", vim_lbuf.signature_help, { buffer = ev.buf, desc = "Signature help" })
                 vim.keymap.set("n", "<leader>gR", vim_lbuf.rename, { buffer = ev.buf, desc = "Rename" })
-                vim.keymap.set({ "n", "v" }, "<leader>ga", vim_lbuf.code_action, { buffer = ev.buf, desc = "Code actions" })
+                vim.keymap.set({ "n", "v" }, "<leader>ga", vim_lbuf.code_action,
+                    { buffer = ev.buf, desc = "Code actions" })
                 vim.keymap.set("n", "<leader>gf", function() vim.lsp.buf.format({ async = true }) end,
                     { buffer = ev.buf, desc = "Format code" })
-
             end,
         })
 
@@ -167,7 +180,7 @@ return {
         local lspkind = require("lspkind")
         cmp.setup({
             completion = {
-               completeopt = "menu,menuone,preview,noselect",
+                completeopt = "menu,menuone,preview,noselect",
             },
             formatting = {
                 format = lspkind.cmp_format({
@@ -258,7 +271,7 @@ return {
         -- 1) Add border to lsp popup windows
         ------------------------------------
         require('lspconfig.ui.windows').default_options = {
-          border = "rounded",
+            border = "rounded",
         }
 
         -- 2) Add border to popup window for signature
