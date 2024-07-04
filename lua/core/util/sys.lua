@@ -120,4 +120,13 @@ return {
     get_cur_dir = function()
         return vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
     end,
+    exec_r = function(command)
+        local h = io.popen(command, "r")
+        if h == nil then
+            return nil
+        end
+        local r = h:read("*a")
+        h:close()
+        return r
+    end,
 }

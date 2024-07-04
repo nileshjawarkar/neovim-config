@@ -195,4 +195,21 @@ return {
         local project_name = sys.get_cur_dir()
         sys.rm_rf(data_path .. '/workspace/jdtls/' .. project_name)
     end,
+    get_java_version = function()
+        local version = { major = 0, minor = 0, patch = 0 }
+        local sys = require("core.util.sys")
+        local r = sys.exec_r("java -version 2>&1")
+        if r ~= nil then
+            for mv, sv, pv in string.gmatch(r, "[version]+%s+.(%d+)%.(%d+)%.(%d+).%s+") do
+                local major, minor, patch = tonumber(mv), tonumber(sv), tonumber(pv)
+                if major ~= nil and minor ~= nil then
+                    version.major = major;
+                    version.minor = minor;
+                    version.patch = patch;
+                    break
+                end
+            end
+        end
+        return version
+    end,
 }
