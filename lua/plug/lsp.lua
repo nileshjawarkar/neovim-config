@@ -1,10 +1,3 @@
-local function rm_jdtls_ws()
-    local data_path = vim.fn.stdpath("data")
-    local sys = require("core.util.sys")
-    local fs = require("core.util.file")
-    local project_name = sys.get_cur_dir()
-    fs.rm_rf(data_path .. '/workspace/jdtls/' .. project_name)
-end
 
 return {
     "neovim/nvim-lspconfig",
@@ -31,7 +24,7 @@ return {
         "onsails/lspkind.nvim",
     },
     config = function()
-        rm_jdtls_ws()
+        require("config.jdtls").rm_jdtls_ws()
 
         require("lazydev").setup({})
         require("mason").setup()
