@@ -82,9 +82,47 @@ local function rm_jdtls_ws()
     sys.rm_rf(data_path .. '/workspace/jdtls/' .. project_name)
 end
 
+local function scan_dir(parent_dir, paths)
+    local file_names = vim.fn.readdir(parent_dir)
+    for _, file in ipairs(file_names) do
+        if string.len(file) > 0 and string.sub(file, 1, 1) ~= "." then
+            if 1 == vim.fn.isdirectory(parent_dir .. "/" .. file) then
+                if file == "src" then
+                    table.insert(paths, parent_dir .. "/" .. file)
+                else
+                    scan_dir(parent_dir .. "/" .. file, paths)
+                end
+            end
+        end
+    end
+end
+
+local function find_src_paths()
+    local paths = {}
+    local parent_dir = vim.fn.getcwd()
+    if parent_dir ~= nil then
+        scan_dir(parent_dir, paths)
+    end
+    return paths
+end
+
 local prepare_config = (function()
+    -- Things that need to executed only once
+    ----------------------------------------
     rm_jdtls_ws()
+
+    -- actual config preparation method
+    ----------------------------------
     return function()
+        --[[
+        local src_paths = find_src_paths()
+        local mvn_src_paths = {}
+        for _, src in ipairs(src_paths) do
+            print(src)
+            table.insert(mvn_src_paths, src .. "/main/java")
+            table.insert(mvn_src_paths, src .. "/test/java")
+        end
+        ]]
         local jdtls_options = get_jdtls_options()
         -- Get the default extended client capablities of the JDTLS language server
         -- Modify one property called resolveAdditionalTextEditsSupport and set it to true
@@ -100,8 +138,7 @@ local prepare_config = (function()
                 '-Declipse.product=org.eclipse.jdt.ls.core.product',
                 '-Dlog.protocol=true',
                 '-Dlog.level=ALL',
-                '-javaagent:' .. jdtls_options.javaagent,
-                '-Xmx4g',
+                '-Xmx3g',
                 '--add-modules=ALL-SYSTEM',
                 '--add-opens', 'java.base/java.util=ALL-UNNAMED',
                 '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
@@ -109,8 +146,7 @@ local prepare_config = (function()
                 '-configuration', jdtls_options.configuration,
                 '-data', jdtls_options.project_dir,
             },
-
-            root_dir = require('jdtls.setup').find_root({ '.git', 'mvnw', 'pom.xml', 'build.gradle' }),
+            root_dir = vim.fs.root(0, { ".git", "pom.xml", "mvnw", "gradlew" }),
             settings = {
                 java = {
                     -- home = vim.fn.getenv("JAVA_HOME"),
@@ -133,6 +169,27 @@ local prepare_config = (function()
                     contentProvider = {
                         preferred = "fernflower"
                     },
+                    -- Experimental >>
+                    --[[
+                    project = {
+                        sourcePaths = mvn_src_paths,
+                    },
+                    ]]
+                    cleanup = {
+                        actionsOnSave = {
+                            "qualifyMembers",
+                            "qualifyStaticMembers",
+                            "addOverride",
+                            "addDeprecated",
+                            "stringConcatToTextBlock",
+                            "invertEquals",
+                            "addFinalModifier",
+                            "instanceofPatternMatch",
+                            "lambdaExpression",
+                            "switchExpression"
+                        }
+                    },
+                    -- << Experimental
                     saveActions = {
                         organizeImports = true
                     },
@@ -150,10 +207,15 @@ local prepare_config = (function()
                             "sun.*",
                         },
                         importOrder = {
+                            "#java",
                             "java",
+                            "#javax",
                             "javax",
+                            "#jakarta",
                             "jakarta",
+                            "#org",
                             "org",
+                            "#com",
                             "com",
                         },
                     },
@@ -161,7 +223,6 @@ local prepare_config = (function()
                         organizeImports = {
                             starThreshold = 9999,
                             staticStarThreshold = 9999,
-                            staticThreshold = 9999,
                         },
                     },
                     codeGeneration = {
@@ -194,6 +255,8 @@ local prepare_config = (function()
     end
 end)()
 
+
+
 local function get_java_path()
     local java_home = os.getenv("JAVA_HOME")
     if java_home ~= nil then
@@ -207,9 +270,11 @@ local function get_java_path()
     return "java", nil
 end
 
+-- local config = prepare_config()
 return {
     setup = function()
         jdtls.start_or_attach(prepare_config())
+        -- jdtls.start_or_attach(config)
     end,
     get_java_path = get_java_path,
     get_java_version = function()
@@ -235,4 +300,5 @@ return {
         end
         return version, err
     end,
+    find_src_paths = find_src_paths,
 }
