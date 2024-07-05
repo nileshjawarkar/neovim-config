@@ -8,6 +8,6 @@ elseif version == nil then
 elseif  version.major < 17 then
     print("Error : Current java version \"" .. version.major .. "\", minimum required \"17\".")
 else
-    print("Starting language server ...")
+    print("...")
     jdtls.setup()
 end
