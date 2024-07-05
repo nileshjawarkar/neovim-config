@@ -74,117 +74,125 @@ local on_attach = function(_, bufnr)
     -- require('jdtls.dap').setup_dap_main_class_configs()
 end
 
-local function prepare_config()
-    local jdtls_options = get_jdtls_options()
 
-    -- Get the default extended client capablities of the JDTLS language server
-    -- Modify one property called resolveAdditionalTextEditsSupport and set it to true
-    local extendedClientCapabilities = jdtls.extendedClientCapabilities
-    extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
-
-    return {
-        on_attach = on_attach,
-        cmd = {
-            'java',
-            '-Declipse.application=org.eclipse.jdt.ls.core.id1',
-            '-Dosgi.bundles.defaultStartLevel=4',
-            '-Declipse.product=org.eclipse.jdt.ls.core.product',
-            '-Dlog.protocol=true',
-            '-Dlog.level=ALL',
-            '-javaagent:' .. jdtls_options.javaagent,
-            '-Xmx4g',
-            '--add-modules=ALL-SYSTEM',
-            '--add-opens', 'java.base/java.util=ALL-UNNAMED',
-            '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
-            '-jar', jdtls_options.launcher,
-            '-configuration', jdtls_options.configuration,
-            '-data', jdtls_options.project_dir,
-        },
-
-        root_dir = require('jdtls.setup').find_root({ '.git', 'mvnw', 'pom.xml', 'build.gradle' }),
-        settings = {
-            java = {
-                -- home = vim.fn.getenv("JAVA_HOME"),
-                eclipse = { downloadSources = true, },
-                maven = { downloadSources = true, },
-                configuration = {
-                    updateBuildConfiguration = "interactive",
-                },
-                implementationsCodeLens = {
-                    enabled = true,
-                },
-                referencesCodeLens = {
-                    enabled = true,
-                },
-                references = {
-                    includeDecompiledSources = false,
-                },
-                signatureHelp = { enabled = true },
-                format = { enabled = true, },
-                contentProvider = {
-                    preferred = "fernflower"
-                },
-                saveActions = {
-                    organizeImports = true
-                },
-                completion = {
-                    favoriteStaticMembers = {
-                        "org.hamcrest.MatcherAssert.assertThat",
-                        "org.hamcrest.Matchers.*",
-                        "org.hamcrest.CoreMatchers.*",
-                        "org.junit.jupiter.api.Assertions.*",
-                        "org.mockito.Mockito.*",
-                    },
-                    filteredTypes = {
-                        "com.sun.*",
-                        "io.micrometer.shaded.*",
-                        "sun.*",
-                    },
-                    importOrder = {
-                        "java",
-                        "javax",
-                        "jakarta",
-                        "org",
-                        "com",
-                    },
-                },
-                extendedClientCapabilities = extendedClientCapabilities,
-                sources = {
-                    organizeImports = {
-                        starThreshold = 9999,
-                        staticStarThreshold = 9999,
-                        staticThreshold = 9999,
-                    },
-                },
-                codeGeneration = {
-                    toString = {
-                        template = "${object.className}{${member.name()}=${member.value}, ${otherMembers}}",
-                    },
-                    hashCodeEquals = {
-                        useJava7Objects = true,
-                    },
-                    useBlocks = true,
-                },
-                inlayHints = {
-                    parameterNames = {
-                        enabled = "all"
-                    }
-                }
-            },
-        },
-        -- Needed for auto-completion with method signatures and placeholders
-        capabilities = require('cmp_nvim_lsp').default_capabilities(),
-        flags = {
-            debounce_text_changes = 90,
-            allow_incremental_sync = true,
-        },
-        init_options = {
-            -- bundles = bundles,
-            extendedClientCapabilities = extendedClientCapabilities,
-        },
-    }
+local function rm_jdtls_ws()
+    local data_path = vim.fn.stdpath("data")
+    local sys = require("core.util.sys")
+    local project_name = sys.get_cur_dir()
+    sys.rm_rf(data_path .. '/workspace/jdtls/' .. project_name)
 end
 
+local prepare_config = (function()
+    rm_jdtls_ws()
+    return function()
+        local jdtls_options = get_jdtls_options()
+        -- Get the default extended client capablities of the JDTLS language server
+        -- Modify one property called resolveAdditionalTextEditsSupport and set it to true
+        local extendedClientCapabilities = jdtls.extendedClientCapabilities
+        extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
+
+        return {
+            on_attach = on_attach,
+            cmd = {
+                'java',
+                '-Declipse.application=org.eclipse.jdt.ls.core.id1',
+                '-Dosgi.bundles.defaultStartLevel=4',
+                '-Declipse.product=org.eclipse.jdt.ls.core.product',
+                '-Dlog.protocol=true',
+                '-Dlog.level=ALL',
+                '-javaagent:' .. jdtls_options.javaagent,
+                '-Xmx4g',
+                '--add-modules=ALL-SYSTEM',
+                '--add-opens', 'java.base/java.util=ALL-UNNAMED',
+                '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
+                '-jar', jdtls_options.launcher,
+                '-configuration', jdtls_options.configuration,
+                '-data', jdtls_options.project_dir,
+            },
+
+            root_dir = require('jdtls.setup').find_root({ '.git', 'mvnw', 'pom.xml', 'build.gradle' }),
+            settings = {
+                java = {
+                    -- home = vim.fn.getenv("JAVA_HOME"),
+                    eclipse = { downloadSources = true, },
+                    maven = { downloadSources = true, },
+                    configuration = {
+                        updateBuildConfiguration = "interactive",
+                    },
+                    implementationsCodeLens = {
+                        enabled = true,
+                    },
+                    referencesCodeLens = {
+                        enabled = true,
+                    },
+                    references = {
+                        includeDecompiledSources = false,
+                    },
+                    signatureHelp = { enabled = true },
+                    format = { enabled = true, },
+                    contentProvider = {
+                        preferred = "fernflower"
+                    },
+                    saveActions = {
+                        organizeImports = true
+                    },
+                    completion = {
+                        favoriteStaticMembers = {
+                            "org.hamcrest.MatcherAssert.assertThat",
+                            "org.hamcrest.Matchers.*",
+                            "org.hamcrest.CoreMatchers.*",
+                            "org.junit.jupiter.api.Assertions.*",
+                            "org.mockito.Mockito.*",
+                        },
+                        filteredTypes = {
+                            "com.sun.*",
+                            "io.micrometer.shaded.*",
+                            "sun.*",
+                        },
+                        importOrder = {
+                            "java",
+                            "javax",
+                            "jakarta",
+                            "org",
+                            "com",
+                        },
+                    },
+                    sources = {
+                        organizeImports = {
+                            starThreshold = 9999,
+                            staticStarThreshold = 9999,
+                            staticThreshold = 9999,
+                        },
+                    },
+                    codeGeneration = {
+                        toString = {
+                            template = "${object.className}{${member.name()}=${member.value}, ${otherMembers}}",
+                        },
+                        hashCodeEquals = {
+                            useJava7Objects = true,
+                        },
+                        useBlocks = true,
+                    },
+                    inlayHints = {
+                        parameterNames = {
+                            enabled = "all"
+                        }
+                    }
+                },
+            },
+            -- Needed for auto-completion with method signatures and placeholders
+            capabilities = require('cmp_nvim_lsp').default_capabilities(),
+            flags = {
+                debounce_text_changes = 90,
+                allow_incremental_sync = true,
+            },
+            init_options = {
+                -- bundles = bundles,
+                extendedClientCapabilities = extendedClientCapabilities,
+            },
+        }
+    end
+end)()
 
 local function get_java_path()
     local java_home = os.getenv("JAVA_HOME")
@@ -202,12 +210,6 @@ end
 return {
     setup = function()
         jdtls.start_or_attach(prepare_config())
-    end,
-    rm_jdtls_ws = function()
-        local data_path = vim.fn.stdpath("data")
-        local sys = require("core.util.sys")
-        local project_name = sys.get_cur_dir()
-        sys.rm_rf(data_path .. '/workspace/jdtls/' .. project_name)
     end,
     get_java_path = get_java_path,
     get_java_version = function()
@@ -229,7 +231,7 @@ return {
                 end
             end
         else
-            err = "Failed to read version using cmd \"" +java_path + " -version\""
+            err = "Failed to read version using cmd \"" + java_path + " -version\""
         end
         return version, err
     end,

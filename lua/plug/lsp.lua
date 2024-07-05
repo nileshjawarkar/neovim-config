@@ -24,8 +24,6 @@ return {
         "onsails/lspkind.nvim",
     },
     config = function()
-        require("config.jdtls").rm_jdtls_ws()
-
         require("lazydev").setup({})
         require("mason").setup()
         require('mason-tool-installer').setup({
