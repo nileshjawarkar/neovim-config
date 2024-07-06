@@ -2,7 +2,7 @@ local jdtls = require('jdtls')
 local function get_jdtls_options()
     local data_path = vim.fn.stdpath("data")
     local sys = require("core.util.sys")
-    local project_name = sys.get_cur_dir()
+    local project_name = sys.get_curdir_name()
     local os_name = sys.get_os()
     local workspace_dir = data_path .. '/workspace/jdtls/' .. project_name
 
@@ -78,51 +78,104 @@ end
 local function rm_jdtls_ws()
     local data_path = vim.fn.stdpath("data")
     local sys = require("core.util.sys")
-    local project_name = sys.get_cur_dir()
+    local project_name = sys.get_curdir_name()
     sys.rm_rf(data_path .. '/workspace/jdtls/' .. project_name)
 end
 
-local function scan_dir(parent_dir, paths)
+local function scan_dir_for_src(parent_dir, paths, is_mvn_prj, cur_level)
+    -- To avoid searching above the max-dept. It will help when
+    -- when current directory has huge directory depth. Any way we expect sub-projects at
+    -- depth gretor than 5.
+    if cur_level > 5 then return end
     local file_names = vim.fn.readdir(parent_dir)
+    if file_names == nil then return end
     for _, file in ipairs(file_names) do
+        -- if list has any hidden directory, skip it.
         if string.len(file) > 0 and string.sub(file, 1, 1) ~= "." then
-            if 1 == vim.fn.isdirectory(parent_dir .. "/" .. file) then
+            local cur_file_path = parent_dir .. "/" .. file
+            if 1 == vim.fn.isdirectory(cur_file_path) then
+                -- directory name is src/SRC/Src and it to the
+                -- output list
                 if file == "src" then
-                    table.insert(paths, parent_dir .. "/" .. file)
+                    local add_src = true
+                    -- If this is maven project, we need to check if project has following structure.
+                    -- If project add these directories as src directory
+                    -- ----------------------------------------------------------
+                    -- src-+
+                    --     |
+                    --     +- main
+                    --     |    |
+                    --     +    +- java
+                    --     |
+                    --     +- test
+                    --          |
+                    --          +- java
+                    -- In other cases, add src only
+                    -- ----------------------------------------------------------
+                    if is_mvn_prj == true then
+                        if 1 == vim.fn.isdirectory(cur_file_path .. "/main/java") then
+                            table.insert(paths, cur_file_path .. "/main/java")
+                            add_src = false
+                        end
+                        if 1 == vim.fn.isdirectory(cur_file_path .. "/test/java") then
+                            table.insert(paths, cur_file_path .. "/test/java")
+                            add_src = false
+                        end
+                    end
+                    if add_src == true then
+                        table.insert(paths, cur_file_path)
+                    end
+                    -- Else cotinue search for src directory
                 else
-                    scan_dir(parent_dir .. "/" .. file, paths)
+                    scan_dir_for_src(cur_file_path, paths, is_mvn_prj, cur_level + 1)
                 end
             end
         end
     end
 end
 
-local function find_src_paths()
+local function find_src_paths(cur_dir)
+    local sys = require("core.util.sys")
     local paths = {}
-    local parent_dir = vim.fn.getcwd()
-    if parent_dir ~= nil then
-        scan_dir(parent_dir, paths)
+    if cur_dir ~= nil then
+        local is_mvn_prj = sys.is_file(cur_dir .. "/" .. "pom.xml")
+        scan_dir_for_src(cur_dir, paths, is_mvn_prj, 1)
     end
     return paths
+end
+
+local function dir_has_any(dir, file_list)
+    local files = vim.fn.readdir(dir)
+    for _, f in ipairs(files) do
+        for _, cf in ipairs(file_list) do
+            if f == cf then
+                return true
+            end
+        end
+    end
+    return false
+end
+
+local function find_root()
+    local ws_files = { ".git", "pom.xml", "mvnw", "gradlew" }
+    local cur_dir = vim.fn.getcwd()
+    if true == dir_has_any(cur_dir, ws_files) then
+        return cur_dir;
+    else
+        return vim.fs.root(0, ws_files)
+    end
 end
 
 local prepare_config = (function()
     -- Things that need to executed only once
     ----------------------------------------
     rm_jdtls_ws()
+    local root_dir = find_root()
+    local src_paths = find_src_paths(root_dir)
 
     -- actual config preparation method
     ----------------------------------
     return function()
-        --[[
-        local src_paths = find_src_paths()
-        local mvn_src_paths = {}
-        for _, src in ipairs(src_paths) do
-            print(src)
-            table.insert(mvn_src_paths, src .. "/main/java")
-            table.insert(mvn_src_paths, src .. "/test/java")
-        end
-        ]]
         local jdtls_options = get_jdtls_options()
         -- Get the default extended client capablities of the JDTLS language server
         -- Modify one property called resolveAdditionalTextEditsSupport and set it to true
@@ -146,7 +199,7 @@ local prepare_config = (function()
                 '-configuration', jdtls_options.configuration,
                 '-data', jdtls_options.project_dir,
             },
-            root_dir = vim.fs.root(0, { ".git", "pom.xml", "mvnw", "gradlew" }),
+            root_dir = root_dir,
             settings = {
                 java = {
                     -- home = vim.fn.getenv("JAVA_HOME"),
@@ -169,12 +222,9 @@ local prepare_config = (function()
                     contentProvider = {
                         preferred = "fernflower"
                     },
-                    -- Experimental >>
-                    --[[
                     project = {
-                        sourcePaths = mvn_src_paths,
+                        sourcePaths = src_paths,
                     },
-                    ]]
                     cleanup = {
                         actionsOnSave = {
                             "qualifyMembers",
@@ -189,7 +239,6 @@ local prepare_config = (function()
                             "switchExpression"
                         }
                     },
-                    -- << Experimental
                     saveActions = {
                         organizeImports = true
                     },
@@ -255,8 +304,6 @@ local prepare_config = (function()
     end
 end)()
 
-
-
 local function get_java_path()
     local java_home = os.getenv("JAVA_HOME")
     if java_home ~= nil then
@@ -270,11 +317,9 @@ local function get_java_path()
     return "java", nil
 end
 
--- local config = prepare_config()
 return {
     setup = function()
         jdtls.start_or_attach(prepare_config())
-        -- jdtls.start_or_attach(config)
     end,
     get_java_path = get_java_path,
     get_java_version = function()
@@ -301,4 +346,5 @@ return {
         return version, err
     end,
     find_src_paths = find_src_paths,
+    find_root = find_root,
 }

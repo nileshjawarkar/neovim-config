@@ -31,11 +31,20 @@ local function open_file(filename, mode)
     }
 end
 
+
 local is_dir = function(dirname)
     if 1 == vim.fn.isdirectory(dirname) then
         return true
     end
     return false
+end
+
+local function dump_table(value)
+    if type(value) == "table" then
+        for key, attr in ipairs(value) do
+            print(key .. " -> " .. attr)
+        end
+    end
 end
 
 return {
@@ -97,16 +106,27 @@ return {
         return false
     end,
     is_dir = is_dir,
-    read_dir = function(dirname, callback)
+    read_dir = function(dirname)
         if is_dir(dirname) then
             local file_list = {}
             for _, ft_path in ipairs(vim.split(vim.fn.glob(dirname .. "/*"), '\n', { trimempty = true })) do
                 table.insert(file_list, ft_path)
             end
-            callback(file_list)
+            return true, file_list
+        end
+        return false, nil
+    end,
+    is_file = function(filepath)
+        if is_dir(filepath) == true then return false end
+        local file = open_file(filepath, "r")
+        if file ~= nil then
+            file.close()
             return true
         end
         return false
+    end,
+    get_curdir_name = function()
+        return vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
     end,
     get_os = function()
         local os_name = vim.loop.os_uname().sysname
@@ -117,9 +137,6 @@ return {
         end
         return "Other"
     end,
-    get_cur_dir = function()
-        return vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
-    end,
     exec_r = function(command)
         local h = io.popen(command, "r")
         if h == nil then
@@ -129,4 +146,5 @@ return {
         h:close()
         return r
     end,
+    dump_table = dump_table,
 }
