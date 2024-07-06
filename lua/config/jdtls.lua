@@ -15,12 +15,21 @@ local function get_jdtls_options()
 
     local javaagent = data_path .. "/mason/share/jdtls/lombok.jar"
     local launcher = vim.fn.glob(data_path .. "/mason/share/jdtls/plugins/org.eclipse.equinox.launcher_*.jar")
-    local configuration = data_path .. '/mason/packages/jdtls/' .. jdtls_config
+
+    local mason_pkg = data_path .. "/mason/packages"
+    local configuration = mason_pkg .. "/jdtls/" .. jdtls_config
+
+    -- java dap
+    local dap_bundles = {
+        vim.fn.glob(mason_pkg .. "/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar", true),
+    }
+    vim.list_extend(dap_bundles, vim.split(vim.fn.glob(mason_pkg .. "/java-test/extension/server/*.jar", true), "\n"))
     return {
         project_dir = workspace_dir,
         javaagent = javaagent,
         launcher = launcher,
         configuration = configuration,
+        dap_bundles = dap_bundles,
     }
 end
 
@@ -84,7 +93,7 @@ end
 
 local function scan_dir_for_src(parent_dir, paths, is_mvn_prj, cur_level)
     -- To avoid searching above the max-dept. It will help when
-    -- when current directory has huge directory depth. Any way we expect sub-projects at
+    -- when current directory has huge directory depth. Any way we didnt expect sub-projects at
     -- depth gretor than 5.
     if cur_level > 5 then return end
     local file_names = vim.fn.readdir(parent_dir)
@@ -99,7 +108,7 @@ local function scan_dir_for_src(parent_dir, paths, is_mvn_prj, cur_level)
                 if file == "src" then
                     local add_src = true
                     -- If this is maven project, we need to check if project has following structure.
-                    -- If project add these directories as src directory
+                    -- If yes, add these following directories as src directory
                     -- ----------------------------------------------------------
                     -- src-+
                     --     |
@@ -297,7 +306,7 @@ local prepare_config = (function()
                 allow_incremental_sync = true,
             },
             init_options = {
-                -- bundles = bundles,
+                bundles = jdtls_options.dap_bundles,
                 extendedClientCapabilities = extendedClientCapabilities,
             },
         }

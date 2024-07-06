@@ -1,4 +1,3 @@
-
 return {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -6,6 +5,7 @@ return {
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
         "WhoIsSethDaniel/mason-tool-installer.nvim",
+        "mfussenegger/nvim-dap",
         { "mfussenegger/nvim-jdtls", ft = 'java' },
 
         -- completion
@@ -28,20 +28,12 @@ return {
         require("mason").setup()
         require('mason-tool-installer').setup({
             ensure_installed = {
-                "lua_ls",
-                "clangd",
-                "pyright",
-                "bashls",
-                "jsonls",
-                "yamlls",
-                "dockerls",
-                "jdtls",
-                "tsserver",
-                "quick_lint_js",
-                "cssls",
-                "clang-format",
-                "prettier",
-                "emmet-language-server",
+                "lua_ls", "clangd", "pyright", "bashls",
+                "jsonls", "yamlls", "dockerls", "jdtls",
+                "tsserver", "quick_lint_js",
+                "cssls", "clang-format",
+                "prettier", "emmet-language-server",
+                "java-debug-adapter", "java-test",
             },
         })
         vim.api.nvim_command('MasonToolsInstall')
