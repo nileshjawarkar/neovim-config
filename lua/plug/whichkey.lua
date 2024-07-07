@@ -40,8 +40,7 @@ return {
             W = { name = "Workspaces", },
             w = { name = "Window", },
             q = { name = "Quickfix list", },
-            u = { name = "Utility functions", },
-            j = { name = "Jdtls", },
+            j = { name = "Run test", },
             d = { name = "Debug/Diagnostic", },
            ["e"] = "which_key_ignore",
         }, {

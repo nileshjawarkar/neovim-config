@@ -12,7 +12,7 @@ return {
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
-        { "hrsh7th/nvim-cmp",        event = { "InsertEnter", "CmdlineEnter" }, },
+        { "hrsh7th/nvim-cmp", event = { "InsertEnter", "CmdlineEnter" }, },
 
         -- snippet
         "saadparwaiz1/cmp_luasnip", -- Snippets source for nvim-cmp
@@ -24,7 +24,13 @@ return {
     },
     config = function()
         require("lazydev").setup({})
-        require("mason").setup()
+        require("mason").setup({
+            ui = {
+                border = 'rounded',
+                width = 0.7,
+                height = 0.8,
+            },
+        })
         require('mason-tool-installer').setup({
             ensure_installed = {
                 "lua_ls", "clangd", "pyright", "bashls",
@@ -36,6 +42,18 @@ return {
             },
         })
         vim.api.nvim_command('MasonToolsInstall')
+
+        -- Define the diagnostic signs.
+        local diagnostic_icons = {
+            ERROR = 'x',
+            WARN = '*',
+            HINT = '*',
+            INFO = '*',
+        }
+        for severity, icon in pairs(diagnostic_icons) do
+            local hl = 'DiagnosticSign' .. severity:sub(1, 1) .. severity:sub(2):lower()
+            vim.fn.sign_define(hl, { text = icon, texthl = hl })
+        end
 
         local lsp_config = require("lspconfig")
         local mason_config = require("mason-lspconfig")
