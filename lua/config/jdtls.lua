@@ -33,6 +33,17 @@ local function get_jdtls_options()
     }
 end
 
+local setup_dap = (function ()
+    local init = false
+    return function()
+        if init == false then
+            jdtls.setup_dap({ hotcodereplace = 'auto' })
+            require('jdtls.dap').setup_dap_main_class_configs()
+            init = true
+        end
+    end
+end)()
+
 local on_attach = function(_, bufnr)
     -- Filetype-specific keymaps (these can be done in the ftplugin directory instead if you prefer)
     local keymap = vim.keymap
@@ -52,35 +63,13 @@ local on_attach = function(_, bufnr)
     -- For debugging & running Unit tests
     -------------------------------------------
     -- 1) Define keymaps :
-    -- keymap.set("n", "<leader>jc", jdtls.test_class,
-    --     { noremap = true, silent = true, buffer = bufnr, desc = "Test class" })
-    -- keymap.set("n", "<leader>jm", jdtls.test_nearest_method,
-    --     { noremap = true, silent = true, buffer = bufnr, desc = "Test nearest method" })
-
-    -- Need review of the following key defs:
-    -------------------------------------------
-    -- keymap.set("n", "<leader>bb", "<cmd>lua require'dap'.toggle_breakpoint()<cr>")
-    -- keymap.set("n", "<leader>bc", "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>")
-    -- keymap.set("n", "<leader>bl", "<cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<cr>")
-    -- keymap.set("n", '<leader>br', "<cmd>lua require'dap'.clear_breakpoints()<cr>")
-    -- keymap.set("n", '<leader>ba', '<cmd>Telescope dap list_breakpoints<cr>')
-    -- keymap.set("n", "<leader>dc", "<cmd>lua require'dap'.continue()<cr>")
-    -- keymap.set("n", "<leader>dj", "<cmd>lua require'dap'.step_over()<cr>")
-    -- keymap.set("n", "<leader>dk", "<cmd>lua require'dap'.step_into()<cr>")
-    -- keymap.set("n", "<leader>do", "<cmd>lua require'dap'.step_out()<cr>")
-    -- keymap.set("n", '<leader>dd', function() require('dap').disconnect(); require('dapui').close(); end)
-    -- keymap.set("n", '<leader>dt', function() require('dap').terminate(); require('dapui').close(); end)
-    -- keymap.set("n", "<leader>dr", "<cmd>lua require'dap'.repl.toggle()<cr>")
-    -- keymap.set("n", "<leader>dl", "<cmd>lua require'dap'.run_last()<cr>")
-    -- keymap.set("n", '<leader>di', function() require "dap.ui.widgets".hover() end)
-    -- keymap.set("n", '<leader>d?', function() local widgets = require "dap.ui.widgets"; widgets.centered_float(widgets.scopes) end)
-    -- keymap.set("n", '<leader>df', '<cmd>Telescope dap frames<cr>')
-    -- keymap.set("n", '<leader>dh', '<cmd>Telescope dap commands<cr>')
-    -- keymap.set("n", '<leader>de', function() require('telescope.builtin').diagnostics({default_text=":E:"}) end)
+    keymap.set("n", "<leader>jc", jdtls.test_class,
+        { noremap = true, silent = true, buffer = bufnr, desc = "Test class" })
+    keymap.set("n", "<leader>jm", jdtls.test_nearest_method,
+        { noremap = true, silent = true, buffer = bufnr, desc = "Test nearest method" })
 
     -- 2) Init
-    -- jdtls.setup_dap({ hotcodereplace = 'auto' })
-    -- require('jdtls.dap').setup_dap_main_class_configs()
+    setup_dap()
 end
 
 

@@ -26,3 +26,6 @@ keymap.set("n", "<leader>qn", ":cnext<CR>", { noremap = true, silent = true, des
 keymap.set("n", "<leader>qp", ":cprev<CR>", { noremap = true, silent = true, desc = "Jump to prev item" })
 keymap.set("n", "<leader>ql", ":clast<CR>", { noremap = true, silent = true, desc = "Jump to last item" })
 keymap.set("n", "<leader>qc", ":cclose<CR>", { noremap = true, silent = true, desc = "Close" })
+
+keymap.set("v", "<", "<gv", { desc = "Indent left in visual mode" })
+keymap.set("v", ">", ">gv", { desc = "Indent right in visual mode" })

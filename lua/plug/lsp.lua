@@ -1,12 +1,11 @@
 return {
     "neovim/nvim-lspconfig",
+    event = "VeryLazy",
     dependencies = {
         "folke/lazydev.nvim",
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
         "WhoIsSethDaniel/mason-tool-installer.nvim",
-        "mfussenegger/nvim-dap",
-        { "mfussenegger/nvim-jdtls", ft = 'java' },
 
         -- completion
         "hrsh7th/cmp-nvim-lsp", -- LSP source for nvim-cmp
@@ -77,7 +76,6 @@ return {
                 end
             end,
         })
-
 
         -- load snippet during lsp-attach event
         --------------------------------------
