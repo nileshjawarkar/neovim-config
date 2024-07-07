@@ -33,31 +33,25 @@ local function get_jdtls_options()
     }
 end
 
-local setup_dap = (function ()
-    local init = false
-    return function()
-        if init == false then
-            jdtls.setup_dap({ hotcodereplace = 'auto' })
-            require('jdtls.dap').setup_dap_main_class_configs()
-            init = true
-        end
-    end
-end)()
+local setup_dap = function()
+    jdtls.setup_dap({ hotcodereplace = 'auto' })
+    require('jdtls.dap').setup_dap_main_class_configs()
+end
 
 local on_attach = function(_, bufnr)
     -- Filetype-specific keymaps (these can be done in the ftplugin directory instead if you prefer)
     local keymap = vim.keymap
-    keymap.set("n", "<leader>go", jdtls.organize_imports,
+    keymap.set("n", "<leader>jo", jdtls.organize_imports,
         { noremap = true, silent = true, buffer = bufnr, desc = "Organize imports" })
     keymap.set("n", "gO", jdtls.organize_imports,
         { noremap = true, silent = true, buffer = bufnr, desc = "Organize imports" })
-    keymap.set("n", "<leader>gu", jdtls.update_projects_config,
+    keymap.set("n", "<leader>ju", jdtls.update_projects_config,
         { noremap = true, silent = true, buffer = bufnr, desc = "Update project config" })
-    keymap.set("n", "<leader>ge", jdtls.extract_variable,
+    keymap.set("n", "<leader>je", jdtls.extract_variable,
         { noremap = true, silent = true, buffer = bufnr, desc = "Extract variable" })
-    keymap.set("n", "<leader>gE", jdtls.extract_constant,
+    keymap.set("n", "<leader>jE", jdtls.extract_constant,
         { noremap = true, silent = true, buffer = bufnr, desc = "Extract constant" })
-    keymap.set("v", "<leader>gm", [[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]],
+    keymap.set("v", "<leader>jm", [[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]],
         { noremap = true, silent = true, buffer = bufnr, desc = "Extract method" })
 
     -- For debugging & running Unit tests

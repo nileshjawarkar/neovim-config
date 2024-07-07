@@ -41,7 +41,9 @@ return {
             w = { name = "Window", },
             q = { name = "Quickfix list", },
             u = { name = "Utility functions", },
-            ["e"] = "which_key_ignore",
+            j = { name = "Jdtls", },
+            d = { name = "Debug/Diagnostic", },
+           ["e"] = "which_key_ignore",
         }, {
             prefix = "<leader>"
         })

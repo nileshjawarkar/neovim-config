@@ -13,12 +13,45 @@ return {
         local dapui = require("dapui")
 
         -- Setup the dap ui with default configuration
-        dapui.setup()
-
+        local settings = {
+            controls = {
+                element = "repl",
+                enabled = false,
+            },
+            layouts = { {
+                elements = { {
+                    id = "scopes",
+                    size = 0.30
+                }, {
+                    id = "breakpoints",
+                    size = 0.20
+                }, {
+                    id = "watches",
+                    size = 0.20
+                }, {
+                    id = "stacks",
+                    size = 0.30
+                } },
+                position = "left",
+                size = 35,
+            }, {
+                elements = { {
+                    id = "repl",
+                    size = 0.5,
+                } , {
+                    id = "console",
+                    size = 0.5,
+                } },
+                position = "bottom",
+                size = 10
+            } },
+        }
+        dapui.setup(settings)
         -- setup an event listener for when the debugger is launched
         dap.listeners.before.launch.dapui_config = function()
             -- when the debugger is launched open up the debug ui
             dapui.open()
+            require("neo-tree").close_all()
         end
 
         -- DAP keymaps : Need review of the following key defs:
