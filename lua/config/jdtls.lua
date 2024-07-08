@@ -207,43 +207,26 @@ local prepare_config = (function()
                     -- home = vim.fn.getenv("JAVA_HOME"),
                     eclipse = { downloadSources = true, },
                     maven = { downloadSources = true, },
-                    configuration = {
-                        updateBuildConfiguration = "interactive",
-                    },
-                    implementationsCodeLens = {
-                        enabled = true,
-                    },
-                    referencesCodeLens = {
-                        enabled = true,
-                    },
-                    references = {
-                        includeDecompiledSources = false,
-                    },
+                    configuration = { updateBuildConfiguration = "interactive", },
+                    implementationsCodeLens = { enabled = true, },
+                    referencesCodeLens = { enabled = true, },
+                    references = { includeDecompiledSources = false, },
                     signatureHelp = { enabled = true },
                     format = { enabled = true, },
-                    contentProvider = {
-                        preferred = "fernflower"
-                    },
+                    contentProvider = { preferred = "fernflower" },
                     project = {
                         sourcePaths = src_paths,
                     },
                     cleanup = {
                         actionsOnSave = {
-                            "qualifyMembers",
-                            "qualifyStaticMembers",
-                            "addOverride",
-                            "addDeprecated",
-                            "stringConcatToTextBlock",
-                            "invertEquals",
-                            "addFinalModifier",
-                            "instanceofPatternMatch",
-                            "lambdaExpression",
-                            "switchExpression"
+                            "qualifyMembers", "qualifyStaticMembers",
+                            "addOverride", "addDeprecated",
+                            "stringConcatToTextBlock", "invertEquals",
+                            "addFinalModifier", "instanceofPatternMatch",
+                            "lambdaExpression", "switchExpression"
                         }
                     },
-                    saveActions = {
-                        organizeImports = true
-                    },
+                    saveActions = { organizeImports = true },
                     completion = {
                         favoriteStaticMembers = {
                             "org.hamcrest.MatcherAssert.assertThat",
@@ -258,16 +241,11 @@ local prepare_config = (function()
                             "sun.*",
                         },
                         importOrder = {
-                            "#java",
-                            "java",
-                            "#javax",
-                            "javax",
-                            "#jakarta",
-                            "jakarta",
-                            "#org",
-                            "org",
-                            "#com",
-                            "com",
+                            "#java", "java",
+                            "#javax", "javax",
+                            "#jakarta", "jakarta",
+                            "#org", "org",
+                            "#com", "com",
                         },
                     },
                     sources = {
@@ -280,15 +258,11 @@ local prepare_config = (function()
                         toString = {
                             template = "${object.className}{${member.name()}=${member.value}, ${otherMembers}}",
                         },
-                        hashCodeEquals = {
-                            useJava7Objects = true,
-                        },
+                        hashCodeEquals = { useJava7Objects = true, },
                         useBlocks = true,
                     },
                     inlayHints = {
-                        parameterNames = {
-                            enabled = "all"
-                        }
+                        parameterNames = { enabled = "all" }
                     }
                 },
             },
