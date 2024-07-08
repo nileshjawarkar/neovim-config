@@ -58,24 +58,9 @@ end
 
 local function setup()
     require("lazydev").setup({})
-    require("mason").setup({
-        ui = {
-            border = 'rounded',
-            width = 0.7,
-            height = 0.8,
-        },
-    })
-
-    require('mason-tool-installer').setup({
-        ensure_installed = require("config.lsp.mason").ensure_installed,
-    })
-    vim.api.nvim_command('MasonToolsInstall')
-
     local lsp_config = require("lspconfig")
-    local mason_config = require("mason-lspconfig")
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
-
-    mason_config.setup_handlers({
+    require("config.lsp.mason").setup({
         function(server_name)
             if server_name == "yamlls" then
                 lsp_config[server_name].setup({
