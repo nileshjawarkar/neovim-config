@@ -36,27 +36,29 @@ local prepare_config = (function()
     ----------------------------------------
     jdtls_util.rm_jdtls_ws()
     local root_dir = jdtls_util.find_root()
-    local src_paths = jdtls_util.find_src_paths(root_dir, false, false)
+    jdtls_util.find_src_paths(root_dir, false, false)
 
     -- actual config preparation method
     ----------------------------------
     return function()
         local jdtls_options = jdtls_util.get_jdtls_options()
+        local src_paths = jdtls_util.find_src_paths(nil, true, false)
         -- Get the default extended client capablities of the JDTLS language server
         -- Modify one property called resolveAdditionalTextEditsSupport and set it to true
         local extendedClientCapabilities = jdtls.extendedClientCapabilities
         extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
-
+        local java, _ = jdtls_util.get_java_path()
         return {
             on_attach = on_attach,
             cmd = {
-                'java',
+                java,
                 '-Declipse.application=org.eclipse.jdt.ls.core.id1',
                 '-Dosgi.bundles.defaultStartLevel=4',
                 '-Declipse.product=org.eclipse.jdt.ls.core.product',
                 '-Dlog.protocol=true',
                 '-Dlog.level=ALL',
-                '-Xmx3g',
+                '-Xms700m',
+                '-Xmx4g',
                 '--add-modules=ALL-SYSTEM',
                 '--add-opens', 'java.base/java.util=ALL-UNNAMED',
                 '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
@@ -73,9 +75,9 @@ local prepare_config = (function()
                     eclipse = { downloadSources = true, },
                     maven = { downloadSources = true, },
                     configuration = { updateBuildConfiguration = "interactive", },
-                    implementationsCodeLens = { enabled = true, },
-                    referencesCodeLens = { enabled = true, },
-                    references = { includeDecompiledSources = false, },
+                    implementationsCodeLens = { enabled = false, },
+                    referencesCodeLens = { enabled = false, },
+                    references = { enabled = false, },
                     signatureHelp = { enabled = true },
                     format = { enabled = true, },
                     contentProvider = { preferred = "fernflower" },
@@ -87,8 +89,9 @@ local prepare_config = (function()
                             "qualifyMembers", "qualifyStaticMembers",
                             "addOverride", "addDeprecated",
                             "stringConcatToTextBlock", "invertEquals",
-                            "addFinalModifier", "instanceofPatternMatch",
-                            "lambdaExpression", "switchExpression"
+                            "addFinalModifier",
+                            -- "instanceofPatternMatch",
+                            -- "lambdaExpression", "switchExpression"
                         }
                     },
                     saveActions = { organizeImports = true },
