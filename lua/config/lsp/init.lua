@@ -51,6 +51,9 @@ local function setup_keys()
                 { buffer = ev.buf, desc = "Code actions" })
             vim.keymap.set("n", "<leader>gf", function() vim.lsp.buf.format({ async = true }) end,
                 { buffer = ev.buf, desc = "Format code" })
+
+            -- Setup DAP keys
+            require("config.dap").setup_keys()
         end,
     })
 end
