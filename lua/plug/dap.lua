@@ -13,11 +13,11 @@ return {
 
         -- Set up icons.
         local icons = {
-            Stopped = { '#', 'DiagnosticWarn', 'DapStoppedLine' },
+            Stopped = { '>', 'DiagnosticWarn', 'DapStoppedLine' },
             Breakpoint = '*',
             BreakpointCondition = '*',
             BreakpointRejected = { 'x', 'DiagnosticError' },
-            LogPoint = '>',
+            LogPoint = '#',
         }
         for name, sign in pairs(icons) do
             sign = type(sign) == 'table' and sign or { sign }

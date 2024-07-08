@@ -170,11 +170,11 @@ end
 local setup_dap = (function()
     local init = false
     return function()
+        local jdtls_dap = require('jdtls.dap')
+        jdtls_dap.setup_dap_main_class_configs()
         vim.lsp.codelens.refresh()
         if init == false then
-            local jdtls_dap = require('jdtls.dap')
             jdtls_dap.setup_dap()
-            jdtls_dap.setup_dap_main_class_configs()
             init = true
         end
     end
