@@ -8,7 +8,7 @@ return {
     },
     config = function()
         require("neo-tree").setup({
-            close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+            close_if_last_window = false,
             popup_border_style = "rounded",
             enable_git_status = false,
         })
@@ -18,3 +18,4 @@ return {
         vim.keymap.set("n", "<leader>tl", "<cmd>Neotree reveal<CR>", { desc = "Locate current file" })
     end,
 }
+
