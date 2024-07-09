@@ -1,8 +1,8 @@
 vim.g.mapleader = " "
-
 local keymap = vim.keymap
 
 -- Window management
+------------------------------
 keymap.set("n", "<leader>wv", "<C-w>v", { noremap = true, silent = true, desc = "Split vertically" })
 keymap.set("n", "<leader>ws", "<C-w>s", { noremap = true, silent = true, desc = "Split horizontally" })
 keymap.set("n", "<leader>wq", ":close<CR>", { noremap = true, silent = true, desc = "Close" })
@@ -13,18 +13,20 @@ keymap.set("n", "<leader>wk", "<C-w>k", { noremap = true, silent = true, desc = 
 keymap.set("n", "<leader>w=", "<cmd>vertical resize +10<cr>", { noremap = true, silent = true, desc = "Increase width" })
 keymap.set("n", "<leader>w-", "<cmd>vertical resize -10<cr>", { noremap = true, silent = true, desc = "Decrease width" })
 
-keymap.set("n", "<M-q>", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close buffer" })
+-- Buffer management
+------------------------------
 keymap.set("n", "<leader>bq", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close buffer" })
 keymap.set("n", "<leader>bn", ":bnext<CR>", { noremap = true, silent = true, desc = "Next buffer" })
 keymap.set("n", "<leader>bp", ":bprevious<CR>", { noremap = true, silent = true, desc = "Prev buffer" })
 
 -- Utillity key binding
+------------------------------
 keymap.set("n", "<M-c>", '<cmd>let @+ = expand("%:p")<CR>', { desc = "Copy file path"})
 keymap.set("t", "<M-\\>", vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, true, true), { desc = "Exit terminal mode"})
 
--- Quick list management
--- Info : For telescope C+q add search results to quick list.
 -- Quickfix keymaps
+------------------------------
+-- Quick list management : For telescope C+q add search results to quick list.
 keymap.set("n", "<leader>qo", ":copen<CR>", { noremap = true, silent = true, desc = "Open list" })
 keymap.set("n", "<leader>qf", ":cfirst<CR>", { noremap = true, silent = true, desc = "Jump to first item" })
 keymap.set("n", "<leader>qn", ":cnext<CR>", { noremap = true, silent = true, desc = "Jump to next item" })

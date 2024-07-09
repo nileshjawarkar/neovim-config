@@ -1,4 +1,28 @@
 return {
+    'stevearc/oil.nvim',
+    opts = {},
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+        local oil = require("oil")
+        oil.setup({
+            float = {
+                padding = 5,
+                border = "rounded",
+                win_options = {
+                    winblend = 0,
+                },
+                preview_split = "auto",
+                override = function(conf)
+                    return conf
+                end,
+            },
+        })
+        vim.keymap.set("n", "-", oil.open_float, { desc = "Open parent" })
+        vim.keymap.set("n", "th", oil.toggle_hidden, { desc = "Toggle hidden" })
+    end,
+}
+--[[
+return {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
     dependencies = {
@@ -18,4 +42,4 @@ return {
         vim.keymap.set("n", "<leader>tl", "<cmd>Neotree reveal<CR>", { desc = "Locate current file" })
     end,
 }
-
+]]

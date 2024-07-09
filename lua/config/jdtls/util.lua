@@ -166,7 +166,6 @@ local function get_java_version()
     return version, err
 end
 
-
 local setup_dap = (function()
     local init = false
     return function()

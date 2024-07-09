@@ -20,7 +20,6 @@ end
 local function open_dapui()
     local dapui = require("dapui")
     dapui.open()
-    require("neo-tree").close_all()
 end
 
 local function setup_keys()

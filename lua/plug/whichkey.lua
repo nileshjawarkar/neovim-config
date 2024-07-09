@@ -36,7 +36,6 @@ return {
         wk.register({
             b = { name = "Buffer", },
             f = { name = "Telescope", },
-            t = { name = "File tree", },
             g = { name = "Lsp", },
             W = { name = "Workspaces", },
             w = { name = "Window", },
