@@ -36,7 +36,7 @@ local prepare_config = (function()
     ----------------------------------------
     jdtls_util.rm_jdtls_ws()
     local root_dir = jdtls_util.find_root()
-    jdtls_util.find_src_paths(root_dir, false, false)
+    -- jdtls_util.find_src_paths(root_dir, false, false)
 
     -- actual config preparation method
     ----------------------------------

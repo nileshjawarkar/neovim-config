@@ -34,6 +34,7 @@ return {
             show_keys = false, -- show the currently pressed key and its label as a message in the command line
         })
         wk.register({
+            b = { name = "Buffer", },
             f = { name = "Telescope", },
             t = { name = "File tree", },
             g = { name = "Lsp", },
