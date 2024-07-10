@@ -1,4 +1,13 @@
+-- Auto command to clear block cursor after exit. It help to prevent messup in terminals 
+-- color theme. This is useful in alacrity teminal OR may also helful in other
+-- terminals.
+vim.api.nvim_create_autocmd("ExitPre", {
+	group = vim.api.nvim_create_augroup("Exit", { clear = true }),
+	command = "set guicursor=a:ver90",
+	desc = "Set cursor back to beam when leaving Neovim."
+})
 
+-- User commands
 vim.api.nvim_create_user_command("DapResetSrcPath", function()
     require("config.jdtls").find_src_paths(nil, false, true)
 end, {})

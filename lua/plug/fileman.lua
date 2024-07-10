@@ -12,13 +12,10 @@ return {
                     winblend = 0,
                 },
                 preview_split = "auto",
-                override = function(conf)
-                    return conf
-                end,
             },
         })
-        vim.keymap.set("n", "-", oil.open_float, { desc = "Open parent" })
-        vim.keymap.set("n", "th", oil.toggle_hidden, { desc = "Toggle hidden" })
+        vim.keymap.set("n", "-", oil.open_float, { desc = "Open file manager" })
+        vim.keymap.set("n", "th", oil.toggle_hidden, { desc = "Toggle file manager" })
     end,
 }
 --[[
