@@ -20,10 +20,6 @@ keymap.set("n", "<leader>w-", "<cmd>vertical resize -10<cr>", { noremap = true, 
 -- Buffer management
 ------------------------------
 keymap.set("n", "<C-q>", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close buffer" })
-keymap.set("n", "<leader>bq", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close buffer (C-q)" })
-keymap.set("n", "<C-tab>", ":bnext<CR>", { noremap = true, silent = true, desc = "Next buffer" })
-keymap.set("n", "<leader>bn", ":bnext<CR>", { noremap = true, silent = true, desc = "Next buffer (C-tab)" })
-keymap.set("n", "<leader>bp", ":bprevious<CR>", { noremap = true, silent = true, desc = "Prev buffer" })
 
 -- Utillity key binding
 ------------------------------

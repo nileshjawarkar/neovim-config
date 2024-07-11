@@ -42,7 +42,8 @@ return {
         vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Find recent open files"})
         vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Find text" })
         vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "Find text under cursor" })
-        vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "List open files" })
+        vim.keymap.set("n", "<C-t>", builtin.buffers, { desc = "List open files" })
+        vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "List open files (C-t)" })
         vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Show help tags" })
         vim.keymap.set("n", "<leader>f.", builtin.current_buffer_fuzzy_find, { desc = "Fuzzy find in current file" })
     end,
