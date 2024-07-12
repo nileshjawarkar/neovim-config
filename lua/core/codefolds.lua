@@ -4,7 +4,7 @@ opt.foldenable = false
 opt.foldmethod = "expr"
 opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 opt.foldtext = ""
-opt.foldlevel = 99
+opt.foldlevel = 1
 opt.foldlevelstart = 1
 opt.foldnestmax = 2
 local fillchars = { fold = ' ', foldopen = '-', foldclose = '+', foldsep = ' ', }
@@ -18,6 +18,11 @@ end
 _G.get_statuscol = function()
     return get_fold(vim.v.lnum) .. " %r %s"
 end
+
+-- Disable keys
+vim.keymap.set("n", "zA", function() end, { noremap = true, })
+vim.keymap.set("n", "zC", function() end, { noremap = true, })
+vim.keymap.set("n", "zM", function() end, { noremap = true, })
 
 vim.keymap.set("n", "<leader>E", function()
     if vim.o.foldenable == false and  vim.bo.filetype ~= "NeogitStatus" then
