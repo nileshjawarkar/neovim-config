@@ -20,7 +20,7 @@ _G.get_statuscol = function()
 end
 
 vim.keymap.set("n", "<leader>E", function()
-    if vim.o.foldenable == false then
+    if vim.o.foldenable == false and  vim.bo.filetype ~= "NeogitStatus" then
         vim.opt.fillchars = fillchars
         vim.o.foldenable = true
         vim.o.foldcolumn = "1"
