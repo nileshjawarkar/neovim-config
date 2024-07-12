@@ -28,13 +28,15 @@ return {
                 "'",
                 '"',
                 "z=",
+                "za",
+                "zz",
             },
             ignore_missing = true,
             show_help = false, -- show a help message in the command line for using WhichKey
             show_keys = false, -- show the currently pressed key and its label as a message in the command line
         })
         wk.register({
-            f = { name = "Telescope", },
+            f = { name = "Files/Telescope", },
             g = { name = "Lsp", },
             W = { name = "Workspaces", },
             w = { name = "Window", },
