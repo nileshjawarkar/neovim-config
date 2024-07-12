@@ -9,12 +9,12 @@ keymap.set("n", "<leader>wh", "<C-w>h", { noremap = true, silent = true, desc = 
 keymap.set("n", "<leader>wl", "<C-w>l", { noremap = true, silent = true, desc = "Move left" })
 keymap.set("n", "<leader>wj", "<C-w>j", { noremap = true, silent = true, desc = "Move down" })
 keymap.set("n", "<leader>wk", "<C-w>k", { noremap = true, silent = true, desc = "Move up" })
-keymap.set("n", "<leader>w=", "<cmd>vertical resize +10<cr>", { noremap = true, silent = true, desc = "Increase width" })
-keymap.set("n", "<leader>w-", "<cmd>vertical resize -10<cr>", { noremap = true, silent = true, desc = "Decrease width" })
+keymap.set("n", "<leader>w=", "<cmd>vertical resize +10<cr>",
+    { noremap = true, silent = true, desc = "Increase width" })
+keymap.set("n", "<leader>w-", "<cmd>vertical resize -10<cr>",
+    { noremap = true, silent = true, desc = "Decrease width" })
 
 -- Shortcuts
-keymap.set("n", "<leader>|", "<C-w>v", { noremap = true, silent = true, desc = "Window split vertically" })
-keymap.set("n", "<leader>-", "<C-w>s", { noremap = true, silent = true, desc = "Window split horizontally" })
 keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true, desc = "Move right" })
 keymap.set("n", "<C-l>", "<C-w>l", { noremap = true, silent = true, desc = "Move left" })
 keymap.set("n", "<C-j>", "<C-w>j", { noremap = true, silent = true, desc = "Move down" })
@@ -22,8 +22,9 @@ keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true, desc = "Move
 
 -- Utillity key binding
 ------------------------------
-keymap.set("n", "<M-c>", '<cmd>let @+ = expand("%:p")<CR>', { desc = "Copy file path"})
-keymap.set("t", "<M-\\>", vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, true, true), { desc = "Exit terminal mode"})
+keymap.set("n", "<M-c>", '<cmd>let @+ = expand("%:p")<CR>', { desc = "Copy file path" })
+keymap.set("t", "<M-\\>", vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, true, true),
+    { desc = "Exit terminal mode" })
 keymap.set("n", "<M-q>", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close buffer" })
 keymap.set("n", "<C-q>", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close buffer" })
 
