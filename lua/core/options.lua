@@ -58,3 +58,9 @@ opt.showmode = false
 opt.ruler = false
 
 opt.inccommand = "nosplit"
+
+-- fold management
+opt.foldenable = false
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.fillchars = { fold = ' ', }
