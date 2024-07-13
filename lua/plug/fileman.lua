@@ -15,8 +15,13 @@ return {
             },
         })
         vim.keymap.set("n", "-", oil.open_float, {})
-        vim.keymap.set("n", "<leader>tt", oil.open_float, { desc = "Open" })
-        vim.keymap.set("n", "<leader>th", oil.toggle_hidden, { desc = "Toggle hidden" })
+        vim.keymap.set("n", "<leader>tt", function()
+           oil.toggle_float(require("core.util.sys").find_root())
+        end, { desc = "Open root folder (toggle)" })
+        vim.keymap.set("n", "<leader>tl", function()
+           oil.toggle_float()
+        end, { desc = "Locate current file (toggle)" })
+        vim.keymap.set("n", "<leader>th", oil.toggle_hidden, { desc = "Show hidden files (toggle)" })
     end,
 }
 --[[
