@@ -41,3 +41,8 @@ vim.api.nvim_create_user_command("JavaVersion", function()
         print("Java version [" .. v.major .. "." .. v.minor .. "." .. v.patch .. "]")
     end
 end, {})
+
+vim.api.nvim_create_user_command("InitConfig", function()
+    local cur_dir = vim.fn.getcwd()
+    require("core.util.sys").create_project_config(cur_dir)
+end, {})

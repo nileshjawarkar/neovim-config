@@ -107,28 +107,6 @@ local find_src_paths = (function()
     end
 end)()
 
-local function dir_has_any(dir, file_list)
-    local files = vim.fn.readdir(dir)
-    for _, f in ipairs(files) do
-        for _, cf in ipairs(file_list) do
-            if f == cf then
-                return true
-            end
-        end
-    end
-    return false
-end
-
-local function find_root()
-    local ws_files = { ".git", "pom.xml", "mvnw", "gradlew" }
-    local cur_dir = vim.fn.getcwd()
-    if true == dir_has_any(cur_dir, ws_files) then
-        return cur_dir;
-    else
-        return vim.fs.root(0, ws_files)
-    end
-end
-
 local function get_java_path()
     local java_home = os.getenv("JAVA_HOME")
     if java_home ~= nil then
@@ -170,7 +148,8 @@ local setup_dap = (function()
     local init = false
     return function()
         local jdtls_dap = require('jdtls.dap')
-        jdtls_dap.setup_dap_main_class_configs()
+        -- Use WS/.nvim/config.lua for defining the debug configurations
+        -- jdtls_dap.setup_dap_main_class_configs()
         vim.lsp.codelens.refresh()
         if init == false then
             jdtls_dap.setup_dap()

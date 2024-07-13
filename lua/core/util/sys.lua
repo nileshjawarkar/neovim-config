@@ -31,7 +31,6 @@ local function open_file(filename, mode)
     }
 end
 
-
 local is_dir = function(dirname)
     if 1 == vim.fn.isdirectory(dirname) then
         return true
@@ -45,6 +44,42 @@ local function dump_table(value)
             print(key .. " -> " .. attr)
         end
     end
+end
+
+local function create_dir(dirname)
+    if 1 == vim.fn.mkdir(dirname, "p") then
+        return true
+    end
+    return false
+end
+
+local function write_to(filename, callback)
+    local file = open_file(filename, "w+")
+    if file ~= nil and callback ~= nil then
+        local wfile = {
+            seek_start = file.seek_start,
+            seek_end = file.seek_end,
+            seek_from_cur = file.seek_from_cur,
+            write = file.write,
+            flush = file.flush,
+        }
+        callback(wfile)
+        file.close()
+        return true
+    end
+    return false
+end
+
+local function dir_has_any(dir, file_list)
+    local files = vim.fn.readdir(dir)
+    for _, f in ipairs(files) do
+        for _, cf in ipairs(file_list) do
+            if f == cf then
+                return true
+            end
+        end
+    end
+    return false
 end
 
 return {
@@ -64,22 +99,7 @@ return {
         end
         return false
     end,
-    write_to = function(filename, callback)
-        local file = open_file(filename, "w+")
-        if file ~= nil and callback ~= nil then
-            local wfile = {
-                seek_start = file.seek_start,
-                seek_end = file.seek_end,
-                seek_from_cur = file.seek_from_cur,
-                write = file.write,
-                flush = file.flush,
-            }
-            callback(wfile)
-            file.close()
-            return true
-        end
-        return false
-    end,
+    write_to = write_to,
     append_to = function(filename, callback)
         local file = open_file(filename, "a+")
         if file ~= nil and callback ~= nil then
@@ -93,12 +113,7 @@ return {
         end
         return false
     end,
-    create_dir = function(dirname)
-        if 1 == vim.fn.mkdir(dirname, "p") then
-            return true
-        end
-        return false
-    end,
+    create_dir = create_dir,
     rm_rf = function(dirname)
         if 0 == vim.fn.delete(dirname, "rf") then
             return true
@@ -147,4 +162,24 @@ return {
         return r
     end,
     dump_table = dump_table,
+    create_project_config = function(ws_dir)
+        local conf_dir = ws_dir .. "/.nvim/"
+        if is_dir(conf_dir) == false and create_dir(conf_dir) == true then
+            write_to(conf_dir .. "config.lua", function(file)
+                file.write("-- This is neovim project configuration file")
+            end)
+        else
+            print(".nvim/config.lua - already exist")
+        end
+    end,
+    find_root = function()
+        local ws_files = { ".git", "pom.xml", "mvnw", "gradlew", ".nvim" }
+        local cur_dir = vim.fn.getcwd()
+        if true == dir_has_any(cur_dir, ws_files) then
+            return cur_dir;
+        else
+            return vim.fs.root(0, ws_files)
+        end
+    end,
+    dir_has_any = dir_has_any,
 }

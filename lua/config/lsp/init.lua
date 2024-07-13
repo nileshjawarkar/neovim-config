@@ -53,7 +53,9 @@ local function setup_keys()
                 { buffer = ev.buf, desc = "Format code" })
 
             -- Setup DAP keys
-            require("config.dap").setup_keys()
+            local dap_conf = require("config.dap")
+            dap_conf.setup_keys()
+            dap_conf.load_dap_config(vim.fn.getcwd(), vim.bo.filetype)
         end,
     })
 end
@@ -63,11 +65,13 @@ local function setup()
     require("lazydev").setup({})
     local lsp_config = require("lspconfig")
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
+    local root_dir = require("core.util.sys").find_root
     require("config.lsp.mason").setup({
         function(server_name)
             if server_name == "yamlls" then
                 lsp_config[server_name].setup({
                     capabilities = capabilities,
+                    root_dir = root_dir,
                     settings = {
                         yaml = {
                             format = {
@@ -83,6 +87,7 @@ local function setup()
             elseif server_name == "lua_ls" then
                 lsp_config[server_name].setup({
                     capabilities = capabilities,
+                    root_dir = root_dir,
                     settings = {
                         Lua = {
                             diagnostics = {
@@ -94,6 +99,7 @@ local function setup()
             elseif server_name ~= "jdtls" then
                 lsp_config[server_name].setup({
                     capabilities = capabilities,
+                    root_dir = root_dir,
                 })
             end
         end,

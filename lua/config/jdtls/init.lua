@@ -1,6 +1,6 @@
 local jdtls = require("jdtls")
 local jdtls_util = require("config.jdtls.util")
-
+local sys = require("core.util.sys")
 
 local on_attach = function(_, bufnr)
     -- Filetype-specific keymaps (these can be done in the ftplugin directory instead if you prefer)
@@ -35,7 +35,7 @@ local prepare_config = (function()
     -- Things that need to executed only once
     ----------------------------------------
     jdtls_util.rm_jdtls_ws()
-    local root_dir = jdtls_util.find_root()
+    local root_dir = sys.find_root()
     -- jdtls_util.find_src_paths(root_dir, false, false)
 
     -- actual config preparation method

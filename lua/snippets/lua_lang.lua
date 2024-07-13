@@ -3,37 +3,84 @@ local s = ls.snippet
 local t = ls.text_node
 local i = ls.insert_node
 local f = ls.function_node
+local fmt = require('luasnip.extras.fmt').fmt
 
 ls.add_snippets("lua", {
-	s("lfun", {
+    s("lfun", {
         t("local function "),
         i(1, "name"),
         t("("),
         i(2, ""),
-        t({ ")", "\t"}),
+        t({ ")", "\t" }),
         i(0),
         t({ "", "end" }),
-	}),
+    }),
 
-	s("fun", {
-		t("function("),
+    s("fun", {
+        t("function("),
         i(1, ""),
-		t({")", "\t"}),
-		i(2),
-		t({ "", "end" }),
+        t({ ")", "\t" }),
+        i(2),
+        t({ "", "end" }),
         i(0),
-	}),
+    }),
 
-	s("lrequire", {
-		t("local "),
-		f(function (import_name)
-            local parts = vim.split(import_name[1][1], ".", {plain = true})
+    s("lrequire", {
+        t("local "),
+        f(function(import_name)
+            local parts = vim.split(import_name[1][1], ".", { plain = true })
             return (parts[#parts] and string.gsub(parts[#parts], "%-", "_")) or ""
-		end, {1}),
-		t(" = require(\""),
-		i(1, "import.name"),
-		t("\")"),
-		i(0)
-	})
-})
+        end, { 1 }),
+        t(" = require(\""),
+        i(1, "import.name"),
+        t("\")"),
+        i(0)
+    }),
 
+    s("dap_config_java", fmt([[
+    local dap = require('dap')
+    dap.configurations.java = {{
+      {{
+        type = 'java';
+        request = 'attach';
+        name = "Debug (Attach) - Remote";
+        hostName = "127.0.0.1";
+        port = 8000;
+      }},
+      {{
+        type = "java",
+        -- classPaths = "",
+        -- modulePaths = "",
+        -- javaExec = "/path/to/your/bin/java",
+        projectName = "Valid Project Name",
+        mainClass = "your.package.name.MainClassName",
+        name = "Launch MainClassName",
+        request = "launch",
+      }}
+    }}
+    ]], {})),
+
+    s("dap_config_c", fmt([[
+        local dap = require('dap')
+        local root_dir = vim.fn.getcwd()
+
+        dap.adapters.cppdbg = {{
+          id = 'cppdbg',
+          type = 'executable',
+          command = vim.fn.stdpath("data") .. "/mason/packages/cpptools/extension/debugAdapters/bin/OpenDebugAD7",
+        }}
+
+        dap.configurations.c = {{
+          {{
+            name = "Launch file",
+            type = "cppdbg",
+            request = "launch",
+            program = function()
+              return vim.fn.input('Path to executable: ', root_dir .. '/', 'file')
+            end,
+            cwd = root_dir,
+            stopAtEntry = true,
+          }},
+        }}
+    ]], {})),
+})

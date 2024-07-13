@@ -14,8 +14,9 @@ return {
                 preview_split = "auto",
             },
         })
-        vim.keymap.set("n", "-", oil.open_float, { desc = "Open file manager" })
-        vim.keymap.set("n", "th", oil.toggle_hidden, { desc = "Toggle file manager" })
+        vim.keymap.set("n", "-", oil.open_float, {})
+        vim.keymap.set("n", "<leader>tt", oil.open_float, { desc = "Open" })
+        vim.keymap.set("n", "<leader>th", oil.toggle_hidden, { desc = "Toggle hidden" })
     end,
 }
 --[[

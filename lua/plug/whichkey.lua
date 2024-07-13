@@ -29,8 +29,8 @@ return {
             },
         })
         wk.add({
-            { "<leader>f", group = "file" },
-            { "<leader>f", group = "Files/Telescope", },
+            { "<leader>f", group = "Search/Telescope", },
+            { "<leader>t", group = "Files Manager", },
             { "<leader>g", group = "Lsp", },
             { "<leader>W", group = "Workspaces", },
             { "<leader>w", group = "Window", },
