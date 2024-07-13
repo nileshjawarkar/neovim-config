@@ -148,9 +148,44 @@ local prepare_config = (function()
     end
 end)()
 
+local setup_user_cmd = (function()
+    local init_done = false
+    return function()
+        if init_done == true then return end
+        init_done = true
+        vim.api.nvim_create_user_command("DapPrintSrcPath", function()
+            local paths = require("config.jdtls").find_src_paths(nil, true, false)
+            for _, p in ipairs(paths) do
+                print(p)
+            end
+        end, {})
+        --[[
+        vim.api.nvim_create_user_command("DapResetSrcPath", function()
+            require("config.jdtls").find_src_paths(nil, false, true)
+        end, {})
+
+        vim.api.nvim_create_user_command("DapInitParentSrcPath", function()
+            local parentdir = vim.fn.fnamemodify( vim.fn.getcwd() .. "/../", ':p:h')
+            local paths = require("config.jdtls").find_src_paths(parentdir, false, true)
+            for _, p in ipairs(paths) do
+                print(p)
+            end
+        end, {})
+
+        vim.api.nvim_create_user_command("DapInitPPSrcPath", function()
+            local parentdir = vim.fn.fnamemodify( vim.fn.getcwd() .. "/../../", ':p:h')
+            local paths = require("config.jdtls").find_src_paths(parentdir, false, true)
+            for _, p in ipairs(paths) do
+                print(p)
+            end
+        end, {})
+        ]]
+    end
+end)()
 
 return {
     setup = function()
+        setup_user_cmd()
         jdtls.start_or_attach(prepare_config())
     end,
     get_java_path = jdtls_util.get_java_path,
