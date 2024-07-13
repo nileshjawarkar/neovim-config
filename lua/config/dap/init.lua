@@ -61,6 +61,7 @@ local function setup_keys()
 end
 
 local function setup()
+    require('telescope').load_extension('dap')
     require("nvim-dap-virtual-text").setup({})
     setup_dap_icons()
     -- gain access to the dap plugin and its functions
@@ -73,17 +74,17 @@ local function setup()
         },
         layouts = { {
             elements = {
-                { id = "scopes",      size = 0.30 },
-                { id = "breakpoints", size = 0.20 },
+                -- { id = "breakpoints", size = 0.20 },
+                { id = "repl",    size = 0.20, },
                 { id = "watches",     size = 0.20 },
+                { id = "scopes",      size = 0.30 },
                 { id = "stacks",      size = 0.30 },
             },
             position = "left",
             size = 35,
         }, {
             elements = {
-                { id = "repl",    size = 0.5, },
-                { id = "console", size = 0.5, }
+                { id = "console", size = 1.0, }
             },
             position = "bottom",
             size = 10
