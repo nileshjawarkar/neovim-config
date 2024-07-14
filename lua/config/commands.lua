@@ -1,10 +1,12 @@
--- Auto command to clear block cursor after exit. It help to prevent messup in terminals 
+local sys = require("core.util.sys")
+
+-- Auto command to clear block cursor after exit. It help to prevent messup in terminals
 -- color theme. This is useful in alacrity teminal OR may also helful in other
 -- terminals.
 vim.api.nvim_create_autocmd("ExitPre", {
-	group = vim.api.nvim_create_augroup("Exit", { clear = true }),
-	command = "set guicursor=a:ver90",
-	desc = "Set cursor back to beam when leaving Neovim."
+    group = vim.api.nvim_create_augroup("Exit", { clear = true }),
+    command = "set guicursor=a:ver90",
+    desc = "Set cursor back to beam when leaving Neovim."
 })
 
 -- User commands
@@ -17,5 +19,23 @@ end, {})
 
 vim.api.nvim_create_user_command("InitConfig", function()
     local cur_dir = vim.fn.getcwd()
-    require("core.util.sys").create_project_config(cur_dir)
+    sys.create_project_config(cur_dir)
 end, {})
+
+
+vim.api.nvim_create_user_command("CreateJavaProject", function()
+    local root_dir = sys.find_root()
+    local mvn = require("config.jdtls.maven")
+    if mvn ~= nil then
+        mvn:create_prj("java", root_dir)
+    end
+end, {})
+
+vim.api.nvim_create_user_command("CreateJavaEEProject", function()
+    local root_dir = sys.find_root()
+    local mvn = require("config.jdtls.maven")
+    if mvn ~= nil then
+        mvn:create_prj("javaee", root_dir)
+    end
+end, {})
+

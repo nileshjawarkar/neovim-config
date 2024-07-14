@@ -182,4 +182,21 @@ return {
         end
     end,
     dir_has_any = dir_has_any,
+    create_dirs = function(dir_list)
+        if type(dir_list) ~= "table" then
+            return false
+        end
+        local parent = dir_list[0]
+        if is_dir(parent) then
+            print("Directory already exit - " .. parent)
+            return false
+        end
+        for _, dir in ipairs(dir_list) do
+            if not create_dir(dir) then
+                print("Failed to create directory - " .. dir)
+                return false
+            end
+        end
+        return true
+    end,
 }
