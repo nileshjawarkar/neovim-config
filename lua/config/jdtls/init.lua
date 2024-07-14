@@ -85,18 +85,17 @@ local prepare_config = (function()
                         sourcePaths = src_paths,
                     },
                     cleanup = {
-                        actionsOnSave = {
+                        actions = {
                             "qualifyMembers", "qualifyStaticMembers",
                             "addOverride", "addDeprecated",
                             "stringConcatToTextBlock", "invertEquals",
                             "addFinalModifier",
-                            -- "instanceofPatternMatch",
-                            -- "lambdaExpression", "switchExpression"
-                        }
+                        },
                     },
-                    saveActions = { organizeImports = true },
+                    saveActions = { organizeImports = true, cleanup = true,},
                     completion = {
                         favoriteStaticMembers = {
+                            "junit.Assert.*",
                             "org.hamcrest.MatcherAssert.assertThat",
                             "org.hamcrest.Matchers.*",
                             "org.hamcrest.CoreMatchers.*",
