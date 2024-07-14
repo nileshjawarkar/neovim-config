@@ -26,6 +26,7 @@ return {
             },
             modes = {
                 i = false, -- Insert mode
+                x = false,
             },
         })
         wk.add({
