@@ -17,10 +17,6 @@ local function setup_dap_icons()
     end
 end
 
-local function open_dapui()
-    require("dapui").open()
-end
-
 local function setup_keys()
     local dap = require("dap")
     vim.keymap.set("n", "<leader>bb", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
@@ -50,10 +46,6 @@ local function setup_keys()
     vim.keymap.set("n", '<leader>df', '<cmd>Telescope dap frames<cr>', { desc = "Show frames", })
     vim.keymap.set("n", '<leader>dh', '<cmd>Telescope dap commands<cr>', { desc = "Show commands", })
 
-    vim.keymap.set("n", "<leader>dr", function()
-        require('dapui').close();
-        dap.repl.toggle()
-    end, { desc = "Open repl", })
 
     vim.keymap.set("n", '<leader>d?', function()
         local widgets = require "dap.ui.widgets"; widgets.centered_float(widgets.scopes)
@@ -66,7 +58,18 @@ local function setup_keys()
         dap.terminate();
         require('dapui').close();
     end, { desc = "Terminate debug" })
-    vim.keymap.set("n", "<leader>da", open_dapui, { desc = "Open DAP ui" })
+    vim.keymap.set("n", "<leader>da", function()
+        require("dapui").open()
+    end, { desc = "Open DAP ui" })
+
+    vim.keymap.set("n", "<leader>dr", function()
+        require("dapui").close()
+        dap.repl.toggle()
+    end, { desc = "Open repl", })
+
+    require("core.keymaps").register_with_leader_qq("dap-repl", function()
+        dap.repl.close()
+    end)
 end
 
 local function setup()
@@ -83,9 +86,9 @@ local function setup()
         },
         layouts = { {
             elements = {
-                { id = "watches",     size = 0.20 },
-                { id = "scopes",      size = 0.40 },
-                { id = "stacks",      size = 0.40 },
+                { id = "watches", size = 0.20 },
+                { id = "scopes",  size = 0.40 },
+                { id = "stacks",  size = 0.40 },
             },
             position = "left",
             size = 35,
@@ -101,10 +104,16 @@ local function setup()
     dapui.setup(settings)
     -- setup an event listener for when the debugger is launched
     dap.listeners.before.attach.dapui_config = function()
-        open_dapui()
+        dap.repl.close()
+        require("dapui").open()
     end
     dap.listeners.before.launch.dapui_config = function()
-        open_dapui()
+        dap.repl.close()
+        require("dapui").open()
+    end
+    dap.listeners.after.event_exited.dapui_config = function()
+        require("dapui").close()
+        dap.repl.open()
     end
 end
 
