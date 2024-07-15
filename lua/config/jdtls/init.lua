@@ -191,5 +191,5 @@ return {
     get_java_path = jdtls_util.get_java_path,
     get_java_version = jdtls_util.get_java_version,
     find_src_paths = jdtls_util.find_src_paths,
-    find_root = jdtls_util.find_root,
+    find_root = sys.find_root,
 }

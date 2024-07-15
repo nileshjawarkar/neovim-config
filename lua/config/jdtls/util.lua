@@ -164,6 +164,5 @@ return {
     get_jdtls_options = get_jdtls_options,
     rm_jdtls_ws = rm_jdtls_ws,
     find_src_paths = find_src_paths,
-    find_root = find_root,
     setup_dap = setup_dap,
 }
