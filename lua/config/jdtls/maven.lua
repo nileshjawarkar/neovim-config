@@ -182,6 +182,23 @@ m.create_prj = function(self, type, root_dir)
             print("Failed to create - " .. root_dir .. "/pom.xml")
             return
         end
+        st = sys.write_to(root_dir .. "/.gitignore", function(file)
+            file.write([[
+trash/**
+Servers/**
+target/**
+*.tar.gz
+.metadata/**
+.settings/**
+.nvim/**
+.classpath
+.project
+            ]])
+        end)
+        if not st then
+            print("Failed to create - " .. root_dir .. "/.gitignore")
+            return
+        end
 
         if is_jee then
             st = sys.write_to(root_dir .. "/src/main/webapp/WEB-INF/web.xml", function(file)
