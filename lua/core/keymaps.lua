@@ -25,8 +25,6 @@ keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true, desc = "Move
 keymap.set("n", "<M-c>", '<cmd>let @+ = expand("%:p")<CR>', { desc = "Copy file path" })
 keymap.set("t", "<M-\\>", vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, true, true),
     { desc = "Exit terminal mode" })
-keymap.set("n", "<M-q>", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close buffer" })
-keymap.set("n", "<C-q>", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close buffer" })
 keymap.set({"i", "n"}, "<C-s>", "<ESC><CMD>:wa<CR>", { noremap = true, silent = true, desc = "Save session" })
 
 -- Quickfix keymaps
@@ -37,7 +35,7 @@ keymap.set("n", "<leader>qf", ":cfirst<CR>", { noremap = true, silent = true, de
 keymap.set("n", "<leader>qn", ":cnext<CR>", { noremap = true, silent = true, desc = "Jump to next item" })
 keymap.set("n", "<leader>qp", ":cprev<CR>", { noremap = true, silent = true, desc = "Jump to prev item" })
 keymap.set("n", "<leader>ql", ":clast<CR>", { noremap = true, silent = true, desc = "Jump to last item" })
-keymap.set("n", "<leader>qq", ":cclose<CR>", { noremap = true, silent = true, desc = "Close" })
+keymap.set("n", "<leader>qq", "<CMD>cclose<CR><CMD>bdelete<CR>", { noremap = true, silent = true, desc = "Close list/buffer" })
 
 keymap.set("v", "<", "<gv", { desc = "Indent left in visual mode" })
 keymap.set("v", ">", ">gv", { desc = "Indent right in visual mode" })
