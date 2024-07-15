@@ -27,6 +27,7 @@ keymap.set("t", "<M-\\>", vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, tr
     { desc = "Exit terminal mode" })
 keymap.set("n", "<M-q>", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close buffer" })
 keymap.set("n", "<C-q>", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close buffer" })
+keymap.set({"i", "n"}, "<C-s>", "<ESC><CMD>:wa<CR>", { noremap = true, silent = true, desc = "Save session" })
 
 -- Quickfix keymaps
 ------------------------------

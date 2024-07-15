@@ -14,7 +14,7 @@ return {
                 preview_split = "auto",
             },
         })
-        vim.keymap.set("n", "-", oil.open_float, {})
+        vim.keymap.set("n", "<leader>-", oil.open_float, {desc = "Locate current file"})
         vim.keymap.set("n", "<leader>tt", function()
            oil.toggle_float(require("core.util.sys").find_root())
         end, { desc = "Open root folder (toggle)" })

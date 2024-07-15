@@ -6,8 +6,7 @@ return {
         vim.o.timeoutlen = 550
         local wk = require("which-key")
         wk.setup({
-            preset = "classic",
-            ignore_missing = true,
+            preset = "modern",
             show_help = false,
             show_keys = false,
             win = {
@@ -15,6 +14,7 @@ return {
                 border = "single",
             },
             plugins = {
+                marks = false,
                 registers = false,
                 presets = {
                     operators = false,    -- adds help for operators like d, y, ...
@@ -22,6 +22,8 @@ return {
                     text_objects = false, -- help for text objects triggered after entering an operator
                     windows = false,      -- default bindings on <c-w>
                     nav = false,          -- misc bindings to work with windows
+                    z = false,             -- bindings for folds, spelling and others prefixed with z
+                    g = false,             -- bindings for prefixed with g
                 },
             },
             modes = {
