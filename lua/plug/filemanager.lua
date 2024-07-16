@@ -1,7 +1,7 @@
 return {
     'stevearc/oil.nvim',
-    opts = {},
     dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = {},
     config = function()
         local oil = require("oil")
         oil.setup({
@@ -13,14 +13,24 @@ return {
                 },
                 preview_split = "auto",
             },
+            view_options = {
+                show_hidden = true,
+                is_hidden_file = function(name, _)
+                    return vim.startswith(name, ".")
+                end,
+                is_always_hidden = function(name, _)
+                    return  vim.startswith(name, "..") or  vim.startswith(name, ".git") and name ~= ".gitignore"
+                end,
+            },
         })
-        vim.keymap.set("n", "<leader>-", oil.open_float, {desc = "Locate current file"})
-        vim.keymap.set("n", "<leader>tt", function()
-           oil.toggle_float(require("core.util.sys").find_root())
-        end, { desc = "Open root folder (toggle)" })
-        vim.keymap.set("n", "<leader>tl", function()
-           oil.toggle_float()
-        end, { desc = "Locate current file (toggle)" })
+        vim.keymap.set("n", "<leader>-", oil.open_float, { desc = "Locate current file" })
+        vim.keymap.set("n", "<leader>_", function()
+            oil.open_float(require("core.util.sys").find_root())
+        end, { desc = "Open root folder" })
+        vim.keymap.set("n", "<leader>tl", oil.open_float, { desc = "Locate current file" })
+        vim.keymap.set("n", "<leader>tr", function()
+            oil.open_float(require("core.util.sys").find_root())
+        end, { desc = "Open root folder" })
         vim.keymap.set("n", "<leader>th", oil.toggle_hidden, { desc = "Show hidden files (toggle)" })
     end,
 }
