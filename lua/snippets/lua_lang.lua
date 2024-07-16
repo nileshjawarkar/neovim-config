@@ -65,22 +65,55 @@ ls.add_snippets("lua", {
         local root_dir = vim.fn.getcwd()
 
         dap.adapters.cppdbg = {{
-          id = 'cppdbg',
-          type = 'executable',
-          command = vim.fn.stdpath("data") .. "/mason/packages/cpptools/extension/debugAdapters/bin/OpenDebugAD7",
+            id = 'cppdbg',
+            type = 'executable',
+            command = vim.fn.exepath("OpenDebugAD7"),
+        }}
+        dap.adapters.codelldb = {{
+            type = 'server',
+            port = '8901',
+            executable = {{
+                command = vim.fn.exepath('codelldb'),
+                args = {{ '--port', '8901' }},
+            }},
         }}
 
-        dap.configurations.c = {{
-          {{
-            name = "Launch file",
+        dap.configurations.c = {{ 
+        {{
+            -- This needs to use => "gdbserver localhost:8901 program" command manualy
+            name = 'Attach to gdbserver :8901',
+            type = 'cppdbg',
+            request = 'launch',
+            MIMode = 'gdb',
+            miDebuggerServerAddress = 'localhost:8901',
+            miDebuggerPath = vim.fn.exepath('gdb'),
+            cwd = root_dir,
+            program = function()
+                return vim.fn.input('Path to executable: ', root_dir .. '/', 'file')
+            end,
+        }}, {{
+            name = "GDB: Launch",
             type = "cppdbg",
             request = "launch",
             program = function()
-              return vim.fn.input('Path to executable: ', root_dir .. '/', 'file')
+                return vim.fn.input('Path to executable: ', root_dir .. '/', 'file')
             end,
             cwd = root_dir,
             stopAtEntry = true,
-          }},
-        }}
+        }}, {{
+            name = 'LLDB: Launch',
+            type = 'codelldb',
+            request = 'launch',
+            program = function()
+                return vim.fn.input('Path to executable: ', root_dir .. '/', 'file')
+            end,
+            cwd = root_dir,
+            stopOnEntry = false,
+            args = {{}},
+            console = 'integratedTerminal',
+        }}, }}
+
+        dap.configurations.cpp = dap.configurations.c
+
     ]], {})),
 })
