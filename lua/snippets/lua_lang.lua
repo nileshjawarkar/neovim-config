@@ -78,7 +78,7 @@ ls.add_snippets("lua", {
             }},
         }}
 
-        dap.configurations.c = {{ 
+        dap.configurations.c = {{
         {{
             -- This needs explicite use of command => "gdbserver localhost:8901 <program>" 
             -- to start the debug session manualy
