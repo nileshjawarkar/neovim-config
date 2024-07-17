@@ -19,37 +19,19 @@ end
 
 local function setup_keys()
     local dap = require("dap")
-    vim.keymap.set("n", "<leader>bb", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
-    vim.keymap.set("n", "<leader>bc", function()
-        dap.set_breakpoint(vim.fn.input('Breakpoint condition: '))
-    end, { desc = "Set breakpoint (condition)" })
-    vim.keymap.set("n", "<leader>bl", function()
-        dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))
-    end, { desc = "Set breakpoint/logpoint message" })
-    vim.keymap.set("n", '<leader>br', dap.clear_breakpoints, { desc = "Clear all breakpoints" })
-    vim.keymap.set("n", '<leader>ba', '<cmd>Telescope dap list_breakpoints<cr>',
-        { desc = "List all breakpoints" })
 
+    -- debug session navigation
     vim.keymap.set("n", "<F8>", dap.continue, { desc = "Continue" })
     vim.keymap.set("n", "<F6>", dap.step_over, { desc = "Step over" })
     vim.keymap.set("n", "<F5>", dap.step_into, { desc = "Step into" })
     vim.keymap.set("n", "<F4>", dap.step_out, { desc = "Step out" })
     vim.keymap.set("n", "<F7>", dap.run_to_cursor, { desc = "Run to cursor" })
 
-    vim.keymap.set("n", "<leader>dC", dap.continue, { desc = "Continue (F8)" })
+    vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "Continue (F8)" })
     vim.keymap.set("n", "<leader>dj", dap.step_over, { desc = "Step over (F6)" })
     vim.keymap.set("n", "<leader>dk", dap.step_into, { desc = "Step into (F5)" })
     vim.keymap.set("n", "<leader>do", dap.step_out, { desc = "Step out (F4)" })
-    vim.keymap.set("n", "<leader>dc", dap.run_to_cursor, { desc = "Run to cursor (F7)" })
-
-    vim.keymap.set("n", "<leader>dl", "<cmd>lua require'dap'.run_last()<cr>", { desc = "Run last", })
-    vim.keymap.set("n", '<leader>df', '<cmd>Telescope dap frames<cr>', { desc = "Show frames", })
-    vim.keymap.set("n", '<leader>dh', '<cmd>Telescope dap commands<cr>', { desc = "Show commands", })
-
-
-    vim.keymap.set("n", '<leader>d?', function()
-        local widgets = require "dap.ui.widgets"; widgets.centered_float(widgets.scopes)
-    end, { desc = "Open scopes" })
+    vim.keymap.set("n", "<leader>dC", dap.run_to_cursor, { desc = "Run to cursor (F7)" })
     vim.keymap.set("n", '<leader>dd', function()
         dap.disconnect();
         require('dapui').close();
@@ -58,6 +40,14 @@ local function setup_keys()
         dap.terminate();
         require('dapui').close();
     end, { desc = "Terminate debug" })
+
+    -- utility ui
+    vim.keymap.set("n", "<leader>dl", "<cmd>lua require'dap'.run_last()<cr>", { desc = "Run last", })
+    vim.keymap.set("n", '<leader>df', '<cmd>Telescope dap frames<cr>', { desc = "Show frames", })
+    vim.keymap.set("n", '<leader>dh', '<cmd>Telescope dap commands<cr>', { desc = "Show commands", })
+    vim.keymap.set("n", '<leader>d?', function()
+        local widgets = require "dap.ui.widgets"; widgets.centered_float(widgets.scopes)
+    end, { desc = "Open scopes" })
     vim.keymap.set("n", "<leader>da", function()
         require("dapui").open()
     end, { desc = "Open DAP ui" })
@@ -67,6 +57,20 @@ local function setup_keys()
         dap.repl.toggle()
     end, { desc = "Open repl", })
 
+    -- breakpoint management
+    vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
+    vim.keymap.set("n", "<leader>dbb", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
+    vim.keymap.set("n", "<leader>dbc", function()
+        dap.set_breakpoint(vim.fn.input('Breakpoint condition: '))
+    end, { desc = "Set breakpoint (condition)" })
+    vim.keymap.set("n", "<leader>dbs", function()
+        dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))
+    end, { desc = "Set breakpoint/logpoint message" })
+    vim.keymap.set("n", '<leader>dbr', dap.clear_breakpoints, { desc = "Clear all breakpoints" })
+    vim.keymap.set("n", '<leader>dbl', '<cmd>Telescope dap list_breakpoints<cr>',
+        { desc = "List all breakpoints" })
+
+    -- generic close
     require("core.keymaps").register_with_leader_qq("dap-repl", function()
         dap.repl.close()
     end)

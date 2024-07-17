@@ -1,4 +1,15 @@
-local function setup_keys()
+local if_once = (function()
+    local once_status = false;
+    return function()
+        if not once_status then
+            once_status = true
+            return true
+        end
+        return false
+    end
+end)()
+
+local function setup_gkeys()
     -- Setup keymap for diagnostics
     ---------------------------------
     local diagnostics = vim.diagnostic
@@ -6,13 +17,26 @@ local function setup_keys()
     vim.keymap.set("n", "<leader>dp", diagnostics.goto_prev, { desc = "Previous diagnostics" })
     vim.keymap.set("n", "<leader>dn", diagnostics.goto_next, { desc = "Next diagnostics" })
 
+    -- Setup DAP
+    local dap_conf = require("config.dap")
+    dap_conf.setup_keys()
+    dap_conf.load_dap_config(vim.fn.getcwd())
+end
+
+local function setup_auto_attach()
     -- Use LspAttach autocommand to only map the following keys
     -- after the language server attaches to the current buffer
     vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspConfig", {}),
         callback = function(ev)
-            -- Load user snippets
-            -----------------------
+            if if_once() then
+                -- This block will be executed only once
+                -- Setup diagnostic and dap keys
+                setup_gkeys()
+            end
+
+            -- Load user snippets - once for each filetype
+            ---------------------------------------------
             require("config.lsp.cmp").load_snippets(vim.bo.filetype)
 
             -- Define key bindings
@@ -23,11 +47,11 @@ local function setup_keys()
             vim.bo[ev.buf].omnifunc = "v:lua.vim_lsp.omnifunc"
 
             local lsp_buildin = require("telescope.builtin")
-            vim.keymap.set("n", "<leader>Wa", vim_lbuf.add_workspace_folder,
+            vim.keymap.set("n", "<leader>lwa", vim_lbuf.add_workspace_folder,
                 { buffer = ev.buf, desc = "Add workspace folder" })
-            vim.keymap.set("n", "<leader>Wr", vim_lbuf.remove_workspace_folder,
+            vim.keymap.set("n", "<leader>lwr", vim_lbuf.remove_workspace_folder,
                 { buffer = ev.buf, desc = "Remove workspace folder" })
-            vim.keymap.set("n", "<leader>Wl", function()
+            vim.keymap.set("n", "<leader>lwl", function()
                 print(vim.inspect(vim_lbuf.list_workspace_folders()))
             end, { buffer = ev.buf, desc = "List workspace folders" })
             vim.keymap.set("n", "gD", vim_lbuf.declaration, { buffer = ev.buf, desc = "Go to declaration" })
@@ -35,23 +59,22 @@ local function setup_keys()
             vim.keymap.set("n", "gi", vim_lbuf.implementation, { buffer = ev.buf, desc = "Go to implementation" })
             vim.keymap.set("n", "gr", lsp_buildin.lsp_references, { buffer = ev.buf, desc = "List references" })
 
-            vim.keymap.set("n", "<leader>gl", lsp_buildin.lsp_document_symbols, { desc = "List document symbols" })
-            vim.keymap.set("n", "<leader>gg", vim_lbuf.hover, { buffer = ev.buf, desc = "Hover" })
-            vim.keymap.set("n", "<leader>gd", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition" })
-            vim.keymap.set("n", "<leader>gD", vim_lbuf.declaration, { buffer = ev.buf, desc = "Go to declaration" })
-            vim.keymap.set("n", "<leader>gi", vim_lbuf.implementation,
+            vim.keymap.set("n", "<leader>ll", lsp_buildin.lsp_document_symbols, { desc = "List document symbols" })
+            vim.keymap.set("n", "<leader>lg", vim_lbuf.hover, { buffer = ev.buf, desc = "Hover" })
+            vim.keymap.set("n", "<leader>ld", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition" })
+            vim.keymap.set("n", "<leader>lD", vim_lbuf.declaration, { buffer = ev.buf, desc = "Go to declaration" })
+            vim.keymap.set("n", "<leader>li", vim_lbuf.implementation,
                 { buffer = ev.buf, desc = "Go to implementation" })
-            vim.keymap.set("n", "<leader>gt", vim_lbuf.type_definition,
+            vim.keymap.set("n", "<leader>lt", vim_lbuf.type_definition,
                 { buffer = ev.buf, desc = "Go to type definition" })
-            vim.keymap.set("n", "<leader>gr", lsp_buildin.lsp_references,
+            vim.keymap.set("n", "<leader>lr", lsp_buildin.lsp_references,
                 { buffer = ev.buf, desc = "List references" })
-            vim.keymap.set("n", "<leader>gs", vim_lbuf.signature_help, { buffer = ev.buf, desc = "Signature help" })
-            vim.keymap.set("n", "<leader>gR", vim_lbuf.rename, { buffer = ev.buf, desc = "Rename" })
-            vim.keymap.set({ "n", "v" }, "<leader>ga", vim_lbuf.code_action,
+            vim.keymap.set("n", "<leader>ls", vim_lbuf.signature_help, { buffer = ev.buf, desc = "Signature help" })
+            vim.keymap.set("n", "<leader>lR", vim_lbuf.rename, { buffer = ev.buf, desc = "Rename" })
+            vim.keymap.set({ "n", "v" }, "<leader>la", vim_lbuf.code_action,
                 { buffer = ev.buf, desc = "Code actions" })
-            vim.keymap.set("n", "<leader>gf", function() vim.lsp.buf.format({ async = true }) end,
+            vim.keymap.set("n", "<leader>lf", function() vim.lsp.buf.format({ async = true }) end,
                 { buffer = ev.buf, desc = "Format code" })
-
         end,
     })
 end
@@ -103,12 +126,7 @@ local function setup()
 
     require("config.lsp.ui").setup()
     require("config.lsp.cmp").setup()
-    setup_keys()
-
-    -- Setup DAP 
-    local dap_conf = require("config.dap")
-    dap_conf.setup_keys()
-    dap_conf.load_dap_config(vim.fn.getcwd())
+    setup_auto_attach()
 end
 
 return {

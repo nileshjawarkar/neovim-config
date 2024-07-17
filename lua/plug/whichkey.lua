@@ -34,12 +34,13 @@ return {
         wk.add({
             { "<leader>f", group = "Search/Telescope", },
             { "<leader>t", group = "Files Manager", },
-            { "<leader>g", group = "Lsp", },
-            { "<leader>W", group = "Workspaces", },
+            { "<leader>l", group = "Lsp", },
+            { "<leader>lw", group = "Workspace", },
             { "<leader>w", group = "Window", },
             { "<leader>q", group = "Quickfix list", },
             { "<leader>j", group = "Run test", },
             { "<leader>d", group = "Debug/Diagnostic", },
+            { "<leader>db", group = "Breakpoint", },
         })
     end
 
