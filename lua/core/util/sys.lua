@@ -206,4 +206,14 @@ return {
         end
         return true
     end,
+    first_time = (function()
+        local t = {}
+       return function(key)
+            if t[key] == nil then
+                t[key] = true
+                return true
+            end
+            return false
+       end
+    end)(),
 }

@@ -5,25 +5,25 @@ local sys = require("core.util.sys")
 local on_attach = function(_, bufnr)
     -- Filetype-specific keymaps (these can be done in the ftplugin directory instead if you prefer)
     local keymap = vim.keymap
-    keymap.set("n", "<leader>go", jdtls.organize_imports,
+    keymap.set("n", "<leader>lo", jdtls.organize_imports,
         { noremap = true, silent = true, buffer = bufnr, desc = "Organize imports" })
     keymap.set("n", "gO", jdtls.organize_imports,
         { noremap = true, silent = true, buffer = bufnr, desc = "Organize imports" })
-    keymap.set("n", "<leader>gu", jdtls.update_projects_config,
+    keymap.set("n", "<leader>lu", jdtls.update_projects_config,
         { noremap = true, silent = true, buffer = bufnr, desc = "Update project config" })
-    keymap.set("n", "<leader>ge", jdtls.extract_variable,
+    keymap.set("n", "<leader>le", jdtls.extract_variable,
         { noremap = true, silent = true, buffer = bufnr, desc = "Extract variable" })
-    keymap.set("n", "<leader>gE", jdtls.extract_constant,
+    keymap.set("n", "<leader>lE", jdtls.extract_constant,
         { noremap = true, silent = true, buffer = bufnr, desc = "Extract constant" })
-    keymap.set("v", "<leader>gm", [[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]],
+    keymap.set("v", "<leader>lm", [[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]],
         { noremap = true, silent = true, buffer = bufnr, desc = "Extract method" })
 
     -- For debugging & running Unit tests
     -------------------------------------------
     -- 1) Define keymaps :
-    keymap.set("n", "<leader>jc", jdtls.test_class,
+    keymap.set("n", "<leader>ltc", jdtls.test_class,
         { noremap = true, silent = true, buffer = bufnr, desc = "Class tests" })
-    keymap.set("n", "<leader>jm", jdtls.test_nearest_method,
+    keymap.set("n", "<leader>ltm", jdtls.test_nearest_method,
         { noremap = true, silent = true, buffer = bufnr, desc = "Current test" })
 
     -- 2) Init
@@ -92,7 +92,7 @@ local prepare_config = (function()
                             "addFinalModifier",
                         },
                     },
-                    saveActions = { organizeImports = true, cleanup = true,},
+                    saveActions = { organizeImports = true, cleanup = true, },
                     completion = {
                         favoriteStaticMembers = {
                             "junit.Assert.*",
@@ -147,45 +147,41 @@ local prepare_config = (function()
     end
 end)()
 
-local setup_user_cmd = (function()
-    local init_done = false
-    return function()
-        if init_done == true then return end
-        init_done = true
-        vim.api.nvim_create_user_command("DapPrintSrcPath", function()
-            local paths = require("config.jdtls").find_src_paths(nil, true, false)
-            for _, p in ipairs(paths) do
-                print(p)
-            end
-        end, {})
+local setup_user_cmd = function()
+    vim.api.nvim_create_user_command("DapPrintSrcPath", function()
+        local paths = require("config.jdtls").find_src_paths(nil, true, false)
+        for _, p in ipairs(paths) do
+            print(p)
+        end
+    end, {})
+    --[[
+    vim.api.nvim_create_user_command("DapResetSrcPath", function()
+        require("config.jdtls").find_src_paths(nil, false, true)
+    end, {})
 
-        --[[
-        vim.api.nvim_create_user_command("DapResetSrcPath", function()
-            require("config.jdtls").find_src_paths(nil, false, true)
-        end, {})
+    vim.api.nvim_create_user_command("DapInitParentSrcPath", function()
+        local parentdir = vim.fn.fnamemodify( vim.fn.getcwd() .. "/../", ':p:h')
+        local paths = require("config.jdtls").find_src_paths(parentdir, false, true)
+        for _, p in ipairs(paths) do
+            print(p)
+        end
+    end, {})
 
-        vim.api.nvim_create_user_command("DapInitParentSrcPath", function()
-            local parentdir = vim.fn.fnamemodify( vim.fn.getcwd() .. "/../", ':p:h')
-            local paths = require("config.jdtls").find_src_paths(parentdir, false, true)
-            for _, p in ipairs(paths) do
-                print(p)
-            end
-        end, {})
-
-        vim.api.nvim_create_user_command("DapInitPPSrcPath", function()
-            local parentdir = vim.fn.fnamemodify( vim.fn.getcwd() .. "/../../", ':p:h')
-            local paths = require("config.jdtls").find_src_paths(parentdir, false, true)
-            for _, p in ipairs(paths) do
-                print(p)
-            end
-        end, {})
-        ]]
-    end
-end)()
+    vim.api.nvim_create_user_command("DapInitPPSrcPath", function()
+        local parentdir = vim.fn.fnamemodify( vim.fn.getcwd() .. "/../../", ':p:h')
+        local paths = require("config.jdtls").find_src_paths(parentdir, false, true)
+        for _, p in ipairs(paths) do
+            print(p)
+        end
+    end, {})
+    ]]
+end
 
 return {
     setup = function()
-        setup_user_cmd()
+        if sys.first_time("jdtls_init") then
+            setup_user_cmd()
+        end
         jdtls.start_or_attach(prepare_config())
     end,
     get_java_path = jdtls_util.get_java_path,

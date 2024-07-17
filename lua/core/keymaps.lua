@@ -29,6 +29,7 @@ keymap.set("n", "<M-c>", '<cmd>let @+ = expand("%:p")<CR>', { desc = "Copy file 
 keymap.set("t", "<M-\\>", vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, true, true),
     { desc = "Exit terminal mode" })
 keymap.set({ "i", "n" }, "<C-s>", "<ESC><CMD>:wa<CR>", { noremap = true, silent = true, desc = "Save session" })
+keymap.set({ "i", "n" }, "<C-t>", "<ESC><CMD>:q<CR>", { noremap = true, silent = true, desc = "Close" })
 
 -- Quickfix keymaps
 ------------------------------

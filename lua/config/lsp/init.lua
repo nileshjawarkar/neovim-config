@@ -1,27 +1,4 @@
-local if_once = (function()
-    local once_status = false;
-    return function()
-        if not once_status then
-            once_status = true
-            return true
-        end
-        return false
-    end
-end)()
-
-local function setup_gkeys()
-    -- Setup keymap for diagnostics
-    ---------------------------------
-    local diagnostics = vim.diagnostic
-    vim.keymap.set("n", "<leader>dl", diagnostics.open_float, { desc = "Show diagnostics" })
-    vim.keymap.set("n", "<leader>dp", diagnostics.goto_prev, { desc = "Previous diagnostics" })
-    vim.keymap.set("n", "<leader>dn", diagnostics.goto_next, { desc = "Next diagnostics" })
-
-    -- Setup DAP
-    local dap_conf = require("config.dap")
-    dap_conf.setup_keys()
-    dap_conf.load_dap_config(vim.fn.getcwd())
-end
+local first_time = require("core.util.sys").first_time
 
 local function setup_auto_attach()
     -- Use LspAttach autocommand to only map the following keys
@@ -29,10 +6,20 @@ local function setup_auto_attach()
     vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspConfig", {}),
         callback = function(ev)
-            if if_once() then
+            if first_time("LspKeyInit") then
                 -- This block will be executed only once
-                -- Setup diagnostic and dap keys
-                setup_gkeys()
+                -- Setup keymap for diagnostics
+                ---------------------------------
+                local diagnostics = vim.diagnostic
+                vim.keymap.set("n", "<leader>dl", diagnostics.open_float, { desc = "Show diagnostics" })
+                vim.keymap.set("n", "<leader>dp", diagnostics.goto_prev, { desc = "Previous diagnostics" })
+                vim.keymap.set("n", "<leader>dn", diagnostics.goto_next, { desc = "Next diagnostics" })
+
+                -- Setup DAP
+                local dap_conf = require("config.dap")
+                dap_conf.setup_keys()
+                dap_conf.load_dap_config(vim.fn.getcwd())
+                print(".")
             end
 
             -- Load user snippets - once for each filetype

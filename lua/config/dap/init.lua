@@ -106,6 +106,7 @@ local function setup()
     }
 
     dapui.setup(settings)
+
     -- setup an event listener for when the debugger is launched
     dap.listeners.before.attach.dapui_config = function()
         dap.repl.close()
@@ -115,25 +116,24 @@ local function setup()
         dap.repl.close()
         require("dapui").open()
     end
-    dap.listeners.after.event_exited.dapui_config = function()
+
+    local function dap_close()
         require("dapui").close()
         dap.repl.open()
+        vim.cmd("buffer")
     end
+    dap.listeners.after.event_exited.dapui_config = dap_close
+    dap.listeners.after.event_stopped.dapui_config = dap_close
+    dap.listeners.after.event_terminated.dapui_config = dap_close
 end
 
 
-local load_dap_config = (function()
-    local is_loaded = false
-    return function(ws_path, file_type)
-        if not is_loaded then
-            local config_path = loadfile(ws_path .. "/.nvim/config.lua")
-            if type(config_path) == "function" then
-                config_path()
-                is_loaded = true
-            end
-        end
+local function load_dap_config(ws_path)
+    local config_path = loadfile(ws_path .. "/.nvim/config.lua")
+    if type(config_path) == "function" then
+        config_path()
     end
-end)()
+end
 
 return {
     setup = setup,
