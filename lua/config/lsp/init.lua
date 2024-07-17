@@ -52,10 +52,6 @@ local function setup_keys()
             vim.keymap.set("n", "<leader>gf", function() vim.lsp.buf.format({ async = true }) end,
                 { buffer = ev.buf, desc = "Format code" })
 
-            -- Setup DAP keys
-            local dap_conf = require("config.dap")
-            dap_conf.setup_keys()
-            dap_conf.load_dap_config(vim.fn.getcwd(), vim.bo.filetype)
         end,
     })
 end
@@ -108,6 +104,11 @@ local function setup()
     require("config.lsp.ui").setup()
     require("config.lsp.cmp").setup()
     setup_keys()
+
+    -- Setup DAP 
+    local dap_conf = require("config.dap")
+    dap_conf.setup_keys()
+    dap_conf.load_dap_config(vim.fn.getcwd())
 end
 
 return {

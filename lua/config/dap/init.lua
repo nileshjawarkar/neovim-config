@@ -119,13 +119,13 @@ end
 
 
 local load_dap_config = (function()
-    local init_file_types = {}
+    local is_loaded = false
     return function(ws_path, file_type)
-        if init_file_types[file_type] == nil then
+        if not is_loaded then
             local config_path = loadfile(ws_path .. "/.nvim/config.lua")
             if type(config_path) == "function" then
                 config_path()
-                init_file_types[file_type] = true
+                is_loaded = true
             end
         end
     end
