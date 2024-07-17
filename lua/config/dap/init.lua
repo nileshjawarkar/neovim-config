@@ -111,7 +111,6 @@ local function setup()
     local function dap_open()
         dap.repl.close()
         require("dapui").open()
-        vim.cmd("buffer")
     end
     dap.listeners.before.attach.dapui_config = dap_open
     dap.listeners.before.launch.dapui_config = dap_open
