@@ -21,9 +21,9 @@ local on_attach = function(_, bufnr)
     -- For debugging & running Unit tests
     -------------------------------------------
     -- 1) Define keymaps :
-    keymap.set("n", "<leader>ltc", jdtls.test_class,
+    keymap.set("n", "<leader>dtc", jdtls.test_class,
         { noremap = true, silent = true, buffer = bufnr, desc = "Class tests" })
-    keymap.set("n", "<leader>ltm", jdtls.test_nearest_method,
+    keymap.set("n", "<leader>dtm", jdtls.test_nearest_method,
         { noremap = true, silent = true, buffer = bufnr, desc = "Current test" })
 
     -- 2) Init

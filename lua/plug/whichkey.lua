@@ -35,13 +35,13 @@ return {
             { "<leader>f", group = "Search/Telescope", },
             { "<leader>t", group = "Files Manager", },
             { "<leader>l", group = "Code/Lsp", },
-            { "<leader>lt", group = "Run test", },
             { "<leader>lw", group = "Workspace", },
             { "<leader>w", group = "Window", },
             { "<leader>q", group = "Quickfix list", },
             { "<leader>j", group = "Run test", },
             { "<leader>d", group = "Debug/Diagnostic", },
             { "<leader>db", group = "Breakpoint", },
+            { "<leader>dt", group = "Run test", },
         })
     end
 
