@@ -108,14 +108,13 @@ local function setup()
     dapui.setup(settings)
 
     -- setup an event listener for when the debugger is launched
-    dap.listeners.before.attach.dapui_config = function()
+    local function dap_open()
         dap.repl.close()
         require("dapui").open()
+        vim.cmd("buffer")
     end
-    dap.listeners.before.launch.dapui_config = function()
-        dap.repl.close()
-        require("dapui").open()
-    end
+    dap.listeners.before.attach.dapui_config = dap_open
+    dap.listeners.before.launch.dapui_config = dap_open
 
     local function dap_close()
         require("dapui").close()
@@ -123,7 +122,6 @@ local function setup()
         vim.cmd("buffer")
     end
     dap.listeners.after.event_exited.dapui_config = dap_close
-    dap.listeners.after.event_stopped.dapui_config = dap_close
     dap.listeners.after.event_terminated.dapui_config = dap_close
 end
 
