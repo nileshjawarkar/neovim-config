@@ -80,8 +80,9 @@ ls.add_snippets("lua", {
 
         dap.configurations.c = {{ 
         {{
-            -- This needs to use => "gdbserver localhost:8901 program" command manualy
-            name = 'Attach to gdbserver :8901',
+            -- This needs explicite use of command => "gdbserver localhost:8901 <program>" 
+            -- to start the debug session manualy
+            name = 'Attach (to gdbserver at :8901)',
             type = 'cppdbg',
             request = 'launch',
             MIMode = 'gdb',
@@ -92,7 +93,7 @@ ls.add_snippets("lua", {
                 return vim.fn.input('Path to executable: ', root_dir .. '/', 'file')
             end,
         }}, {{
-            name = "GDB: Launch",
+            name = "Launch (using GDB)",
             type = "cppdbg",
             request = "launch",
             program = function()
@@ -101,7 +102,7 @@ ls.add_snippets("lua", {
             cwd = root_dir,
             stopAtEntry = true,
         }}, {{
-            name = 'LLDB: Launch',
+            name = 'Launch (using LLDB)',
             type = 'codelldb',
             request = 'launch',
             program = function()

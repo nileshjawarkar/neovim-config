@@ -14,12 +14,12 @@ return {
                 preview_split = "auto",
             },
             view_options = {
-                show_hidden = true,
+                show_hidden = false,
                 is_hidden_file = function(name, _)
+                    if name == ".nvim" or name == ".gitignore" then
+                        return false
+                    end
                     return vim.startswith(name, ".")
-                end,
-                is_always_hidden = function(name, _)
-                    return  vim.startswith(name, "..") or  vim.startswith(name, ".git") and name ~= ".gitignore"
                 end,
             },
         })
