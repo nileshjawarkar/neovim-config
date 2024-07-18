@@ -64,3 +64,9 @@ opt.foldenable = false
 opt.foldmethod = "expr"
 opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 opt.fillchars = { fold = ' ', }
+
+_G.tabNameGen = function()
+    return " " .. vim.fn.expand("%") .. " "
+end
+opt.tabline = "%!v:lua.tabNameGen()"
+

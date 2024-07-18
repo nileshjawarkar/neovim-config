@@ -26,9 +26,8 @@ return {
                     g = false,             -- bindings for prefixed with g
                 },
             },
-            modes = {
-                i = false, -- Insert mode
-                x = false,
+            triggers = {
+                { "<leader>", mode = { "n", "v" } },
             },
         })
         wk.add({
@@ -44,5 +43,4 @@ return {
             { "<leader>dt", group = "Run test", },
         })
     end
-
 }
