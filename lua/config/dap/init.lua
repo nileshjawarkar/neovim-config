@@ -69,11 +69,6 @@ local function setup_keys()
     vim.keymap.set("n", '<leader>dbr', dap.clear_breakpoints, { desc = "Clear all breakpoints" })
     vim.keymap.set("n", '<leader>dbl', '<cmd>Telescope dap list_breakpoints<cr>',
         { desc = "List all breakpoints" })
-
-    -- generic close
-    require("core.keymaps").register_with_leader_qq("dap-repl", function()
-        dap.repl.close()
-    end)
 end
 
 local function setup()

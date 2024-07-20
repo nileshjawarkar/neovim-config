@@ -19,7 +19,6 @@ local function setup_auto_attach()
                 local dap_conf = require("config.dap")
                 dap_conf.setup_keys()
                 dap_conf.setup_dap_config()
-                print(".")
             end
 
             -- Load user snippets - once for each filetype

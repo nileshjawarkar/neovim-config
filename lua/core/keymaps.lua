@@ -29,7 +29,15 @@ keymap.set("n", "<M-c>", '<cmd>let @+ = expand("%:p")<CR>', { desc = "Copy file 
 keymap.set("t", "<M-\\>", vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, true, true),
     { desc = "Exit terminal mode" })
 keymap.set({ "i", "n" }, "<C-s>", "<ESC><CMD>:wa<CR>", { noremap = true, silent = true, desc = "Save session" })
-keymap.set({ "i", "n" }, "<C-t>", "<ESC>", { noremap = true, silent = true})
+keymap.set({ "i", "n" }, "<C-t>", function() end, { noremap = true, silent = true})
+
+
+keymap.set({ "i", "n" }, "<leader>fp", function()
+    vim.cmd("let @+ = expand('%:p')")
+end, { noremap = true, silent = true, desc = "Copy file path" })
+keymap.set({ "i", "n" }, "<leader>fP", function()
+    vim.cmd("let @+ = expand('%:p:t')")
+end, { noremap = true, silent = true, desc = "Copy file name" })
 
 -- Quickfix keymaps
 ------------------------------
@@ -40,6 +48,7 @@ keymap.set("n", "<leader>qn", ":cnext<CR>", { noremap = true, silent = true, des
 keymap.set("n", "<leader>qp", ":cprev<CR>", { noremap = true, silent = true, desc = "Jump to prev item" })
 keymap.set("n", "<leader>ql", ":clast<CR>", { noremap = true, silent = true, desc = "Jump to last item" })
 
+--[[
 local leader_qq = (function()
     local maps = {}
     maps["qf"] = function()
@@ -61,13 +70,9 @@ local leader_qq = (function()
         end,
     }
 end)()
+]]
 
 keymap.set("n", "<leader>qq", function()
-    if not leader_qq.execute(vim.bo.filetype) then
         vim.cmd("bdelete")
-    end
+        vim.cmd("cclose")
 end, { noremap = true, silent = true, desc = "Close list/buffer" })
-
-return {
-    register_with_leader_qq = leader_qq.register,
-}
