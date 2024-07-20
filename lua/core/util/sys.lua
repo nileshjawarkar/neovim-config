@@ -40,7 +40,7 @@ end
 
 local function dump_table(value)
     if type(value) == "table" then
-        for key, attr in ipairs(value) do
+        for key, attr in pairs(value) do
             if type(attr) == "string" then
                 print(key .. " -> " .. attr)
             else
