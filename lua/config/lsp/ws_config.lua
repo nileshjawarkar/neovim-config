@@ -4,6 +4,7 @@ m.dap_setup = function() return nil end
 
 (function()
     local ws_path = require("core.util.sys").find_root()
+    if ws_path == nil then return end
     local config_path = loadfile(ws_path .. "/.nvim/config.lua")
     if type(config_path) == "function" then
         local config = config_path()
