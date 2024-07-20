@@ -37,7 +37,7 @@ ls.add_snippets("lua", {
         i(0)
     }),
 
-    s("dap_config_java", fmt([[
+    s("config_java", fmt([[
     local dap = require('dap')
     dap.configurations.java = {{
       {{
@@ -60,7 +60,7 @@ ls.add_snippets("lua", {
     }}
     ]], {})),
 
-    s("dap_config_c", fmt([[
+    s("config_c_cpp", fmt([[
     local root_dir = vim.fn.getcwd()
     local function dap_setup()
         local dap = require('dap')
@@ -116,22 +116,22 @@ ls.add_snippets("lua", {
         dap.configurations.cpp = dap.configurations.c
     end
 
-    -- Way to configure clangd compiler inputs
-    -------------------------------------------
-    -+ If:
-    -+   PathMatch: .*\.cpp
+    --+ Way to configure clangd compiler inputs
+    --+-----------------------------------------
+    --+ If:
+    --+   PathMatch: .*\.cpp
 
-    -+ CompileFlags:
-    -+   Add: [-std=c++20]
+    --+ CompileFlags:
+    --+   Add: [-std=c++20]
 
-    -+ ---
-    -+ If:
-    -+   PathMatch: .*\.c
+    --+ ---
+    --+ If:
+    --+   PathMatch: .*\.c
 
-    -+ CompileFlags:
-    -+   Compiler: zig cc
-    -+   Add: [-Wall, -isysroot=/home/nilesh/.local/zig ]
-    -+-------------------------------------------
+    --+ CompileFlags:
+    --+   Compiler: zig cc
+    --+   Add: [-Wall, -isysroot=/home/nilesh/.local/zig ]
+    --+-------------------------------------------
 
     return {{
         dap_setup = dap_setup,
