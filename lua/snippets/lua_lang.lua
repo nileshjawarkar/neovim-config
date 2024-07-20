@@ -77,7 +77,6 @@ ls.add_snippets("lua", {
                 args = {{ '--port', '8901' }},
             }},
         }}
-
         dap.configurations.c = {{
             {{
                 -- This needs explicite use of command => "gdbserver localhost:8901 <program>"
@@ -119,8 +118,10 @@ ls.add_snippets("lua", {
     return {{
         dap_setup = dap_setup,
         lsp_config = {{
-            -- dk_root = "/home/nilesh/.local/llvm-180108",
-            -- cmd = {{ "/home/nilesh/.local/llvm-180108/bin/clangd", "--enable-config", }},
+            clangd = {{
+                -- dk_root = "/home/nilesh/.local/llvm-180108",
+                -- cmd = {{ "/home/nilesh/.local/llvm-180108/bin/clangd", "--enable-config", }},
+            }},
         }},
     }}
     ]], {})),
