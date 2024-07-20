@@ -72,7 +72,7 @@ local function setup()
     local lsp_config = require("lspconfig")
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
     local root_dir = require("core.util.sys").find_root
-    local ws_config = require("config.lsp.ws").lsp_config
+    local ws_config = require("config.lsp.ws_config").lsp_config
 
     require("config.lsp.mason").setup({
         function(server_name)

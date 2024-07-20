@@ -127,5 +127,5 @@ end
 return {
     setup = setup,
     setup_keys = setup_keys,
-    setup_dap_config = require("config.lsp.ws").dap_setup,
+    setup_dap_config = require("config.lsp.ws_config").dap_setup,
 }
