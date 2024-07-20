@@ -61,9 +61,9 @@ ls.add_snippets("lua", {
     ]], {})),
 
     s("dap_config_c", fmt([[
+    local root_dir = vim.fn.getcwd()
+    local function dap_setup()
         local dap = require('dap')
-        local root_dir = vim.fn.getcwd()
-
         dap.adapters.cppdbg = {{
             id = 'cppdbg',
             type = 'executable',
@@ -79,42 +79,49 @@ ls.add_snippets("lua", {
         }}
 
         dap.configurations.c = {{
-        {{
-            -- This needs explicite use of command => "gdbserver localhost:8901 <program>" 
-            -- to start the debug session manualy
-            name = 'Attach (to gdbserver at :8901)',
-            type = 'cppdbg',
-            request = 'launch',
-            MIMode = 'gdb',
-            miDebuggerServerAddress = 'localhost:8901',
-            miDebuggerPath = vim.fn.exepath('gdb'),
-            cwd = root_dir,
-            program = function()
-                return vim.fn.input('Path to executable: ', root_dir .. '/', 'file')
-            end,
-        }}, {{
-            name = "Launch (using GDB)",
-            type = "cppdbg",
-            request = "launch",
-            program = function()
-                return vim.fn.input('Path to executable: ', root_dir .. '/', 'file')
-            end,
-            cwd = root_dir,
-            stopAtEntry = true,
-        }}, {{
-            name = 'Launch (using LLDB)',
-            type = 'codelldb',
-            request = 'launch',
-            program = function()
-                return vim.fn.input('Path to executable: ', root_dir .. '/', 'file')
-            end,
-            cwd = root_dir,
-            stopOnEntry = false,
-            args = {{}},
-            console = 'integratedTerminal',
-        }}, }}
-
+            {{
+                -- This needs explicite use of command => "gdbserver localhost:8901 <program>"
+                -- to start the debug session manualy
+                name = 'Attach (to gdbserver at :8901)',
+                type = 'cppdbg',
+                request = 'launch',
+                MIMode = 'gdb',
+                miDebuggerServerAddress = 'localhost:8901',
+                miDebuggerPath = vim.fn.exepath('gdb'),
+                cwd = root_dir,
+                program = function()
+                    return vim.fn.input('Path to executable: ', root_dir .. '/', 'file')
+                end,
+            }}, {{
+                name = "Launch (using GDB)",
+                type = "cppdbg",
+                request = "launch",
+                program = function()
+                    return vim.fn.input('Path to executable: ', root_dir .. '/', 'file')
+                end,
+                cwd = root_dir,
+                stopAtEntry = true,
+            }}, {{
+                name = 'Launch (using LLDB)',
+                type = 'codelldb',
+                request = 'launch',
+                program = function()
+                    return vim.fn.input('Path to executable: ', root_dir .. '/', 'file')
+                end,
+                cwd = root_dir,
+                stopOnEntry = false,
+                args = {{}},
+                console = 'integratedTerminal',
+            }}, 
+        }}
         dap.configurations.cpp = dap.configurations.c
-
+    end
+    return {{
+        dap_setup = dap_setup,
+        lsp_config = {{
+            -- dk_root = "/home/nilesh/.local/llvm-180108",
+            -- cmd = {{ "/home/nilesh/.local/llvm-180108/bin/clangd", "--enable-config", }},
+        }},
+    }}
     ]], {})),
 })

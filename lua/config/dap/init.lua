@@ -124,16 +124,8 @@ local function setup()
     dap.listeners.after.event_terminated.dapui_config = dap_close
 end
 
-
-local function load_dap_config(ws_path)
-    local config_path = loadfile(ws_path .. "/.nvim/config.lua")
-    if type(config_path) == "function" then
-        config_path()
-    end
-end
-
 return {
     setup = setup,
     setup_keys = setup_keys,
-    load_dap_config = load_dap_config,
+    setup_dap_config = require("config.lsp.ws").dap_setup,
 }

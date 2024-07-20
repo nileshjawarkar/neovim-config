@@ -18,7 +18,7 @@ local function setup_auto_attach()
                 -- Setup DAP
                 local dap_conf = require("config.dap")
                 dap_conf.setup_keys()
-                dap_conf.load_dap_config(vim.fn.getcwd())
+                dap_conf.setup_dap_config()
                 print(".")
             end
 
@@ -72,41 +72,46 @@ local function setup()
     local lsp_config = require("lspconfig")
     local capabilities = require("cmp_nvim_lsp").default_capabilities()
     local root_dir = require("core.util.sys").find_root
+    local ws_config = require("config.lsp.ws").lsp_config
+
     require("config.lsp.mason").setup({
         function(server_name)
+            local conf = ws_config ~= nil and ws_config[server_name] or nil
+            local srv_config = {
+                capabilities = capabilities,
+                root_dir = root_dir,
+            }
+
+            if conf ~= nil then
+                if conf["cmd"] ~= nil then
+                    srv_config["cmd"] = conf["cmd"]
+                end
+            end
+
             if server_name == "yamlls" then
-                lsp_config[server_name].setup({
-                    capabilities = capabilities,
-                    root_dir = root_dir,
-                    settings = {
-                        yaml = {
-                            format = {
-                                enable = true,
-                                singleQuote = false,
-                                bracketSpacing = true
-                            },
-                            validate = false,
-                            completion = true,
+                srv_config["settings"] = {
+                    yaml = {
+                        format = {
+                            enable = true,
+                            singleQuote = false,
+                            bracketSpacing = true
                         },
+                        validate = false,
+                        completion = true,
                     },
-                })
+                }
             elseif server_name == "lua_ls" then
-                lsp_config[server_name].setup({
-                    capabilities = capabilities,
-                    root_dir = root_dir,
-                    settings = {
-                        Lua = {
-                            diagnostics = {
-                                globals = { "vim" },
-                            },
+                srv_config["settings"] = {
+                    Lua = {
+                        diagnostics = {
+                            globals = { "vim" },
                         },
                     },
-                })
-            elseif server_name ~= "jdtls" then
-                lsp_config[server_name].setup({
-                    capabilities = capabilities,
-                    root_dir = root_dir,
-                })
+                }
+            end
+
+            if server_name ~= "jdtls" then
+                lsp_config[server_name].setup(srv_config)
             end
         end,
     })
