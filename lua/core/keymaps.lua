@@ -1,6 +1,5 @@
 vim.g.mapleader = " "
 local keymap = vim.keymap
-
 -- Window management
 ------------------------------
 keymap.set("n", "<leader>wv", "<C-w>v", { noremap = true, silent = true, desc = "Split vertically" })
@@ -25,18 +24,21 @@ keymap.set("v", ">", ">gv", { desc = "Indent right in visual mode" })
 
 -- Utillity key binding
 ------------------------------
-keymap.set("n", "<M-c>", '<cmd>let @+ = expand("%:p")<CR>', { desc = "Copy file path" })
 keymap.set("t", "<M-\\>", vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, true, true),
     { desc = "Exit terminal mode" })
 keymap.set({ "i", "n" }, "<C-s>", "<ESC><CMD>:wa<CR>", { noremap = true, silent = true, desc = "Save session" })
 keymap.set({ "i", "n" }, "<C-t>", function() end, { noremap = true, silent = true})
 
 
-keymap.set({ "i", "n" }, "<leader>fp", function()
-    vim.cmd("let @+ = expand('%:p')")
+keymap.set("n", "<leader>fp", function()
+    local pn = vim.fn.expand('%:p')
+    vim.cmd("let @+ = \'" ..  pn .. "\'")
+    print( "Copied - " ..  pn )
 end, { noremap = true, silent = true, desc = "Copy file path" })
-keymap.set({ "i", "n" }, "<leader>fP", function()
-    vim.cmd("let @+ = expand('%:p:t')")
+keymap.set("n", "<leader>fP", function()
+    local n = vim.fn.expand('%:p:t')
+    vim.cmd("let @+ = \'" ..  n .. "\'")
+    print( "Copied - " ..  n )
 end, { noremap = true, silent = true, desc = "Copy file name" })
 
 -- Quickfix keymaps

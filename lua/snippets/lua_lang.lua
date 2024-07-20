@@ -115,12 +115,32 @@ ls.add_snippets("lua", {
         }}
         dap.configurations.cpp = dap.configurations.c
     end
+
+    -- Way to configure clangd compiler inputs
+    -------------------------------------------
+    -+ If:
+    -+   PathMatch: .*\.cpp
+
+    -+ CompileFlags:
+    -+   Add: [-std=c++20]
+
+    -+ ---
+    -+ If:
+    -+   PathMatch: .*\.c
+
+    -+ CompileFlags:
+    -+   Compiler: zig cc
+    -+   Add: [-Wall, -isysroot=/home/nilesh/.local/zig ]
+    -+-------------------------------------------
+
     return {{
         dap_setup = dap_setup,
         lsp_config = {{
             clangd = {{
-                -- dk_root = "/home/nilesh/.local/llvm-180108",
-                -- cmd = {{ "/home/nilesh/.local/llvm-180108/bin/clangd", "--enable-config", }},
+                "clangd", "--enable-config",
+                -- "/home/nilesh/.local/llvm-180108/bin/clangd", "--enable-config",
+                -- "--compile-commands-dir=" .. root_dir,
+                -- "--query-driver=/home/nilesh/.local/zig/zig_cc.sh",
             }},
         }},
     }}
