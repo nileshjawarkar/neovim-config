@@ -33,10 +33,12 @@ local function setup_keys()
     vim.keymap.set("n", "<leader>do", dap.step_out, { desc = "Step out (F4)" })
     vim.keymap.set("n", "<leader>dC", dap.run_to_cursor, { desc = "Run to cursor (F7)" })
     vim.keymap.set("n", '<leader>dd', function()
+        dap.repl.close()
         dap.disconnect();
         require('dapui').close();
     end, { desc = "Disconnect debug" })
     vim.keymap.set("n", '<leader>dt', function()
+        dap.repl.close()
         dap.terminate();
         require('dapui').close();
     end, { desc = "Terminate debug" })
@@ -53,8 +55,7 @@ local function setup_keys()
     end, { desc = "Open DAP ui" })
 
     vim.keymap.set("n", "<leader>dr", function()
-        require("dapui").close()
-        dap.repl.toggle()
+        dap.repl.open()
     end, { desc = "Open repl", })
 
     -- breakpoint management
@@ -112,7 +113,6 @@ local function setup()
 
     local function dap_close()
         require("dapui").close()
-        dap.repl.open()
         vim.cmd("buffer")
     end
     dap.listeners.after.event_exited.dapui_config = dap_close
