@@ -55,8 +55,8 @@ local function setup_keys()
     end, { desc = "Open DAP ui" })
 
     vim.keymap.set("n", "<leader>dr", function()
-        dap.repl.open()
-    end, { desc = "Open repl", })
+        dap.repl.toggle()
+    end, { desc = "Toggle repl", })
 
     -- breakpoint management
     vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
@@ -111,12 +111,14 @@ local function setup()
     dap.listeners.before.attach.dapui_config = dap_open
     dap.listeners.before.launch.dapui_config = dap_open
 
+    --[[
     local function dap_close()
         require("dapui").close()
         vim.cmd("buffer")
     end
     dap.listeners.after.event_exited.dapui_config = dap_close
     dap.listeners.after.event_terminated.dapui_config = dap_close
+    ]]
 end
 
 return {
