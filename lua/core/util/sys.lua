@@ -188,6 +188,14 @@ return {
             return vim.fs.root(0, ws_files)
         end
     end,
+    get_curbuf_name = function()
+        local name = vim.fn.expand('%:t')
+        if name == nil then
+            return "noname"
+        end
+        local v, _ = string.gsub(name, "%." .. vim.bo.filetype, "")
+        return v
+    end,
     dir_has_any = dir_has_any,
     create_dirs = function(dir_list)
         if type(dir_list) ~= "table" then
@@ -208,12 +216,12 @@ return {
     end,
     first_time = (function()
         local t = {}
-       return function(key)
+        return function(key)
             if t[key] == nil then
                 t[key] = true
                 return true
             end
             return false
-       end
+        end
     end)(),
 }
