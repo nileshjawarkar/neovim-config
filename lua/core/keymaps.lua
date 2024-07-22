@@ -50,6 +50,9 @@ keymap.set("n", "<leader>qn", ":cnext<CR>", { noremap = true, silent = true, des
 keymap.set("n", "<leader>qp", ":cprev<CR>", { noremap = true, silent = true, desc = "Jump to prev item" })
 keymap.set("n", "<leader>ql", ":clast<CR>", { noremap = true, silent = true, desc = "Jump to last item" })
 
+-- keymap.set("n", "<Tab>", ":bn<CR>", { noremap = true, silent = true, desc = "Jump to last item" })
+keymap.set("n", "<leader><Tab>", ":bn<CR>", { noremap = true, silent = true, desc = "Move to next buffer" })
+
 --[[
 local leader_qq = (function()
     local maps = {}
