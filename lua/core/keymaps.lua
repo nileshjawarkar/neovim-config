@@ -24,10 +24,7 @@ keymap.set("v", ">", ">gv", { desc = "Indent right in visual mode" })
 
 -- Utillity key binding
 ------------------------------
-keymap.set("t", "<M-\\>", vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, true, true),
-    { desc = "Exit terminal mode" })
 keymap.set({ "i", "n" }, "<C-s>", "<ESC><CMD>:wa<CR>", { noremap = true, silent = true, desc = "Save session" })
-keymap.set({ "i", "n" }, "<C-t>", function() end, { noremap = true, silent = true})
 
 
 keymap.set("n", "<leader>fp", function()
@@ -50,34 +47,18 @@ keymap.set("n", "<leader>qn", ":cnext<CR>", { noremap = true, silent = true, des
 keymap.set("n", "<leader>qp", ":cprev<CR>", { noremap = true, silent = true, desc = "Jump to prev item" })
 keymap.set("n", "<leader>ql", ":clast<CR>", { noremap = true, silent = true, desc = "Jump to last item" })
 
--- keymap.set("n", "<Tab>", ":bn<CR>", { noremap = true, silent = true, desc = "Jump to last item" })
 keymap.set("n", "<leader><Tab>", ":bn<CR>", { noremap = true, silent = true, desc = "Move to next buffer" })
-
---[[
-local leader_qq = (function()
-    local maps = {}
-    maps["qf"] = function()
-        vim.cmd("cclose")
-    end
-
-    return {
-        register = function(buftype, callback)
-            if maps[buftype] == nil then
-                maps[buftype] = callback
-            end
-        end,
-        execute = function(buftype)
-            if maps[buftype] ~= nil then
-                maps[buftype]()
-                return true
-            end
-            return false
-        end,
-    }
-end)()
-]]
-
 keymap.set("n", "<leader>qq", function()
         vim.cmd("bdelete")
         vim.cmd("cclose")
 end, { noremap = true, silent = true, desc = "Close list/buffer" })
+
+-- terminal management
+--------------------------
+keymap.set("t", "<C-k>", "<C-\\><C-n><C-w>k", {noremap = true, silent = true})
+keymap.set("t", "<C-l>", "<C-\\><C-n><C-w>l", {noremap = true, silent = true})
+keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h", {noremap = true, silent = true})
+keymap.set("t", "<C-j>", "<C-\\><C-n><C-w>j", {noremap = true, silent = true})
+keymap.set("t", "<C-q>", "<C-\\><C-n>:q<CR>", {noremap = true, silent = true})
+keymap.set("n", "<C-t>", ":below terminal<CR>", {noremap = true, silent = true})
+
