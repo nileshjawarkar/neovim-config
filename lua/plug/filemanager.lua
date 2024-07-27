@@ -1,4 +1,12 @@
 return {
+    "nvim-tree/nvim-tree.lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+        require("config.filemanager").setup()
+    end,
+}
+--[[
+return {
     'stevearc/oil.nvim',
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {},
@@ -34,6 +42,8 @@ return {
         vim.keymap.set("n", "<leader>th", oil.toggle_hidden, { desc = "Show hidden files (toggle)" })
     end,
 }
+]]
+
 --[[
 return {
     "nvim-neo-tree/neo-tree.nvim",

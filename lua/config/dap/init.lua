@@ -52,7 +52,8 @@ local function setup_keys()
     end, { desc = "Open scopes" })
     vim.keymap.set("n", "<leader>da", function()
         require("dapui").open()
-    end, { desc = "Open DAP ui" })
+        require("config.filemanager").closeTreeView()
+    end, { desc = "Open DapUI" })
 
     vim.keymap.set("n", "<leader>dr", function()
         dap.repl.toggle()
@@ -107,6 +108,7 @@ local function setup()
     local function dap_open()
         dap.repl.close()
         require("dapui").open()
+        require("config.filemanager").closeTreeView()
     end
     dap.listeners.before.attach.dapui_config = dap_open
     dap.listeners.before.launch.dapui_config = dap_open
