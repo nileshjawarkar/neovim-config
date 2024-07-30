@@ -5,18 +5,27 @@ m.setup = function()
     vim.g.loaded_netrwPlugin = 1
     vim.opt.termguicolors = true
 
+    local function label(path)
+        return vim.fn.fnamemodify(path, ':p:h:t') .. " -"
+    end
+
     require("nvim-tree").setup({
-        auto_reload_on_write = true,
+        renderer = {
+            root_folder_label = label,
+        },
         sort = {
             sorter = "case_sensitive",
         },
         filters = {
-            dotfiles = true,
+            dotfiles = false,
         },
         view = {
             width = 40,
             side = "left",
             preserve_window_proportions = true,
+        },
+        git = {
+            enable = false,
         },
     })
 
@@ -29,5 +38,7 @@ end
 m.closeTreeView = function()
     vim.cmd("NvimTreeClose")
 end
+
+
 
 return m
