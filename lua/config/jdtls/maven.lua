@@ -10,20 +10,20 @@ m.get_pom = function(_, type, package, version, name)
     local plugin = ""
     if type == "javaee" then
         build_type = "war"
-        deps = [[
-		<dependency>
+        deps = [[ 
+        <dependency>
 			<groupId>jakarta.platform</groupId>
 			<artifactId>jakarta.jakartaee-api</artifactId>
 			<version>10.0.0</version>
 			<scope>provided</scope>
 		</dependency>
         ]]
-        plugin = [[
+        plugin = [[ 
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-war-plugin</artifactId>
             <version>3.4.0</version>
-        </plugin>
+        </plugin> 
         ]]
     end
 
@@ -42,9 +42,9 @@ m.get_pom = function(_, type, package, version, name)
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<failOnMissingWebXml>false</failOnMissingWebXml>
 	</properties>
-	<dependencies>
-    ]] .. deps .. [[
-		<dependency>
+	<dependencies> ]]
+    .. deps ..
+    [[ <dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>5.11.0</version>
@@ -74,8 +74,9 @@ m.get_pom = function(_, type, package, version, name)
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.3.1</version>
-			</plugin>
-            ]] .. plugin .. [[<plugin>
+			</plugin> ]]
+            .. plugin ..
+            [[ <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-install-plugin</artifactId>
 				<version>3.1.2</version>

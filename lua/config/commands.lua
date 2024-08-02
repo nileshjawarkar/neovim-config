@@ -24,18 +24,18 @@ end, {})
 
 
 vim.api.nvim_create_user_command("CreateJavaProject", function()
-    local root_dir = sys.find_root()
+    local cur_dir = vim.fn.getcwd()
     local mvn = require("config.jdtls.maven")
-    if mvn ~= nil then
-        mvn:create_prj("java", root_dir)
+    if cur_dir ~= nil and mvn ~= nil then
+        mvn:create_prj("java", cur_dir)
     end
 end, {})
 
 vim.api.nvim_create_user_command("CreateJavaEEProject", function()
-    local root_dir = sys.find_root()
+    local cur_dir = vim.fn.getcwd()
     local mvn = require("config.jdtls.maven")
-    if mvn ~= nil then
-        mvn:create_prj("javaee", root_dir)
+    if cur_dir ~= nil and mvn ~= nil then
+        mvn:create_prj("javaee", cur_dir)
     end
 end, {})
 
