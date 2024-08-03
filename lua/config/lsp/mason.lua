@@ -11,10 +11,10 @@ return {
             ensure_installed = {
                 "lua_ls", "clangd", "pyright", "bashls",
                 "jsonls", "yamlls", "dockerls", "jdtls",
-                "tsserver", "quick_lint_js",
-                "cssls", "clang-format", "cpptools",
-                "prettier", "emmet-language-server",
-                "java-debug-adapter", "java-test",
+                "tsserver", "quick_lint_js", "cssls",
+                "clang-format", "cpptools", "prettier",
+                "emmet-language-server", "java-debug-adapter",
+                "java-test", "xmlformatter"
             },
         })
         vim.api.nvim_command('MasonToolsInstall')

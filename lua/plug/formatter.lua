@@ -59,6 +59,10 @@ return {
                     require("formatter.filetypes.css").prettier,
                 },
 
+                xml = {
+                    require("formatter.filetypes.xml").xmlformat,
+                },
+
                 markdown = {
                     require("formatter.filetypes.markdown").prettier,
                 },
