@@ -32,7 +32,7 @@ return {
         })
         wk.add({
             { "<leader>f", group = "Search/Telescope", },
-            { "<leader>t", group = "Files Manager", },
+            { "<leader>t", group = "FM/Tree view", },
             { "<leader>l", group = "Code/Lsp", },
             { "<leader>b", group = "Buffer", },
             { "<leader>lw", group = "Workspace", },

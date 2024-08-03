@@ -29,10 +29,11 @@ m.setup = function()
         },
     })
 
-    vim.keymap.set("n", "<leader>-", "<cmd>NvimTreeFindFile<CR>", { desc = "Locate current file" })
-    vim.keymap.set("n", "<leader>tl", "<cmd>NvimTreeFindFile<CR>", { desc = "Locate current file" })
-    vim.keymap.set("n", "<leader>tt", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle tree view" })
-    vim.keymap.set("n", "<leader>tr", "<cmd>NvimTreeRefresh<CR>", { desc = "Refresh tree view" })
+    vim.keymap.set("n", "<leader>-", "<cmd>NvimTreeFindFile<CR>", { desc = "Locate file" })
+    vim.keymap.set("n", "<leader>tl", "<cmd>NvimTreeFindFile<CR>", { desc = "Locate file (Leader-)" })
+    vim.keymap.set("n", "<leader>tk", "<cmd>NvimTreeCollapse<CR>", { desc = "Collapse" })
+    vim.keymap.set("n", "<leader>tt", "<cmd>NvimTreeToggle<CR>", { desc = "Show/Toggle" })
+    vim.keymap.set("n", "<leader>tr", "<cmd>NvimTreeRefresh<CR>", { desc = "Refresh" })
 end
 
 m.closeTreeView = function()
