@@ -8,6 +8,7 @@ m.get_pom = function(_, type, package, version, name)
     local build_type = "jar"
     local deps = ""
     local plugin = ""
+    local props = ""
     if type == "javaee" then
         build_type = "war"
         deps = [[ 
@@ -25,6 +26,9 @@ m.get_pom = function(_, type, package, version, name)
             <version>3.4.0</version>
         </plugin> 
         ]]
+        props = [[
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+        ]]
     end
 
     local str_pom = [[
@@ -40,9 +44,13 @@ m.get_pom = function(_, type, package, version, name)
     <packaging>]] .. build_type .. [[</packaging>
 	<properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<failOnMissingWebXml>false</failOnMissingWebXml>
-	</properties>
-	<dependencies> ]]
+        <skipTests>true</skipTests>
+    ]]
+    .. props ..
+	[[
+    </properties>
+	<dependencies>
+    ]]
     .. deps ..
     [[ <dependency>
 			<groupId>org.mockito</groupId>
@@ -74,9 +82,14 @@ m.get_pom = function(_, type, package, version, name)
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.3.1</version>
-			</plugin> ]]
+                <configuration>
+                    <skipTests>${skipTests}</skipTests>
+                </configuration>
+			</plugin> 
+            ]]
             .. plugin ..
-            [[ <plugin>
+            [[ 
+            <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-install-plugin</artifactId>
 				<version>3.1.2</version>
@@ -94,7 +107,7 @@ m.get_pom = function(_, type, package, version, name)
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.1.1</version>
 			</plugin>
 		</plugins>
 		<pluginManagement>
