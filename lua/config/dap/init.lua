@@ -17,6 +17,18 @@ local function setup_dap_icons()
     end
 end
 
+local function dap_open()
+    require("dap").repl.close()
+    require("dapui").open()
+    require("config.filemanager").closeTreeView()
+end
+
+local function dap_close()
+    require("dap").repl.close()
+    require("dapui").close()
+    vim.cmd("buffer")
+end
+
 local function setup_keys()
     local dap = require("dap")
 
@@ -33,14 +45,12 @@ local function setup_keys()
     vim.keymap.set("n", "<leader>do", dap.step_out, { desc = "Step out (F4)" })
     vim.keymap.set("n", "<leader>dC", dap.run_to_cursor, { desc = "Run to cursor (F7)" })
     vim.keymap.set("n", '<leader>dd', function()
-        dap.repl.close()
+        dap_close()
         dap.disconnect();
-        require('dapui').close();
     end, { desc = "Disconnect debug" })
     vim.keymap.set("n", '<leader>dt', function()
-        dap.repl.close()
+        dap_close()
         dap.terminate();
-        require('dapui').close();
     end, { desc = "Terminate debug" })
 
     -- utility ui
@@ -50,11 +60,7 @@ local function setup_keys()
     vim.keymap.set("n", '<leader>d?', function()
         local widgets = require "dap.ui.widgets"; widgets.centered_float(widgets.scopes)
     end, { desc = "Open scopes" })
-    vim.keymap.set("n", "<leader>da", function()
-        require("dapui").open()
-        require("config.filemanager").closeTreeView()
-    end, { desc = "Open DapUI" })
-
+    vim.keymap.set("n", "<leader>da", dap_open, { desc = "Open DapUI" })
     vim.keymap.set("n", "<leader>dr", function()
         dap.repl.toggle()
     end, { desc = "Toggle repl", })
@@ -105,19 +111,10 @@ local function setup()
     dapui.setup(settings)
 
     -- setup an event listener for when the debugger is launched
-    local function dap_open()
-        dap.repl.close()
-        require("dapui").open()
-        require("config.filemanager").closeTreeView()
-    end
     dap.listeners.before.attach.dapui_config = dap_open
     dap.listeners.before.launch.dapui_config = dap_open
 
     --[[
-    local function dap_close()
-        require("dapui").close()
-        vim.cmd("buffer")
-    end
     dap.listeners.after.event_exited.dapui_config = dap_close
     dap.listeners.after.event_terminated.dapui_config = dap_close
     ]]
