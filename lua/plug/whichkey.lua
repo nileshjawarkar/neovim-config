@@ -34,6 +34,7 @@ return {
             { "<leader>f", group = "Search/Telescope", },
             { "<leader>t", group = "Files Manager", },
             { "<leader>l", group = "Code/Lsp", },
+            { "<leader>b", group = "Buffer", },
             { "<leader>lw", group = "Workspace", },
             { "<leader>w", group = "Window", },
             { "<leader>q", group = "Quickfix list", },
