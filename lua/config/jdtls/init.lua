@@ -86,7 +86,7 @@ local prepare_config = (function()
                     },
                     cleanup = {
                         actions = {
-                            "qualifyStaticMembers",
+                            -- "qualifyStaticMembers",
                             "addOverride", "addDeprecated",
                             "stringConcatToTextBlock", "invertEquals",
                             "addFinalModifier",
