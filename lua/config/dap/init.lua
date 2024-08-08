@@ -48,7 +48,7 @@ local function setup_keys()
         dap_close()
         dap.disconnect();
     end, { desc = "Disconnect debug" })
-    vim.keymap.set("n", '<leader>dt', function()
+    vim.keymap.set("n", '<leader>dT', function()
         dap_close()
         dap.terminate();
     end, { desc = "Terminate debug" })
@@ -66,7 +66,7 @@ local function setup_keys()
     end, { desc = "Toggle repl", })
 
     -- breakpoint management
-    vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
+    vim.keymap.set("n", "<leader>B", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
     vim.keymap.set("n", "<leader>dbb", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
     vim.keymap.set("n", "<leader>dbc", function()
         dap.set_breakpoint(vim.fn.input('Breakpoint condition: '))

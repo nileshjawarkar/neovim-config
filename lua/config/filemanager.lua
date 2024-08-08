@@ -40,6 +40,4 @@ m.closeTreeView = function()
     vim.cmd("NvimTreeClose")
 end
 
-
-
 return m
