@@ -2,8 +2,8 @@ local function setup_dap_icons()
     local icons = {
         Stopped = { '>', 'DiagnosticWarn', 'DapStoppedLine' },
         Breakpoint = '*',
-        BreakpointCondition = '*',
-        BreakpointRejected = { 'x', 'DiagnosticError' },
+        BreakpointCondition = '+',
+        BreakpointRejected = { '!', 'DiagnosticError' },
         LogPoint = '#',
     }
     for name, sign in pairs(icons) do
@@ -26,7 +26,9 @@ end
 local function dap_close()
     require("dap").repl.close()
     require("dapui").close()
-    vim.cmd("buffer")
+    if vim.api.nvim_win_get_buf(0) == nil then
+        vim.cmd("buffer")
+    end
 end
 
 local function setup_keys()
