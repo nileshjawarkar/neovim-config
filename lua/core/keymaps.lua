@@ -27,14 +27,14 @@ keymap.set("v", ">", ">gv", { desc = "Indent right in visual mode" })
 keymap.set({ "i", "n" }, "<C-s>", "<ESC><CMD>:wa<CR>", { noremap = true, silent = true, desc = "Save session" })
 
 
-keymap.set("n", "<leader>tp", function()
+keymap.set("n", "<leader>bC", function()
     local pn = vim.fn.expand('%:p')
     if pn ~= nil and pn ~= "" then
         vim.cmd("let @+ = \'" .. pn .. "\'")
         print("Copied - " .. pn)
     end
 end, { noremap = true, silent = true, desc = "Copy file path" })
-keymap.set("n", "<leader>tP", function()
+keymap.set("n", "<leader>bc", function()
     local n = vim.fn.expand('%:p:t')
     if n ~= nil and n ~= "" then
         vim.cmd("let @+ = \'" .. n .. "\'")
