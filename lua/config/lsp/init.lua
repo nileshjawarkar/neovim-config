@@ -40,21 +40,25 @@ local function setup_auto_attach()
             vim.keymap.set("n", "<leader>lwl", function()
                 print(vim.inspect(vim_lbuf.list_workspace_folders()))
             end, { buffer = ev.buf, desc = "List workspace folders" })
+
+            vim.keymap.set("n", "<leader>lD", vim_lbuf.declaration, { buffer = ev.buf, desc = "Go to declaration [<gD>]" })
             vim.keymap.set("n", "gD", vim_lbuf.declaration, { buffer = ev.buf, desc = "Go to declaration" })
+
+            vim.keymap.set("n", "<leader>ld", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition [<gd>]" })
             vim.keymap.set("n", "gd", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition" })
+
+            vim.keymap.set("n", "<leader>li", vim_lbuf.implementation,
+                { buffer = ev.buf, desc = "Go to implementation [<gi>]" })
             vim.keymap.set("n", "gi", vim_lbuf.implementation, { buffer = ev.buf, desc = "Go to implementation" })
+
+            vim.keymap.set("n", "<leader>lr", lsp_buildin.lsp_references,
+                { buffer = ev.buf, desc = "List references [<gr>]" })
             vim.keymap.set("n", "gr", lsp_buildin.lsp_references, { buffer = ev.buf, desc = "List references" })
 
             vim.keymap.set("n", "<leader>ll", lsp_buildin.lsp_document_symbols, { desc = "List document symbols" })
             vim.keymap.set("n", "<leader>lg", vim_lbuf.hover, { buffer = ev.buf, desc = "Hover" })
-            vim.keymap.set("n", "<leader>ld", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition" })
-            vim.keymap.set("n", "<leader>lD", vim_lbuf.declaration, { buffer = ev.buf, desc = "Go to declaration" })
-            vim.keymap.set("n", "<leader>li", vim_lbuf.implementation,
-                { buffer = ev.buf, desc = "Go to implementation" })
             vim.keymap.set("n", "<leader>lt", vim_lbuf.type_definition,
                 { buffer = ev.buf, desc = "Go to type definition" })
-            vim.keymap.set("n", "<leader>lr", lsp_buildin.lsp_references,
-                { buffer = ev.buf, desc = "List references" })
             vim.keymap.set("n", "<leader>ls", vim_lbuf.signature_help, { buffer = ev.buf, desc = "Signature help" })
             vim.keymap.set("n", "<leader>lR", vim_lbuf.rename, { buffer = ev.buf, desc = "Rename" })
             vim.keymap.set({ "n", "v" }, "<leader>la", vim_lbuf.code_action,

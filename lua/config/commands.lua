@@ -38,4 +38,3 @@ vim.api.nvim_create_user_command("CreateJavaEEProject", function()
         mvn:create_prj("javaee", cur_dir)
     end
 end, {})
-

@@ -4,10 +4,10 @@ local keymap = vim.keymap
 ------------------------------
 keymap.set("n", "<leader>wv", "<C-w>v", { noremap = true, silent = true, desc = "Split vertically" })
 keymap.set("n", "<leader>ws", "<C-w>s", { noremap = true, silent = true, desc = "Split horizontally" })
-keymap.set("n", "<leader>wh", "<C-w>h", { noremap = true, silent = true, desc = "Move right (C-h)" })
-keymap.set("n", "<leader>wl", "<C-w>l", { noremap = true, silent = true, desc = "Move left (C-l)" })
-keymap.set("n", "<leader>wj", "<C-w>j", { noremap = true, silent = true, desc = "Move down (C-j)" })
-keymap.set("n", "<leader>wk", "<C-w>k", { noremap = true, silent = true, desc = "Move up (C-k)" })
+keymap.set("n", "<leader>wh", "<C-w>h", { noremap = true, silent = true, desc = "Move right [<C-h>]" })
+keymap.set("n", "<leader>wl", "<C-w>l", { noremap = true, silent = true, desc = "Move left [<C-l>]" })
+keymap.set("n", "<leader>wj", "<C-w>j", { noremap = true, silent = true, desc = "Move down [<C-j>]" })
+keymap.set("n", "<leader>wk", "<C-w>k", { noremap = true, silent = true, desc = "Move up [<C-k>]" })
 keymap.set("n", "<leader>w=", "<cmd>vertical resize +10<cr>",
     { noremap = true, silent = true, desc = "Increase width" })
 keymap.set("n", "<leader>w-", "<cmd>vertical resize -10<cr>",
@@ -56,8 +56,8 @@ keymap.set("n", "<leader>ql", ":clast<CR>", { noremap = true, silent = true, des
 -----------------------------------------------
 keymap.set("n", "<leader><Tab>", ":bn<CR>", { noremap = true, silent = true, desc = "Move to next buffer" })
 keymap.set("n", "<leader>Q", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close buffer" })
-keymap.set("n", "<leader>bq", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close (Leader+Q)" })
-keymap.set("n", "<leader>bn", ":bn<CR>", { noremap = true, silent = true, desc = "Move next (Leader+Tab)" })
+keymap.set("n", "<leader>bq", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close [<Leader>Q]" })
+keymap.set("n", "<leader>bn", ":bn<CR>", { noremap = true, silent = true, desc = "Move next [<Leader>Tab]" })
 keymap.set("n", "<leader>bp", ":bp<CR>", { noremap = true, silent = true, desc = "Move prev" })
 
 -- terminal management

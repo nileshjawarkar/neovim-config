@@ -23,7 +23,7 @@ m.setup_oil = function()
         oil.open(vim.fn.getcwd())
     end, { desc = "Open root folder [<Leader>_]" })
 
-    vim.keymap.set("n", "<leader>th", oil.toggle_hidden, { desc = "Show hidden files (toggle)" })
+    vim.keymap.set("n", "<leader>th", oil.toggle_hidden, { desc = "Toggle hidden mode" })
 end
 
 --[[
@@ -61,9 +61,8 @@ m.setup = function()
     vim.keymap.set("n", "<leader>tk", "<cmd>NvimTreeCollapse<CR>", { desc = "Collapse" })
     vim.keymap.set("n", "<leader>tt", "<cmd>NvimTreeToggle<CR>", { desc = "Show/Toggle" })
     vim.keymap.set("n", "<leader>tr", "<cmd>NvimTreeRefresh<CR>", { desc = "Refresh" })
-end ]]
+end 
 
---[[
 m.setup_neotree = function()
     require("neo-tree").setup({
         close_if_last_window = false,
