@@ -4,50 +4,46 @@ local t = ls.text_node
 local i = ls.insert_node
 local fmt = require('luasnip.extras.fmt').fmt
 local sys = require("core.util.sys")
-
-local split = function(input_str, sep)
-    local str_table = {}
-    local len = 0
-    for str in string.gmatch(input_str, "([^" .. sep .. "]+)") do
-        table.insert(str_table, str)
-        len = len + 1
-    end
-    return len, str_table
-end
+local str_util = require("core.util.string")
 
 local get_file_and_pkg = function()
-    local len, sub_paths = split(vim.fn.bufname(), "/")
-    local pkg = ""
-    local file_name = "file_name"
-    local idx = -1
-    for ii, value in pairs(sub_paths) do
-        if ii < len then
-            if value == "src" or value == "Src" or value == "SRC" then
-                idx = 0
-            elseif idx >= 0 then
-                idx = idx + 1
-                if idx == 1 and (value == "main" or value == "test") then
-                elseif idx == 2 and (value == "java") then
-                else
-                    if pkg ~= "" then
-                        pkg = pkg .. "."
-                    end
-                    pkg = pkg .. value
+    local file_name, parent_path = sys.get_bufname_and_its_parent(false)
+    local pkg, idx = "", -1
+    str_util.split(parent_path, sys.get_path_sep(), function(dir_name)
+        if dir_name == "src" or dir_name == "Src" or dir_name == "SRC" then
+            idx = 0
+        elseif idx >= 0 then
+            idx = idx + 1
+            if idx == 1 and (dir_name == "main" or dir_name == "test") then
+            elseif idx == 2 and (dir_name == "java") then
+            else
+                if pkg ~= "" then
+                    pkg = pkg .. "."
                 end
+                pkg = pkg .. dir_name
             end
-        else
-            file_name = value
         end
-    end
+    end)
     return file_name, pkg
 end
 
-local function get_pkg()
-    local _, pkg = get_file_and_pkg()
-    if pkg == nil then
-        return "package_name"
-    end
-    return pkg
+local function get_junit_moc_class_def()
+    local filename, pkg = get_file_and_pkg()
+    return [[
+package ]] .. pkg .. [[;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
+
+@RunWith(MockitoJUnitRunner.class)
+public class ]] .. filename .. [[ {{
+    @Test
+    public void test_name() {{
+        {}
+    }}
+}}
+]]
 end
 
 ls.add_snippets("java", {
@@ -60,19 +56,5 @@ ls.add_snippets("java", {
         t({ "", "}" }),
     }),
 
-    s("jclass", fmt([[
-    package {};
-
-    import org.junit.Test;
-    import org.junit.runner.RunWith;
-    import org.mockito.junit.MockitoJUnitRunner;
-
-    @RunWith(MockitoJUnitRunner.class)
-    public class {} {{
-        @Test
-        public void test_name() {{
-            {}
-        }}
-    }}
-    ]], { i(1, get_pkg()), i(2, sys.get_curbuf_name()), i(0), })),
+    s("jclass", fmt(get_junit_moc_class_def(), { i(0), })),
 })

@@ -39,8 +39,9 @@ return {
         vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Fuzzy find files [<Leader>/]" })
         vim.keymap.set("n", "<leader>/", builtin.find_files, { desc = "Fuzzy find files" })
 
-        vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "List open files [<Leader>,]" })
-        vim.keymap.set("n", "<leader>,", builtin.buffers, { desc = "List open files" })
+        vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "List open files [<Leader>Tab]" })
+        -- vim.keymap.set("n", "<leader>,", builtin.buffers, { desc = "List open files" })
+        vim.keymap.set("n", "<leader><Tab>", builtin.buffers, { desc = "List open files" })
 
         vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Find recent open files" })
         vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Find text" })

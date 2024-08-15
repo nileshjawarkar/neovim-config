@@ -1,4 +1,5 @@
 vim.g.mapleader = " "
+local sys = require("core.util.sys")
 local keymap = vim.keymap
 -- Window management
 ------------------------------
@@ -28,17 +29,17 @@ keymap.set({ "i", "n" }, "<C-s>", "<ESC><CMD>:wa<CR>", { noremap = true, silent 
 
 
 keymap.set("n", "<leader>bC", function()
-    local pn = vim.fn.expand('%:p')
-    if pn ~= nil and pn ~= "" then
-        vim.cmd("let @+ = \'" .. pn .. "\'")
-        print("Copied - " .. pn)
+    local fullpath = vim.fn.bufname()
+    if fullpath ~= nil and fullpath ~= "" then
+        vim.cmd("let @+ = \'" .. fullpath .. "\'")
+        print("Copied - " .. fullpath)
     end
 end, { noremap = true, silent = true, desc = "Copy file path" })
 keymap.set("n", "<leader>bc", function()
-    local n = vim.fn.expand('%:p:t')
-    if n ~= nil and n ~= "" then
-        vim.cmd("let @+ = \'" .. n .. "\'")
-        print("Copied - " .. n)
+    local bufname = sys.get_curbuf_name()
+    if bufname ~= nil and bufname ~= "" then
+        vim.cmd("let @+ = \'" .. bufname .. "\'")
+        print("Copied - " .. bufname)
     end
 end, { noremap = true, silent = true, desc = "Copy file name" })
 
@@ -54,7 +55,6 @@ keymap.set("n", "<leader>ql", ":clast<CR>", { noremap = true, silent = true, des
 
 -- Buffer management
 -----------------------------------------------
-keymap.set("n", "<leader><Tab>", ":bn<CR>", { noremap = true, silent = true, desc = "Move to next buffer" })
 keymap.set("n", "<leader>Q", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close buffer" })
 keymap.set("n", "<leader>bq", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close [<Leader>Q]" })
 keymap.set("n", "<leader>bn", ":bn<CR>", { noremap = true, silent = true, desc = "Move next [<Leader>Tab]" })

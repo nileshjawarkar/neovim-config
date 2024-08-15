@@ -1,3 +1,5 @@
+local str_util = require("core.util.string")
+
 local function open_file(filename, mode)
     local file = io.open(filename, mode)
     if file == nil then
@@ -89,6 +91,39 @@ local function dir_has_any(dir, file_list)
     return false
 end
 
+local function get_os()
+    local os_name = vim.loop.os_uname().sysname
+    if os_name == "Linux" or string.find(os_name, "inux") then
+        return "Linux"
+    elseif os_name == "Windows_NT" or string.find(os_name, "indows") then
+        return "Windows"
+    end
+    return "Other"
+end
+
+local function bufname_and_its_parent(withext)
+    if withext == nil then withext = true end
+    local fullpath = vim.fn.bufname()
+    local parent, filename = "", ""
+    if get_os() == "Windows" then
+        parent, filename, _ = string.match(fullpath, "(.-)([^\\]-([^%.]+))$")
+    else
+        parent, filename, _ = string.match(fullpath, "(.-)([^/]-([^%.]+))$")
+    end
+
+    if withext == false then
+        filename, _ = string.gsub(filename, "%." .. vim.bo.filetype, "")
+    end
+    return filename, parent
+end
+
+local function get_path_sep()
+    if get_os() == "Windows" then
+        return "\\"
+    end
+    return "/"
+end
+
 return {
     read_from = function(filename, callback)
         local file = open_file(filename, "r")
@@ -147,18 +182,11 @@ return {
         end
         return false
     end,
+    get_bufname_and_its_parent = bufname_and_its_parent,
     get_curdir_name = function()
         return vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
     end,
-    get_os = function()
-        local os_name = vim.loop.os_uname().sysname
-        if os_name == "Linux" or string.find(os_name, "inux") then
-            return "Linux"
-        elseif os_name == "Windows_NT" or string.find(os_name, "indows") then
-            return "Windows"
-        end
-        return "Other"
-    end,
+    get_os = get_os,
     exec_r = function(command)
         local h = io.popen(command, "r")
         if h == nil then
@@ -189,12 +217,8 @@ return {
         end
     end,
     get_curbuf_name = function()
-        local name = vim.fn.expand('%:t')
-        if name == nil then
-            return "noname"
-        end
-        local v, _ = string.gsub(name, "%." .. vim.bo.filetype, "")
-        return v
+        local filename, _ = bufname_and_its_parent(true)
+        return filename
     end,
     dir_has_any = dir_has_any,
     create_dirs = function(dir_list)
@@ -214,6 +238,7 @@ return {
         end
         return true
     end,
+    get_path_sep = get_path_sep,
     first_time = (function()
         local t = {}
         return function(key)
