@@ -25,8 +25,8 @@ keymap.set("v", ">", ">gv", { desc = "Indent right in visual mode" })
 
 -- Utillity key binding
 ------------------------------
+keymap.set("i", "jk", "<ESC>", { noremap = true, silent = true })
 keymap.set({ "i", "n" }, "<C-s>", "<ESC><CMD>:wa<CR>", { noremap = true, silent = true, desc = "Save session" })
-
 
 keymap.set("n", "<leader>bC", function()
     local fullpath = vim.fn.bufname()
