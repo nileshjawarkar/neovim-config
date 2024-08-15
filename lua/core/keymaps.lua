@@ -42,7 +42,13 @@ keymap.set("n", "<leader>bc", function()
         print("Copied - " .. bufname)
     end
 end, { noremap = true, silent = true, desc = "Copy file name" })
-
+keymap.set("n", "<leader>bP", function()
+    local bufdir = sys.get_curbuf_dir()
+    if bufdir ~= nil and bufdir ~= "" then
+        vim.cmd("let @+ = \'" .. bufdir .. "\'")
+        print("Copied - " .. bufdir)
+    end
+end, { noremap = true, silent = true, desc = "Copy file directory path" })
 -- Quickfix keymaps
 ------------------------------
 -- Quick list management : For telescope C+q add search results to quick list.

@@ -101,28 +101,37 @@ local function get_os()
     return "Other"
 end
 
-local function bufname_and_its_parent(withext)
-    if withext == nil then withext = true end
-    local fullpath = vim.fn.bufname()
-    local parent, filename = "", ""
-    if get_os() == "Windows" then
-        parent, filename, _ = string.match(fullpath, "(.-)([^\\]-([^%.]+))$")
-    else
-        parent, filename, _ = string.match(fullpath, "(.-)([^/]-([^%.]+))$")
-    end
-
-    if withext == false then
-        filename, _ = string.gsub(filename, "%." .. vim.bo.filetype, "")
-    end
-    return filename, parent
-end
-
 local function get_path_sep()
     if get_os() == "Windows" then
         return "\\"
     end
     return "/"
 end
+
+local function bufname_and_its_parent(withext)
+    if withext == nil then withext = true end
+    local fullpath = vim.fn.bufname()
+    local parent, filename, ext = "", "", ""
+    if get_os() == "Windows" then
+        parent, filename, ext = string.match(fullpath, "(.-)([^\\]-([^%.]+))$")
+    else
+        parent, filename, ext = string.match(fullpath, "(.-)([^/]-([^%.]+))$")
+    end
+
+    -- if filename didnt have <.extension>, above regex will fail
+    if parent == "" or filename == "" then
+        local sep = get_path_sep()
+        local sub_paths = vim.split(fullpath, sep, { plain = true })
+        filename = (sub_paths[#sub_paths] and sub_paths[#sub_paths] or "")
+        parent = string.gsub(fullpath, sep .. filename, "")
+    else
+        if withext == false then
+            filename, _ = string.gsub(filename, "%." .. ext, "")
+        end
+    end
+    return filename, parent
+end
+
 
 return {
     read_from = function(filename, callback)
@@ -219,6 +228,10 @@ return {
     get_curbuf_name = function()
         local filename, _ = bufname_and_its_parent(true)
         return filename
+    end,
+    get_curbuf_dir = function()
+        local _, dir = bufname_and_its_parent(true)
+        return dir
     end,
     dir_has_any = dir_has_any,
     create_dirs = function(dir_list)
