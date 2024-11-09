@@ -11,7 +11,7 @@ return {
             ensure_installed = {
                 "lua_ls", "clangd", "pyright", "bashls",
                 "jsonls", "yamlls", "dockerls", "jdtls",
-                "tsserver", "quick_lint_js", "cssls",
+                "quick_lint_js", "cssls", "ts_ls",
                 "clang-format", "cpptools", "prettier",
                 "emmet-language-server", "java-debug-adapter",
                 "java-test", "xmlformatter"
