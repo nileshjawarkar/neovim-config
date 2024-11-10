@@ -1,65 +1,64 @@
-local opt = vim.opt     -- for conciseness
+local opt = vim.opt
 
 opt.cmdheight = 1
--- line numbers
-opt.relativenumber = true     -- show relative line numbers
-opt.number = true             -- shows absolute line number on cursor line (when relative number is on)
+opt.relativenumber = true -- Show relative line numbers
+opt.number = true         -- Shows absolute line number on cursor line (when relative number is on)
 
--- tabs & indentation
+-- Tabs & indentation
 opt.tabstop = 4
 opt.shiftwidth = 4
-opt.expandtab = true      -- expand tab to spaces
-opt.autoindent = true     -- copy indent from current line when starting new one
+opt.expandtab = true  -- Expand tab to spaces
+opt.autoindent = true -- Copy indent from current line when starting new one
 
--- line wrapping
-opt.wrap = false     -- disable line wrapping
+-- Line wrapping
+opt.wrap = false -- Disable line wrapping
 
--- search settings
+-- Search settings
 opt.hlsearch = false
-opt.ignorecase = true     -- ignore case when searching
-opt.smartcase = true      -- if you include mixed case in your search, assumes you want case-sensitive
+opt.ignorecase = true -- Ignore case when searching
+opt.smartcase = true  -- If you include mixed case in your search, assumes you want case-sensitive
 
 opt.inccommand = "nosplit"
 
--- cursor line
-opt.cursorline = true     -- highlight the current cursor line
+-- Highlight the current cursor line
+opt.cursorline = true
 
--- appearance
+-- Appearance Config
 
--- turn on termguicolors for nightfly colorscheme to work
+-- Turn on termguicolors for nightfly color scheme to work
 -- (have to use iterm2 or any other true color terminal)
 opt.termguicolors = true
-opt.background = "dark"     -- colorschemes that can be light or dark will be made dark
-opt.signcolumn = "yes"      -- show sign column so that text doesn't shift
+opt.background = "dark" -- colorschemes that can be light or dark will be made dark
+opt.signcolumn = "yes"  -- show sign column so that text doesn't shift
 
--- backspace
-opt.backspace = "indent,eol,start"     -- allow backspace on indent, end of line or insert mode start position
+-- Allow backspace on indent, end of line or insert mode start position
+opt.backspace = "indent,eol,start"
 
--- clipboard
-opt.clipboard:append("unnamedplus")     -- use system clipboard as default register
+-- Use system clipboard as default register
+opt.clipboard:append("unnamedplus")
 
--- split windows
-opt.splitright = true     -- split vertical window to the right
-opt.splitbelow = true     -- split horizontal window to the bottom
+-- Split windows
+opt.splitright = true
+opt.splitbelow = true
 
--- turn off swapfile
+-- Turn off swapfile
 opt.swapfile = false
 
 opt.mouse = ""
 
--- open completion menu even for single item
--- do not auto insert items from completion menu
--- @warning - preview is removed. when it's on, default lsp opens a vertical tab
+-- Open completion menu even for single item
+-- Do not auto insert items from completion menu
+-- @warning - preview is removed. When it's on, default LSP opens a vertical tab
 opt.completeopt = "menuone,noinsert,noselect"
 
--- stop showing the current mode
+-- Stop showing the current mode
 opt.showmode = false
--- stop showing the current line and cursor position in the status bar
+-- Stop showing the current line and cursor position in the status bar
 opt.ruler = false
 
 opt.inccommand = "nosplit"
 
--- fold management
+-- Fold management
 opt.foldenable = false
 opt.foldmethod = "expr"
 opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
@@ -73,4 +72,3 @@ opt.tabline = "%!v:lua.tabNameGen()"
 if vim.g.neovide then
     vim.o.guifont = "SauceCodePro Nerd Font:h14"
 end
-

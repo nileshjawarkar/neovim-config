@@ -1,2 +1,3 @@
 # Neovim Config by NJ
 
+

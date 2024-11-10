@@ -217,13 +217,40 @@ return {
         end
     end,
     find_root = function()
-        local ws_files = { ".git", "pom.xml", "mvnw", "gradlew", ".nvim" }
+        local prj_files = { ".git", "pom.xml", "mvnw", "gradlew", ".nvim", }
+        local function check_if_root_dir(ws_dir)
+            if true == dir_has_any(ws_dir, prj_files) then
+                return true;
+            end
+            local dir_name = vim.fn.fnamemodify(ws_dir, ':p:h:t')
+            -- Added this to check ws files which start with directory name.
+            -- Currently added for Microsoft Projects but if required we can
+            -- other such files here
+            local ms_prj_files = { dir_name .. ".sln", dir_name .. ".csproj", }
+            if true == dir_has_any(ws_dir, ms_prj_files) then
+                return true;
+            end
+            return false
+        end
+
         local cur_dir = vim.fn.getcwd()
+        if check_if_root_dir(cur_dir) == true then
+            return cur_dir;
+        else
+            for dir in vim.fs.parents(cur_dir) do
+                if check_if_root_dir(dir) == true then
+                    return dir;
+                end
+            end
+            return nil;
+        end
+        --[[
         if true == dir_has_any(cur_dir, ws_files) then
             return cur_dir;
         else
             return vim.fs.root(0, ws_files)
         end
+        ]]
     end,
     get_curbuf_name = function()
         local filename, _ = bufname_and_its_parent(true)

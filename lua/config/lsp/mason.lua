@@ -14,7 +14,8 @@ return {
                 "quick_lint_js", "cssls", "ts_ls",
                 "clang-format", "cpptools", "prettier",
                 "emmet-language-server", "java-debug-adapter",
-                "java-test", "xmlformatter"
+                "java-test", "xmlformatter", -- "harper-ls"
+                "csharp_ls"
             },
         })
         vim.api.nvim_command('MasonToolsInstall')
