@@ -70,5 +70,5 @@ end
 opt.tabline = "%!v:lua.tabNameGen()"
 
 if vim.g.neovide then
-    vim.o.guifont = "SauceCodePro Nerd Font:h14"
+    vim.o.guifont = "SauceCodePro Nerd Font:h12"
 end
