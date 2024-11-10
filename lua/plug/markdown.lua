@@ -8,6 +8,7 @@ return {
                 sign = false,
                 position = 'inline',
                 icons = { '󰫎 ' },
+                border = true,
             },
         })
     end,

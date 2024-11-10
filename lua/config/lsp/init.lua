@@ -41,7 +41,8 @@ local function setup_auto_attach()
                 print(vim.inspect(vim_lbuf.list_workspace_folders()))
             end, { buffer = ev.buf, desc = "List workspace folders" })
 
-            vim.keymap.set("n", "<leader>lD", vim_lbuf.declaration, { buffer = ev.buf, desc = "Go to declaration [<gD>]" })
+            vim.keymap.set("n", "<leader>lD", vim_lbuf.declaration,
+                { buffer = ev.buf, desc = "Go to declaration [<gD>]" })
             vim.keymap.set("n", "gD", vim_lbuf.declaration, { buffer = ev.buf, desc = "Go to declaration" })
 
             vim.keymap.set("n", "<leader>ld", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition [<gd>]" })

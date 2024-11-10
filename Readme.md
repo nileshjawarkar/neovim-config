@@ -1,3 +1,5 @@
 # Neovim Config by NJ
 
 
+
+

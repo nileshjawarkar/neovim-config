@@ -14,7 +14,7 @@ return {
                 "quick_lint_js", "cssls", "ts_ls",
                 "clang-format", "cpptools", "prettier",
                 "emmet-language-server", "java-debug-adapter",
-                "java-test", "xmlformatter", -- "harper-ls"
+                "java-test", "xmlformatter",
                 "csharp_ls"
             },
         })
