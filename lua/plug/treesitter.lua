@@ -6,6 +6,7 @@ return {
                 "c", "lua", "cpp", "java",
                 "css", "html", "javascript",
                 "json", "make", "yaml", "vim", "vimdoc",
+                "markdown", "markdown_inline"
             },
             sync_install = false,
             auto_install = false,
