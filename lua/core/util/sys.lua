@@ -79,16 +79,30 @@ local function write_to(filename, callback)
     return false
 end
 
-local function dir_has_any(dir, file_list)
+local function dir_has_any_file_or_file_with_ext(dir, filename_list, fileext_list)
     local files = vim.fn.readdir(dir)
-    for _, f in ipairs(files) do
-        for _, cf in ipairs(file_list) do
-            if f == cf then
+    for _, curfile in ipairs(files) do
+        for _, fname in ipairs(filename_list) do
+            if curfile == fname then
                 return true
+            end
+        end
+        if fileext_list ~= nil then
+            local curext = string.match(curfile, "^.*%.(.+)$")
+            if curext ~= nil and curext ~= "" then
+                for _, ext in ipairs(fileext_list) do
+                    if ext == curext then
+                        return true
+                    end
+                end
             end
         end
     end
     return false
+end
+
+local function dir_has_any(dir, filename_list)
+    return dir_has_any_file_or_file_with_ext(dir, filename_list, nil)
 end
 
 local function get_os()
@@ -108,30 +122,24 @@ local function get_path_sep()
     return "/"
 end
 
-local function bufname_and_its_parent(withext)
+local function split_to_filename_and_its_parent(filepath, withext)
+    if filepath == nil then return nil, nil end
     if withext == nil then withext = true end
-    local fullpath = vim.fn.bufname()
-    local parent, filename, ext = "", "", ""
-    if get_os() == "Windows" then
-        parent, filename, ext = string.match(fullpath, "(.-)([^\\]-([^%.]+))$")
-    else
-        parent, filename, ext = string.match(fullpath, "(.-)([^/]-([^%.]+))$")
-    end
-
-    -- if filename didnt have <.extension>, above regex will fail
-    if parent == "" or filename == "" then
-        local sep = get_path_sep()
-        local sub_paths = vim.split(fullpath, sep, { plain = true })
-        filename = (sub_paths[#sub_paths] and sub_paths[#sub_paths] or "")
-        parent = string.gsub(fullpath, sep .. filename, "")
-    else
-        if withext == false then
+    local filename = vim.fs.basename(filepath)
+    local parent = vim.fs.dirname(filepath)
+    if withext == false then
+        local ext = string.match(filename, "^.*(%..+)$")
+        if ext ~= nil then
             filename, _ = string.gsub(filename, "%." .. ext, "")
         end
     end
     return filename, parent
 end
 
+local function bufname_and_its_parent(withext)
+    local fullpath = vim.fn.bufname()
+    return split_to_filename_and_its_parent(fullpath, withext)
+end
 
 return {
     read_from = function(filename, callback)
@@ -217,40 +225,30 @@ return {
         end
     end,
     find_root = function()
-        local prj_files = { ".git", "pom.xml", "mvnw", "gradlew", ".nvim", }
-        local function check_if_root_dir(ws_dir)
-            if true == dir_has_any(ws_dir, prj_files) then
-                return true;
-            end
-            local dir_name = vim.fn.fnamemodify(ws_dir, ':p:h:t')
-            -- Added this to check ws files which start with directory name.
-            -- Currently added for Microsoft Projects but if required we can
-            -- other such files here
-            local ms_prj_files = { dir_name .. ".sln", dir_name .. ".csproj", }
-            if true == dir_has_any(ws_dir, ms_prj_files) then
-                return true;
-            end
-            return false
+        local root = nil
+        local prj_markers = { "pom.xml", "mvnw", "gradlew", ".git", ".nvim", }
+        local prj_ext_marker = { "sln", "csproj" }
+        -- Step 1: In current directory file project-tool related files,
+        -- if found any of them return cur-dir as root-dir
+        local cwd = vim.fn.getcwd()
+        if true == dir_has_any_file_or_file_with_ext(cwd, prj_markers, prj_ext_marker) then
+            return cwd
         end
-
-        local cur_dir = vim.fn.getcwd()
-        if check_if_root_dir(cur_dir) == true then
-            return cur_dir;
-        else
-            for dir in vim.fs.parents(cur_dir) do
-                if check_if_root_dir(dir) == true then
-                    return dir;
+        -- Step 2: Get bufname, if not empty/nil
+        local bufpath = vim.fn.bufname()
+        if bufpath ~= nil and bufpath ~= "" then
+            local ext = string.match(bufpath, "^.*(%..+)$")
+            if ext == ".cs" then
+                root = vim.fs.root(0, function(name, _)
+                    return string.match(name, "%.csproj$") or string.match(name, "%.sln$")
+                end)
+                if root ~= nil then
+                    return root
                 end
             end
-            return nil;
+            return vim.fs.root(0, prj_markers)
         end
-        --[[
-        if true == dir_has_any(cur_dir, ws_files) then
-            return cur_dir;
-        else
-            return vim.fs.root(0, ws_files)
-        end
-        ]]
+        return nil
     end,
     get_curbuf_name = function()
         local filename, _ = bufname_and_its_parent(true)
