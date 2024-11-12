@@ -3,6 +3,7 @@ return {
     branch = "0.1.x",
     dependencies = {
         "nvim-lua/plenary.nvim",
+        { "nvim-telescope/telescope-live-grep-args.nvim" , version = "^1.0.0", },
     },
     config = function()
         local actions = require("telescope.actions")
@@ -35,6 +36,9 @@ return {
             },
         })
 
+        local telescope = require("telescope")
+        telescope.load_extension("live_grep_args")
+
         local builtin = require("telescope.builtin")
         vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Fuzzy find files [<Leader>/]" })
         vim.keymap.set("n", "<leader>/", builtin.find_files, { desc = "Fuzzy find files" })
@@ -44,7 +48,8 @@ return {
         vim.keymap.set("n", "<leader><Tab>", builtin.buffers, { desc = "List open files" })
 
         vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Find recent open files" })
-        vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Find text" })
+        -- vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Find text" })
+        vim.keymap.set("n", "<leader>fg", telescope.extensions.live_grep_args.live_grep_args, { desc = "Find text" })
         vim.keymap.set("n", "<leader>fw", function()
             builtin.grep_string({ search_dirs = { vim.fn.expand('%:p'), } })
         end, { desc = "Find text under cursor (in current buffer)" })

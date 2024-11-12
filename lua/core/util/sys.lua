@@ -1,5 +1,3 @@
-local str_util = require("core.util.string")
-
 local function open_file(filename, mode)
     local file = io.open(filename, mode)
     if file == nil then
@@ -199,9 +197,15 @@ return {
         end
         return false
     end,
+    get_curbuf_name = function()
+        return vim.fs.basename(vim.fn.bufname())
+    end,
+    get_curbuf_dir = function()
+        return vim.fs.dirname(vim.fn.bufname())
+    end,
     get_bufname_and_its_parent = bufname_and_its_parent,
     get_curdir_name = function()
-        return vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
+        return vim.fs.basename(vim.fn.getcwd())
     end,
     get_os = get_os,
     exec_r = function(command)
@@ -249,14 +253,6 @@ return {
             return vim.fs.root(0, prj_markers)
         end
         return nil
-    end,
-    get_curbuf_name = function()
-        local filename, _ = bufname_and_its_parent(true)
-        return filename
-    end,
-    get_curbuf_dir = function()
-        local _, dir = bufname_and_its_parent(true)
-        return dir
     end,
     dir_has_any = dir_has_any,
     create_dirs = function(dir_list)
