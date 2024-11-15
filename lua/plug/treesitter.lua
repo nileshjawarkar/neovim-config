@@ -3,7 +3,7 @@ return {
     config = function()
         require 'nvim-treesitter.configs'.setup({
             ensure_installed = {
-                "c", "lua", "cpp", "java",
+                "c", "lua", "cpp", "java", "c_sharp",
                 "css", "html", "javascript",
                 "json", "make", "yaml", "vim", "vimdoc",
                 "markdown", "markdown_inline"
