@@ -60,6 +60,7 @@ local m = (function()
             },
         })
 
+        local api = require("nvim-tree.api")
         vim.keymap.set("n", "<leader>tl", function()
             if mode == 1 then
                 require("oil").close()
@@ -72,10 +73,13 @@ local m = (function()
                 require("oil").close()
             end
             mode = 2
-            vim.cmd("NvimTreeToggle")
-        end, { desc = "Show/Toggle" })
-        vim.keymap.set("n", "<leader>tk", "<cmd>NvimTreeCollapse<CR>", { desc = "Collapse" })
-        vim.keymap.set("n", "<leader>tr", "<cmd>NvimTreeRefresh<CR>", { desc = "Refresh" })
+            api.tree.toggle()
+        end, { desc = "Toggle tree" })
+        vim.keymap.set("n", "<leader>tk", api.tree.collapse_all, { desc = "Collapse tree" })
+        vim.keymap.set("n", "<leader>tr", api.tree.reload, { desc = "Refresh" })
+        vim.keymap.set("n", "<leader>th", api.tree.toggle_help, { desc = "Show help" })
+        vim.keymap.set("n", "<leader>tR", api.tree.change_root_to_parent, { desc = "Open root" })
+        vim.keymap.set("n", "<leader>td", api.tree.change_root_to_node, { desc = "Set as root" })
     end
 
     local closeTreeView = function()
