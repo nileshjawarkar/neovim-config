@@ -8,7 +8,11 @@ return {
     },
     config = function()
         local neogit = require('neogit')
-        neogit.setup({})
-        vim.keymap.set("n", "<leader>G", neogit.open, { desc = "Open git view" })
+        neogit.setup({
+        })
+        vim.keymap.set("n", "<leader>G", function()
+            require("config.filemanager").closeTreeView()
+            neogit.open({ kind = "replace" })
+        end, { desc = "Open git view" })
     end,
 }
