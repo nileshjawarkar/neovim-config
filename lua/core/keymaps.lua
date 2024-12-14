@@ -1,4 +1,3 @@
-vim.g.mapleader = " "
 local sys = require("core.util.sys")
 local keymap = vim.keymap
 -- Window management

@@ -1,3 +1,6 @@
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+
 local opt = vim.opt
 
 opt.cmdheight = 1
@@ -35,7 +38,10 @@ opt.signcolumn = "yes"  -- show sign column so that text doesn't shift
 opt.backspace = "indent,eol,start"
 
 -- Use system clipboard as default register
-opt.clipboard:append("unnamedplus")
+-- Schedule the setting after `UiEnter` because it can increase startup-time.
+vim.schedule(function()
+    vim.opt.clipboard = 'unnamedplus'
+end)
 
 -- Split windows
 opt.splitright = true
@@ -72,3 +78,14 @@ opt.tabline = "%!v:lua.tabNameGen()"
 if vim.g.neovide then
     vim.o.guifont = "SauceCodePro Nerd Font:h12"
 end
+
+-- Highlight when yanking (copying) text
+--  Try it with `yap` in normal mode
+--  See `:help vim.highlight.on_yank()`
+vim.api.nvim_create_autocmd('TextYankPost', {
+    desc = 'Highlight when yanking (copying) text',
+    group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+    callback = function()
+        vim.highlight.on_yank()
+    end,
+})
