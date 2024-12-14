@@ -37,7 +37,7 @@ ls.add_snippets("lua", {
         i(0)
     }),
 
-    s("config_java", fmt([[
+    s("dap_config_java", fmt([[
     local dap = require('dap')
     dap.configurations.java = {{
       {{
@@ -60,7 +60,7 @@ ls.add_snippets("lua", {
     }}
     ]], {})),
 
-    s("config_c_cpp", fmt([[
+    s("dap_config_c_cpp", fmt([[
     local root_dir = vim.fn.getcwd()
     local function dap_setup()
         local dap = require('dap')

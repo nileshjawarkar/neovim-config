@@ -17,13 +17,13 @@ vim.api.nvim_create_user_command("JavaVersion", function()
     end
 end, {})
 
-vim.api.nvim_create_user_command("InitConfig", function()
+vim.api.nvim_create_user_command("InitPrjConfig", function()
     local cur_dir = vim.fn.getcwd()
     sys.create_project_config(cur_dir)
 end, {})
 
 
-vim.api.nvim_create_user_command("CreateJavaProject", function()
+vim.api.nvim_create_user_command("MvnCreateJavaProject", function()
     local cur_dir = vim.fn.getcwd()
     local mvn = require("config.jdtls.maven")
     if cur_dir ~= nil and mvn ~= nil then
@@ -31,7 +31,7 @@ vim.api.nvim_create_user_command("CreateJavaProject", function()
     end
 end, {})
 
-vim.api.nvim_create_user_command("CreateJavaEEProject", function()
+vim.api.nvim_create_user_command("MvnCreateJavaEEProject", function()
     local cur_dir = vim.fn.getcwd()
     local mvn = require("config.jdtls.maven")
     if cur_dir ~= nil and mvn ~= nil then
