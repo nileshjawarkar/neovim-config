@@ -74,9 +74,11 @@ end
 local function setup()
     require("lazydev").setup({})
     local lsp_config = require("lspconfig")
-    local capabilities = require("cmp_nvim_lsp").default_capabilities()
     local root_dir = require("core.util.sys").find_root
     local ws_config = require("config.lsp.ws_config").lsp_config
+
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
     require("config.lsp.mason").setup({
         function(server_name)
