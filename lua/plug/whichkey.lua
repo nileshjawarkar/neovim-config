@@ -31,15 +31,14 @@ return {
             },
         })
         wk.add({
-            { "<leader>f", group = "Search/Telescope", },
-            { "<leader>t", group = "FM/Tree view", },
-            { "<leader>l", group = "Code/Lsp", },
+            { "<leader>f", group = "Find using telescope", },
+            { "<leader>t", group = "Tree view", },
+            { "<leader>l", group = "Code Lsp", },
             { "<leader>b", group = "Buffer", },
             { "<leader>lw", group = "Workspace", },
             { "<leader>w", group = "Window", },
             { "<leader>q", group = "Quickfix list", },
-            { "<leader>j", group = "Run test", },
-            { "<leader>d", group = "Debug/Diagnostic", },
+            { "<leader>d", group = "Debug", },
             { "<leader>db", group = "Breakpoint", },
             { "<leader>dt", group = "Run test", },
         })
