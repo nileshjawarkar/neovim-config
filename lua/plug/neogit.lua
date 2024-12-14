@@ -9,6 +9,12 @@ return {
     config = function()
         local neogit = require('neogit')
         neogit.setup({
+            signs = {
+                -- { CLOSED, OPENED }
+                hunk = { "+", "" },
+                item = { "+", "" },
+                section = { "+", "" },
+            },
         })
         vim.keymap.set("n", "<leader>G", function()
             require("config.filemanager").closeTreeView()
@@ -16,3 +22,4 @@ return {
         end, { desc = "Open git view" })
     end,
 }
+
