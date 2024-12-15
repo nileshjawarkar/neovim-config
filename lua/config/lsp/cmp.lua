@@ -14,7 +14,10 @@ local function setup()
         formatting = {
             format = lspkind.cmp_format({
                 mode = "symbol", -- show only symbol annotations
-                maxwidth = 50,
+                maxwidth = {
+                    menu = 50,
+                    abbr = 50
+                },
                 ellipsis_char = "...",
             }),
             expandable_indicator = true,
