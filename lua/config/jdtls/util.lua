@@ -19,16 +19,56 @@ local function get_jdtls_options()
     local configuration = mason_pkg .. "/jdtls/" .. jdtls_config
 
     -- java dap
+    --[[
     local dap_bundles = {
         vim.fn.glob(mason_pkg .. "/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar", true),
     }
     vim.list_extend(dap_bundles, vim.split(vim.fn.glob(mason_pkg .. "/java-test/extension/server/*.jar", true), "\n"))
+    ]]
+
+    -- npm install broke for me: https://github.com/npm/cli/issues/2508
+    -- So gather the required jars manually; this is based on the gulpfile.js in the vscode-java-test repo
+    local bundle_list = vim.tbl_map(
+        function(x) return require('jdtls.path').join("/java-test/extension/server/", x) end,
+        {
+            'org.eclipse.jdt.junit4.runtime_*.jar',
+            'org.eclipse.jdt.junit5.runtime_*.jar',
+            'org.junit.jupiter.api*.jar',
+            'org.junit.jupiter.engine*.jar',
+            'org.junit.jupiter.migrationsupport*.jar',
+            'org.junit.jupiter.params*.jar',
+            'org.junit.vintage.engine*.jar',
+            'org.opentest4j*.jar',
+            'org.junit.platform.commons*.jar',
+            'org.junit.platform.engine*.jar',
+            'org.junit.platform.launcher*.jar',
+            'org.junit.platform.runner*.jar',
+            'org.junit.platform.suite.api*.jar',
+            'org.apiguardian*.jar'
+        }
+    )
+
+    local jar_patterns = {
+        "/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
+        "/java-test/extension/server/*.jar",
+    }
+    vim.list_extend(jar_patterns, bundle_list)
+    local bundles = {}
+    for _, jar_pattern in ipairs(jar_patterns) do
+        for _, bundle in ipairs(vim.split(vim.fn.glob(mason_pkg .. jar_pattern), '\n')) do
+            if not vim.endswith(bundle, 'com.microsoft.java.test.runner-jar-with-dependencies.jar')
+                and not vim.endswith(bundle, 'com.microsoft.java.test.runner.jar') then
+                table.insert(bundles, bundle)
+            end
+        end
+    end
+
     return {
         project_dir = workspace_dir,
         javaagent = javaagent,
         launcher = launcher,
         configuration = configuration,
-        dap_bundles = dap_bundles,
+        dap_bundles = bundles, -- dap_bundles
     }
 end
 
