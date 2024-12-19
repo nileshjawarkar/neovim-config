@@ -1,4 +1,4 @@
-local function get_jdtls_options()
+local get_jdtls_options = (function()
     local data_path = vim.fn.stdpath("data")
     local sys = require("core.util.sys")
     local project_name = sys.get_curdir_name()
@@ -14,45 +14,14 @@ local function get_jdtls_options()
 
     local javaagent = data_path .. "/mason/share/jdtls/lombok.jar"
     local launcher = vim.fn.glob(data_path .. "/mason/share/jdtls/plugins/org.eclipse.equinox.launcher_*.jar")
-
     local mason_pkg = data_path .. "/mason/packages"
     local configuration = mason_pkg .. "/jdtls/" .. jdtls_config
 
     -- java dap
-    --[[
-    local dap_bundles = {
-        vim.fn.glob(mason_pkg .. "/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar", true),
-    }
-    vim.list_extend(dap_bundles, vim.split(vim.fn.glob(mason_pkg .. "/java-test/extension/server/*.jar", true), "\n"))
-    ]]
-
-    -- npm install broke for me: https://github.com/npm/cli/issues/2508
-    -- So gather the required jars manually; this is based on the gulpfile.js in the vscode-java-test repo
-    local bundle_list = vim.tbl_map(
-        function(x) return require('jdtls.path').join("/java-test/extension/server/", x) end,
-        {
-            'org.eclipse.jdt.junit4.runtime_*.jar',
-            'org.eclipse.jdt.junit5.runtime_*.jar',
-            'org.junit.jupiter.api*.jar',
-            'org.junit.jupiter.engine*.jar',
-            'org.junit.jupiter.migrationsupport*.jar',
-            'org.junit.jupiter.params*.jar',
-            'org.junit.vintage.engine*.jar',
-            'org.opentest4j*.jar',
-            'org.junit.platform.commons*.jar',
-            'org.junit.platform.engine*.jar',
-            'org.junit.platform.launcher*.jar',
-            'org.junit.platform.runner*.jar',
-            'org.junit.platform.suite.api*.jar',
-            'org.apiguardian*.jar'
-        }
-    )
-
     local jar_patterns = {
         "/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
         "/java-test/extension/server/*.jar",
     }
-    vim.list_extend(jar_patterns, bundle_list)
     local bundles = {}
     for _, jar_pattern in ipairs(jar_patterns) do
         for _, bundle in ipairs(vim.split(vim.fn.glob(mason_pkg .. jar_pattern), '\n')) do
@@ -63,14 +32,17 @@ local function get_jdtls_options()
         end
     end
 
-    return {
-        project_dir = workspace_dir,
-        javaagent = javaagent,
-        launcher = launcher,
-        configuration = configuration,
-        dap_bundles = bundles, -- dap_bundles
-    }
-end
+    -- require("core.util.sys").dump_table(bundles)
+    return function()
+        return {
+            project_dir = workspace_dir,
+            javaagent = javaagent,
+            launcher = launcher,
+            configuration = configuration,
+            dap_bundles = bundles,
+        }
+    end
+end)()
 
 local function rm_jdtls_ws()
     local data_path = vim.fn.stdpath("data")
