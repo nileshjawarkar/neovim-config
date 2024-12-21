@@ -38,20 +38,6 @@ local is_dir = function(dirname)
     return false
 end
 
-local function dump_table(value)
-    if type(value) == "table" then
-        for key, attr in pairs(value) do
-            if type(attr) == "string" then
-                print(key .. " -> " .. attr)
-            else
-                print(key)
-                if type(attr) == "table" then
-                    dump_table(attr)
-                end
-            end
-        end
-    end
-end
 
 local function create_dir(dirname)
     if 1 == vim.fn.mkdir(dirname, "p") then
@@ -217,7 +203,6 @@ return {
         h:close()
         return r
     end,
-    dump_table = dump_table,
     create_project_config = function(ws_dir)
         local conf_dir = ws_dir .. "/.nvim/"
         if is_dir(conf_dir) == false and create_dir(conf_dir) == true then

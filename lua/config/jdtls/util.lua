@@ -32,7 +32,7 @@ local get_jdtls_options = (function()
         end
     end
 
-    -- require("core.util.sys").dump_table(bundles)
+    -- require("core.util.table").dump(bundles)
     return function()
         return {
             project_dir = workspace_dir,
@@ -55,7 +55,7 @@ local function scan_dir_for_src(parent_dir, paths, is_mvn_prj, cur_level)
     -- To avoid searching above the max-dept. It will help when
     -- when current directory has huge directory depth. Any way we didnt expect sub-projects at
     -- depth gretor than 5.
-    if cur_level > 5 then return end
+    if cur_level > 6 then return end
     local file_names = vim.fn.readdir(parent_dir)
     if file_names == nil then return end
     for _, file in ipairs(file_names) do
@@ -106,7 +106,10 @@ end
 local find_src_paths = (function()
     local paths = {}
     return function(input_dir, return_existing, reset)
-        if return_existing ~= nil and return_existing == true then return paths end
+        local tbl_len = require("core.util.table").len;
+        if return_existing ~= nil and return_existing == true and tbl_len(paths) > 0 then
+            return paths
+        end
         if reset ~= nil and reset == true then
             paths = {}
         end
