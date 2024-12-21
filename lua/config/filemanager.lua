@@ -1,6 +1,32 @@
 local m = (function()
-    -- o : NoOilNoTree, 1 : OilNoTree, 2 : TreeNoOil
-    local mode = 0
+    local treeHandler = (function()
+        -- o : NoOilNoTree, 1 : OilNoTree, 2 : TreeNoOil
+        local mode = 0
+        return {
+            closeNTree = function()
+                if mode == 2 then
+                    vim.cmd("NvimTreeClose")
+                end
+                mode = 1
+            end,
+            closeOil = function()
+                if mode == 1 then
+                    require("oil").close()
+                end
+                mode = 2
+            end,
+            closeBoth = function()
+                if mode == 2 then
+                    vim.cmd("NvimTreeClose")
+                end
+                if mode == 1 then
+                    require("oil").close()
+                end
+                mode = 0
+            end
+        }
+    end)()
+
     local setup_oil = function()
         local oil = require("oil")
         oil.setup({
@@ -15,19 +41,12 @@ local m = (function()
             },
         })
 
-        local handleMode = function ()
-            if mode == 2 then
-                vim.cmd("NvimTreeClose")
-            end
-            mode = 1
-        end
-
         vim.keymap.set("n", "<leader>-", function()
-            handleMode()
+            treeHandler.closeNTree()
             oil.open()
         end, { desc = "Locate current file" })
         vim.keymap.set("n", "<leader>_", function()
-            handleMode()
+            treeHandler.closeNTree()
             oil.open(vim.fn.getcwd())
         end, { desc = "Open root folder" })
         vim.keymap.set("n", "<leader>eH", oil.toggle_hidden, { desc = "Toggle hidden mode" })
@@ -62,20 +81,14 @@ local m = (function()
             },
         })
 
-        local handleMode = function ()
-            if mode == 1 then
-                require("oil").close()
-            end
-            mode = 2
-        end
 
         local api = require("nvim-tree.api")
         vim.keymap.set("n", "<leader>el", function()
-            handleMode()
+            treeHandler.closeOil()
             vim.cmd("NvimTreeFindFile")
         end, { desc = "Locate file" })
         vim.keymap.set("n", "<leader>ee", function()
-            handleMode()
+            treeHandler.closeOil()
             api.tree.toggle()
         end, { desc = "Toggle tree" })
         vim.keymap.set("n", "<leader>ek", api.tree.collapse_all, { desc = "Collapse tree" })
@@ -85,20 +98,10 @@ local m = (function()
         vim.keymap.set("n", "<leader>ed", api.tree.change_root_to_node, { desc = "Set as root" })
     end
 
-    local closeTreeView = function()
-        if mode == 2 then
-            vim.cmd("NvimTreeClose")
-        end
-        if mode == 1 then
-            require("oil").close()
-        end
-        mode = 0
-    end
-
     return {
         setup_oil = setup_oil,
         setup_nvimtree = setup_nvimtree,
-        closeTreeView = closeTreeView,
+        closeTreeView = treeHandler.closeBoth,
     }
 end)()
 
