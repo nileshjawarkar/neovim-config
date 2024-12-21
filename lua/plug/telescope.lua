@@ -52,8 +52,7 @@ return {
         vim.keymap.set("n", "<leader>/", builtin.find_files, { desc = "Fuzzy find files" })
 
         vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "List open files [<Leader>Tab]" })
-        -- vim.keymap.set("n", "<leader>,", builtin.buffers, { desc = "List open files" })
-        vim.keymap.set("n", "<leader><Tab>", builtin.buffers, { desc = "List open files" })
+        vim.keymap.set("n", "<leader>,", builtin.buffers, { desc = "List open files" })
 
         vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Find recent open files" })
         -- vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Find text" })
@@ -61,15 +60,10 @@ return {
             { desc = "Find text" })
         vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Show help tags" })
 
+        vim.keymap.set("n", "<leader>f.", builtin.current_buffer_fuzzy_find, { desc = "Find text (in current buffer)" })
         vim.keymap.set("n", "<leader>fW", builtin.grep_string, { desc = "Find text under cursor (in workspace)" })
         vim.keymap.set("n", "<leader>fw", function()
             builtin.grep_string({ search_dirs = { vim.fn.expand('%:p'), } })
         end, { desc = "Find text under cursor (in current buffer)" })
-        vim.keymap.set("n", "<leader>f.", function()
-            builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-                winblend = 10,
-                previewer = false,
-            })
-        end, { desc = "Fuzzy find in current file [<Leader>.]" })
     end,
 }
