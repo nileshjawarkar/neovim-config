@@ -49,7 +49,7 @@ m.createMM_prj = function(self, root_dir, prj_type)
         print("Failed to create module - " .. modules[0])
         return
     end
-
+    print("Created maven module - " .. modules[0])
     if prj_type == "JEE" then
         mod_deps = {}
         mod_deps[0] = {
@@ -62,6 +62,7 @@ m.createMM_prj = function(self, root_dir, prj_type)
         if false == self:createWar_module(root_dir, prj_type, modules[1], pkg, version, root_name, pkg, version, mod_deps) then
             print("Failed to create module - " .. modules[1])
         end
+        print("Created maven module - " .. modules[1])
     end
     print("Created maven project - " .. root_name)
 end

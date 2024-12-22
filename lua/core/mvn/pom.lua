@@ -205,7 +205,6 @@ return {
         builder:addDependancy("h2", "com.h2database", "2.3.232", "")
         if type(modules) == "table" then
             for _, value in pairs(modules) do
-                print(value)
                 builder:addModule(value)
             end
         end
