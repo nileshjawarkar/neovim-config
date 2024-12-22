@@ -1,5 +1,6 @@
 local jdtls = require("jdtls")
 local jdtls_util = require("config.jdtls.util")
+local mvn_util = require("core.mvn")
 local sys = require("core.util.sys")
 
 local on_attach = function(_, bufnr)
@@ -36,13 +37,13 @@ local prepare_config = (function()
     ----------------------------------------
     jdtls_util.rm_jdtls_ws()
     local root_dir = sys.find_root()
-    jdtls_util.find_src_paths(root_dir, false, false)
+    mvn_util.find_src_paths(root_dir, false, false)
 
     -- actual config preparation method
     ----------------------------------
     return function()
         local jdtls_options = jdtls_util.get_jdtls_options()
-        local src_paths = jdtls_util.find_src_paths(nil, true, false)
+        local src_paths = mvn_util.find_src_paths(nil, true, false)
         -- Get the default extended client capablities of the JDTLS language server
         -- Modify one property called resolveAdditionalTextEditsSupport and set it to true
         local extendedClientCapabilities = jdtls.extendedClientCapabilities

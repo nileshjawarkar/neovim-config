@@ -1,3 +1,5 @@
+require("core.mvn.commands")
+
 local sys = require("core.util.sys")
 
 -- Auto command to clear block cursor after exit. It help to prevent messup in terminals
@@ -23,18 +25,3 @@ vim.api.nvim_create_user_command("InitPrjConfig", function()
 end, {})
 
 
-vim.api.nvim_create_user_command("MvnCreateJavaProject", function()
-    local cur_dir = vim.fn.getcwd()
-    local mvn = require("config.jdtls.maven")
-    if cur_dir ~= nil and mvn ~= nil then
-        mvn:create_prj("java", cur_dir)
-    end
-end, {})
-
-vim.api.nvim_create_user_command("MvnCreateJavaEEProject", function()
-    local cur_dir = vim.fn.getcwd()
-    local mvn = require("config.jdtls.maven")
-    if cur_dir ~= nil and mvn ~= nil then
-        mvn:create_prj("javaee", cur_dir)
-    end
-end, {})

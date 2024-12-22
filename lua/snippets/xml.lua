@@ -1,4 +1,4 @@
-local mvn = require("config.jdtls.maven")
+local mvn = require("core.mvn")
 local ls = require("luasnip")
 local s = ls.snippet
 local i = ls.insert_node
