@@ -1,11 +1,8 @@
 local pom_util = require("core.mvn.pom")
-local jee_util = require("core.mvn.jee")
-local git_util = require("core.mvn.git")
 local util = require("core.mvn.util")
 
 local m = {}
 m.find_src_paths = util.find_src_paths
-
 m.createMM_prj = function(self, root_dir, prj_type)
     -- preqs
     local sys = require("core.util.sys")
@@ -35,7 +32,7 @@ m.createMM_prj = function(self, root_dir, prj_type)
         return
     end
     st = sys.write_to(root_dir .. "/.gitignore", function(file)
-        file.write(git_util.get_ignore_content())
+        file.write(util.get_ignore_content())
     end)
     if not st then
         print("Failed to create - " .. root_dir .. "/.gitignore")
@@ -127,28 +124,28 @@ m.createWar_module = function(self, root_dir, prj_type, name, pkg, version, pare
         end
 
         st = sys.write_to(mod_path .. "/src/main/webapp/WEB-INF/web.xml", function(file)
-            file.write(jee_util.get_web_xml(root_name))
+            file.write(util.get_web_xml(root_name))
         end)
         if not st then
             print("Failed to create - " .. mod_path .. "/src/main/webapp/WEB-INF/web.xml")
             return false
         end
         st = sys.write_to(mod_path .. "/src/main/webapp/WEB-INF/beans.xml", function(file)
-            file.write(jee_util.get_beans_xml())
+            file.write(util.get_beans_xml())
         end)
         if not st then
             print("Failed to create - " .. mod_path .. "/src/main/webapp/WEB-INF/beans.xml")
             return false
         end
         st = sys.write_to(mod_path .. "/src/main/resources/application.properties", function(file)
-            file.write(jee_util.get_application_props())
+            file.write(util.get_application_props())
         end)
         if not st then
             print("Failed to create - " .. mod_path .. "/src/main/resources/application.properties")
             return false
         end
         st = sys.write_to(mod_path .. "/src/main/resources/META-INF/persistence.xml", function(file)
-            file.write(jee_util.get_persistence_xml())
+            file.write(util.get_persistence_xml())
         end)
         if not st then
             print("Failed to create - " .. mod_path .. "/src/main/resources/META-INF/persistence.xml")
