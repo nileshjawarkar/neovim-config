@@ -53,9 +53,8 @@ local function setup_auto_attach()
             vim.keymap.set("n", "<leader>ld", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition [<gd>]" })
             vim.keymap.set("n", "gd", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition" })
 
-            vim.keymap.set("n", "<leader>li", vim_lbuf.implementation,
-                { buffer = ev.buf, desc = "Go to implementation [<gi>]" })
-            vim.keymap.set("n", "gi", vim_lbuf.implementation, { buffer = ev.buf, desc = "Go to implementation" })
+            vim.keymap.set("n", "<leader>lI", lsp_buildin.lsp_implementations, { buffer = ev.buf, desc = "Go to implementation [<gI>]" })
+            vim.keymap.set("n", "gI", lsp_buildin.lsp_implementations, { buffer = ev.buf, desc = "Go to implementation" })
 
             vim.keymap.set("n", "<leader>lr", lsp_buildin.lsp_references,
                 { buffer = ev.buf, desc = "List references" })
