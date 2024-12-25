@@ -7,8 +7,6 @@ local on_attach = function(_, bufnr)
     -- Filetype-specific keymaps (these can be done in the ftplugin directory instead if you prefer)
     local keymap = vim.keymap
     keymap.set("n", "<leader>lo", jdtls.organize_imports,
-        { noremap = true, silent = true, buffer = bufnr, desc = "Organize imports (gO)" })
-    keymap.set("n", "gO", jdtls.organize_imports,
         { noremap = true, silent = true, buffer = bufnr, desc = "Organize imports" })
     keymap.set("n", "<leader>lu", jdtls.update_projects_config,
         { noremap = true, silent = true, buffer = bufnr, desc = "Update project config" })

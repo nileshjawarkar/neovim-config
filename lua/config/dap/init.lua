@@ -68,7 +68,7 @@ local function setup_keys()
     end, { desc = "Toggle repl", })
 
     -- breakpoint management
-    vim.keymap.set("n", "<leader>B", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
+    vim.keymap.set("n", "<leader>Bb", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
     vim.keymap.set("n", "<leader>Bc", function()
         dap.set_breakpoint(vim.fn.input('Breakpoint condition: '))
     end, { desc = "Set breakpoint (condition)" })
