@@ -146,17 +146,13 @@ local prepare_config = (function()
     end
 end)()
 
-local setup_user_cmd = function()
-    vim.api.nvim_create_user_command("DapPrintSrcPath", function()
-        local paths = require("config.jdtls").find_src_paths(nil, true, false)
-        require("core.util.table").dump(paths)
-    end, {})
-end
-
 return {
     setup = function()
         if sys.first_time("jdtls_init") then
-            setup_user_cmd()
+            vim.api.nvim_create_user_command("DapPrintSrcPath", function()
+                local paths = require("config.jdtls").find_src_paths(nil, true, false)
+                require("core.util.table").dump(paths)
+            end, {})
         end
         jdtls.start_or_attach(prepare_config())
     end,
