@@ -1,8 +1,10 @@
-local m = {}
-m.lsp_config = {}
-m.dap_setup = function() return nil end
+local m = {
+    lsp_config = {},
+    dap_setup = nil,
+    reload = false,
+}
 
-(function()
+local function load_config()
     local ws_path = require("core.util.sys").find_root()
     if ws_path == nil then return end
     local config_path = loadfile(ws_path .. "/.nvim/config.lua")
@@ -17,6 +19,22 @@ m.dap_setup = function() return nil end
             end
         end
     end
-end)()
+end
 
-return m
+load_config()
+
+return {
+    lsp_config = m.lsp_config,
+    dap_setup = function()
+        if m.reload == true then
+            load_config()
+            m.reload = false
+        end
+        if m.dap_setup ~= nil then
+            m.dap_setup()
+        end
+    end,
+    reload_config = function()
+        m.reload = true
+    end
+}

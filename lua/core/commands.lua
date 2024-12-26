@@ -19,9 +19,14 @@ vim.api.nvim_create_user_command("JavaVersion", function()
     end
 end, {})
 
-vim.api.nvim_create_user_command("InitPrjConfig", function()
+vim.api.nvim_create_user_command("PrjInitConfig", function()
     local cur_dir = vim.fn.getcwd()
     sys.create_project_config(cur_dir)
 end, {})
 
+vim.api.nvim_create_user_command("PrjReloadConfig", function()
+    local config = require("config.lsp.ws_config")
+    config.reload_config()
+    config.dap_setup()
+end, {})
 
