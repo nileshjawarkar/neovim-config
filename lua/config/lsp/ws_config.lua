@@ -1,7 +1,6 @@
 local m = {
     lsp_config = {},
     dap_setup = nil,
-    reload = false,
 }
 
 local function load_config()
@@ -26,15 +25,14 @@ load_config()
 return {
     lsp_config = m.lsp_config,
     dap_setup = function()
-        if m.reload == true then
-            load_config()
-            m.reload = false
-        end
         if m.dap_setup ~= nil then
             m.dap_setup()
         end
     end,
     reload_config = function()
-        m.reload = true
+        load_config()
+        if m.dap_setup ~= nil then
+            m.dap_setup()
+        end
     end
 }

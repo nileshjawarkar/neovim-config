@@ -27,6 +27,5 @@ end, {})
 vim.api.nvim_create_user_command("PrjReloadConfig", function()
     local config = require("config.lsp.ws_config")
     config.reload_config()
-    config.dap_setup()
 end, {})
 
