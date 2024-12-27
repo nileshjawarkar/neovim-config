@@ -75,13 +75,17 @@ m.get_ignore_content = function()
 trash/**
 Servers/**
 target/**
-**/target/**
 *.tar.gz
 .metadata/**
 .settings/**
+**/target/**
+**/.metadata/**
+**/.settings/**
 .nvim/**
 .classpath
 .project
+*.trc
+*.phd
 ]]
 end
 
