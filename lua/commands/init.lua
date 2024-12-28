@@ -1,4 +1,4 @@
-require("core.mvn.commands")
+require("commands.mvn")
 
 local sys = require("core.util.sys")
 
