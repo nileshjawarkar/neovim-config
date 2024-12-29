@@ -33,10 +33,17 @@ local function get_junit_moc_class_def()
 package ]] .. pkg .. [[;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+//-- Not required for Junit5
+//----------------------------------
+//-- import org.junit.runner.RunWith;
+//-- import org.mockito.junit.MockitoJUnitRunner;
+//----------------------------------
+
+//-- Not required for Junit5
+//----------------------------------
+//-- @RunWith(MockitoJUnitRunner.class)
+//----------------------------------
 public class ]] .. filename .. [[ {{
     @Test
     public void test_name() {{
@@ -58,13 +65,49 @@ ls.add_snippets("java", {
 
     s("jclass", fmt(get_junit_moc_class_def(), { i(0), })),
 
-    s("psf", {
+    s("prsf", {
+        t("private static "),
+        i(1, "String"),
+        t(" "),
+        i(2, "name"),
+        t(";"),
+        i(0)
+    }),
+
+    s("pusf", {
         t("public static "),
         i(1, "String"),
         t(" "),
         i(2, "name"),
         t(";"),
         i(0)
+    }),
+
+    s("prsm", {
+        t("private static"),
+        i(1, "void"),
+        t( " " ),
+        i(2, "name"),
+        t({ "(){", "\t" }),
+        i(0),
+        t({ "", "}" }),
+    }),
+
+    s("pusm", {
+        t("public static"),
+        i(1, "void"),
+        t( " " ),
+        i(2, "name"),
+        t({ "(){", "\t" }),
+        i(0),
+        t({ "", "}" }),
+    }),
+
+    s("pusvm", {
+        t("public static void main(final String[] args )"),
+        t({ " {", "\t" }),
+        i(0),
+        t({ "", "}" }),
     }),
 
     s("prf", {
@@ -88,16 +131,6 @@ ls.add_snippets("java", {
 
     s("pum", {
         t("public "),
-        i(1, "void"),
-        t( " " ),
-        i(2, "name"),
-        t({ "(){", "\t" }),
-        i(0),
-        t({ "", "}" }),
-    }),
-
-    s("psm", {
-        t("public static"),
         i(1, "void"),
         t( " " ),
         i(2, "name"),
