@@ -4,6 +4,12 @@ return {
         "nvim-tree/nvim-web-devicons",
     },
     config = function()
+        -- NvimTree extension
+        local function treeName()
+            return [[File Tree]]
+        end
+        local nvimtree_ext = { sections = { lualine_a = { treeName }, lualine_b = { "location" }, }, filetypes = { 'NvimTree' } }
+
         require("lualine").setup({
             options = {
                 icons_enabled = false,
@@ -11,8 +17,8 @@ return {
                 component_separators = { left = "", right = "" },
                 section_separators = { left = "", right = "" },
                 disabled_filetypes = {
-                    statusline = { "NvimTree", },
-                    winbar = { "NvimTree",},
+                    -- statusline = { "NvimTree", },
+                    -- winbar = { "NvimTree",},
                 },
                 ignore_focus = {},
                 always_divide_middle = true,
@@ -43,9 +49,8 @@ return {
             winbar = {},
             inactive_winbar = {},
             extensions = {
-                -- "neo-tree",
+                nvimtree_ext,
             },
         })
     end,
 }
-
