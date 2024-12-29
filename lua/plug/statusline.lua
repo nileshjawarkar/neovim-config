@@ -6,9 +6,9 @@ return {
     config = function()
         -- NvimTree extension
         local function treeName()
-            return [[File Tree]]
+            return [[FILES]]
         end
-        local nvimtree_ext = { sections = { lualine_a = { treeName }, lualine_b = { "location" }, }, filetypes = { 'NvimTree' } }
+        local nvimtree_ext = { sections = { lualine_a = { treeName }, lualine_z = { "location" }, }, filetypes = { 'NvimTree' } }
 
         require("lualine").setup({
             options = {
