@@ -56,7 +56,6 @@ local m = (function()
         local function label(path)
             return vim.fn.fnamemodify(path, ':p:h:t') .. " -"
         end
-
         vim.g.loaded_netrw = 1
         vim.g.loaded_netrwPlugin = 1
         vim.opt.termguicolors = true
@@ -78,6 +77,10 @@ local m = (function()
             },
             git = {
                 enable = false,
+            },
+            notify = {
+                threshold = vim.log.levels.WARN,
+                absolute_path = false,
             },
         })
 
