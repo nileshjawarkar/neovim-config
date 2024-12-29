@@ -57,4 +57,52 @@ ls.add_snippets("java", {
     }),
 
     s("jclass", fmt(get_junit_moc_class_def(), { i(0), })),
+
+    s("psf", {
+        t("public static "),
+        i(1, "String"),
+        t(" "),
+        i(2, "name"),
+        t(";"),
+        i(0)
+    }),
+
+    s("prf", {
+        t("private "),
+        i(1, "String"),
+        t(" "),
+        i(2, "name"),
+        t(";"),
+        i(0)
+    }),
+
+    s("prm", {
+        t("private "),
+        i(1, "void"),
+        t( " " ),
+        i(2, "name"),
+        t({ "(){", "\t" }),
+        i(0),
+        t({ "", "}" }),
+    }),
+
+    s("pum", {
+        t("public "),
+        i(1, "void"),
+        t( " " ),
+        i(2, "name"),
+        t({ "(){", "\t" }),
+        i(0),
+        t({ "", "}" }),
+    }),
+
+    s("psm", {
+        t("public static"),
+        i(1, "void"),
+        t( " " ),
+        i(2, "name"),
+        t({ "(){", "\t" }),
+        i(0),
+        t({ "", "}" }),
+    }),
 })
