@@ -84,7 +84,7 @@ ls.add_snippets("java", {
     }),
 
     s("prsm", {
-        t("private static"),
+        t("private static "),
         i(1, "void"),
         t( " " ),
         i(2, "name"),
@@ -94,7 +94,7 @@ ls.add_snippets("java", {
     }),
 
     s("pusm", {
-        t("public static"),
+        t("public static "),
         i(1, "void"),
         t( " " ),
         i(2, "name"),
