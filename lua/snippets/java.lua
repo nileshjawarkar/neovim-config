@@ -3,11 +3,12 @@ local s = ls.snippet
 local t = ls.text_node
 local i = ls.insert_node
 local fmt = require('luasnip.extras.fmt').fmt
+local f = ls.function_node
 local sys = require("core.util.sys")
 local str_util = require("core.util.string")
 
-local get_file_and_pkg = function()
-    local file_name, parent_path = sys.get_bufname_and_its_parent(false)
+local get_pkg = function()
+    local _, parent_path = sys.get_bufname_and_its_parent(false)
     local pkg, idx = "", -1
     str_util.split(parent_path, sys.get_path_sep(), function(dir_name)
         if dir_name == "src" or dir_name == "Src" or dir_name == "SRC" then
@@ -24,46 +25,56 @@ local get_file_and_pkg = function()
             end
         end
     end)
-    return file_name, pkg
+    return pkg
 end
 
-local function get_junit_moc_class_def()
-    local filename, pkg = get_file_and_pkg()
-    return [[
-package ]] .. pkg .. [[;
+
+local get_class = function()
+    local file_name, _ = sys.get_bufname_and_its_parent(false)
+    return file_name
+end
+
+local junit4_class_def = [[
+package {pkg};
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 
-//-- Not required for Junit5
-//----------------------------------
-//-- import org.junit.runner.RunWith;
-//-- import org.mockito.junit.MockitoJUnitRunner;
-//----------------------------------
-
-//-- Not required for Junit5
-//----------------------------------
-//-- @RunWith(MockitoJUnitRunner.class)
-//----------------------------------
-public class ]] .. filename .. [[ {{
+@RunWith(MockitoJUnitRunner.class)
+public class {name} {{
     @Test
     public void test_name() {{
-        {}
+        {last}
     }}
 }}
 ]]
-end
+
+local private_static_class = [[
+private static class {name} {{
+    {last}
+}}
+]]
+
+local public_static_class = [[
+public static class {name} {{
+    {last}
+}}
+]]
+
+local jtest_method = [[
+@Test
+public void {test_name}(){{
+    {last}
+}}
+]]
 
 ls.add_snippets("java", {
-    s("jtest", {
-        t({ "@Test", "" }),
-        t("public void "),
-        i(1, "test_name"),
-        t({ "(){", "\t" }),
-        i(0),
-        t({ "", "}" }),
-    }),
+    s("jclass4", fmt(junit4_class_def, { pkg = f(get_pkg), name = f(get_class), last = i(0) })),
+    s("jtest", fmt(jtest_method, { name = i(1, "name"), last = i(0) })),
 
-    s("jclass", fmt(get_junit_moc_class_def(), { i(0), })),
+    s("pusc", fmt(public_static_class, { name = i(1, "name"), last = i(0) })),
+    s("prsc", fmt(private_static_class, { name = i(1, "name"), last = i(0) })),
 
     s("prsf", {
         t("private static "),
@@ -83,59 +94,4 @@ ls.add_snippets("java", {
         i(0)
     }),
 
-    s("prsm", {
-        t("private static "),
-        i(1, "void"),
-        t( " " ),
-        i(2, "name"),
-        t({ "(){", "\t" }),
-        i(0),
-        t({ "", "}" }),
-    }),
-
-    s("pusm", {
-        t("public static "),
-        i(1, "void"),
-        t( " " ),
-        i(2, "name"),
-        t({ "(){", "\t" }),
-        i(0),
-        t({ "", "}" }),
-    }),
-
-    s("pusvm", {
-        t("public static void main(final String[] args )"),
-        t({ " {", "\t" }),
-        i(0),
-        t({ "", "}" }),
-    }),
-
-    s("prf", {
-        t("private "),
-        i(1, "String"),
-        t(" "),
-        i(2, "name"),
-        t(";"),
-        i(0)
-    }),
-
-    s("prm", {
-        t("private "),
-        i(1, "void"),
-        t( " " ),
-        i(2, "name"),
-        t({ "(){", "\t" }),
-        i(0),
-        t({ "", "}" }),
-    }),
-
-    s("pum", {
-        t("public "),
-        i(1, "void"),
-        t( " " ),
-        i(2, "name"),
-        t({ "(){", "\t" }),
-        i(0),
-        t({ "", "}" }),
-    }),
 })

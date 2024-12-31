@@ -114,7 +114,7 @@ local function split_to_filename_and_its_parent(filepath, withext)
     if withext == false then
         local ext = string.match(filename, "^.*(%..+)$")
         if ext ~= nil then
-            filename, _ = string.gsub(filename, "%." .. ext, "")
+            filename = filename:gsub(ext, "")
         end
     end
     return filename, parent
