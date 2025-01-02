@@ -106,23 +106,28 @@ local function get_path_sep()
     return "/"
 end
 
-local function split_to_filename_and_its_parent(filepath, withext)
+local function rm_ext_from_filename(filename)
+    local ext = string.match(filename, "^.*(%..+)$")
+    if ext ~= nil then
+        filename = filename:gsub(ext, "")
+    end
+    return filename;
+end
+
+local function split_filepath(filepath, withext)
     if filepath == nil then return nil, nil end
     if withext == nil then withext = true end
     local filename = vim.fs.basename(filepath)
     local parent = vim.fs.dirname(filepath)
     if withext == false then
-        local ext = string.match(filename, "^.*(%..+)$")
-        if ext ~= nil then
-            filename = filename:gsub(ext, "")
-        end
+        filename = rm_ext_from_filename(filename)
     end
     return filename, parent
 end
 
 local function bufname_and_its_parent(withext)
     local fullpath = vim.fn.bufname()
-    return split_to_filename_and_its_parent(fullpath, withext)
+    return split_filepath(fullpath, withext)
 end
 
 return {
@@ -182,6 +187,10 @@ return {
             return true
         end
         return false
+    end,
+    get_curbuf_name_without_ext = function ()
+        local filename = vim.fs.basename(vim.fn.bufname())
+        return rm_ext_from_filename(filename)
     end,
     get_curbuf_name = function()
         return vim.fs.basename(vim.fn.bufname())

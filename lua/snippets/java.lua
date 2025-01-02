@@ -8,7 +8,7 @@ local sys = require("core.util.sys")
 local str_util = require("core.util.string")
 
 local get_pkg = function()
-    local _, parent_path = sys.get_bufname_and_its_parent(false)
+    local parent_path = sys.get_curbuf_dir()
     local pkg, idx = "", -1
     str_util.split(parent_path, sys.get_path_sep(), function(dir_name)
         if dir_name == "src" or dir_name == "Src" or dir_name == "SRC" then
@@ -30,8 +30,7 @@ end
 
 
 local get_class = function()
-    local file_name, _ = sys.get_bufname_and_its_parent(false)
-    return file_name
+    return sys.get_curbuf_name_without_ext()
 end
 
 local junit4_class_def = [[
@@ -44,7 +43,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class {name} {{
     @Test
-    public void test_name() {{
+    public void {test_name}() {{
         {last}
     }}
 }}
@@ -64,14 +63,14 @@ public static class {name} {{
 
 local jtest_method = [[
 @Test
-public void {test_name}(){{
+public void {name}(){{
     {last}
 }}
 ]]
 
 ls.add_snippets("java", {
-    s("jclass4", fmt(junit4_class_def, { pkg = f(get_pkg), name = f(get_class), last = i(0) })),
-    s("jtest", fmt(jtest_method, { name = i(1, "name"), last = i(0) })),
+    s("jclass4", fmt(junit4_class_def, { pkg = f(get_pkg), name = f(get_class), test_name = i(1, "test_name"), last = i(0) })),
+    s("jtest", fmt(jtest_method, { name = i(1, "test_name"), last = i(0) })),
 
     s("pusc", fmt(public_static_class, { name = i(1, "name"), last = i(0) })),
     s("prsc", fmt(private_static_class, { name = i(1, "name"), last = i(0) })),
