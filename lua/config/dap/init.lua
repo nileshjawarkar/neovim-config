@@ -17,10 +17,12 @@ local function setup_dap_icons()
     end
 end
 
+local isDapOpen = false;
 local function dap_open()
     require("dap").repl.close()
     require("dapui").open()
     require("config.filemanager").closeTreeView()
+    isDapOpen = true
 end
 
 local function dap_close()
@@ -29,6 +31,7 @@ local function dap_close()
     if vim.api.nvim_win_get_buf(0) == nil then
         vim.cmd("buffer")
     end
+    isDapOpen = false
 end
 
 local function setup_keys()
@@ -125,4 +128,7 @@ return {
     setup = setup,
     setup_keys = setup_keys,
     setup_dap_config = require("config.lsp.ws_config").dap_setup,
+    is_dap_open = function ()
+       return isDapOpen
+    end
 }
