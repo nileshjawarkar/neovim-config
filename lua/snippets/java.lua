@@ -2,8 +2,8 @@ local ls = require("luasnip")
 local s = ls.snippet
 local t = ls.text_node
 local i = ls.insert_node
-local fmt = require('luasnip.extras.fmt').fmt
 local f = ls.function_node
+local fmt = require('luasnip.extras.fmt').fmt
 local sys = require("core.util.sys")
 local str_util = require("core.util.string")
 
@@ -68,12 +68,33 @@ public void {name}(){{
 }}
 ]]
 
+local new_runnable = [[
+new Runnable() {{
+    @Override
+    public void run() {{
+        {last}
+    }}
+}}
+]]
+
+local public_runnable = [[
+public static class {name} implements Runnable {{
+    @Override
+    public void run() {{
+        {last}
+    }}
+}}
+]]
+
+
 ls.add_snippets("java", {
     s("jclass4", fmt(junit4_class_def, { pkg = f(get_pkg), name = f(get_class), test_name = i(1, "test_name"), last = i(0) })),
     s("jtest", fmt(jtest_method, { name = i(1, "test_name"), last = i(0) })),
 
     s("pusc", fmt(public_static_class, { name = i(1, "name"), last = i(0) })),
+    s("pusr", fmt(public_runnable, { name = i(1, "name"), last = i(0) })),
     s("prsc", fmt(private_static_class, { name = i(1, "name"), last = i(0) })),
+    s("newrunnable", fmt(new_runnable, { last = i(0) })),
 
     s("prsf", {
         t("private static "),
