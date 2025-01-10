@@ -60,9 +60,8 @@ keymap.set("n", "<leader>ql", ":clast<CR>", { noremap = true, silent = true, des
 
 -- Buffer management
 -----------------------------------------------
-keymap.set("n", "<leader>Q", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close buffer" })
-keymap.set("n", "<leader>bq", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close [<Leader>Q]" })
-keymap.set("n", "<leader>bn", ":bn<CR>", { noremap = true, silent = true, desc = "Move next [<Leader>Tab]" })
+keymap.set("n", "<leader>bq", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close" })
+keymap.set("n", "<leader>bn", ":bn<CR>", { noremap = true, silent = true, desc = "Move next" })
 keymap.set("n", "<leader>bp", ":bp<CR>", { noremap = true, silent = true, desc = "Move prev" })
 
 -- terminal management
