@@ -47,23 +47,43 @@ return {
         pcall(require('telescope').load_extension, 'live_grep_args')
         pcall(require('telescope').load_extension, 'fzf')
 
+        local function prepare_handler(fun, args)
+            return function()
+                if vim.bo.filetype == "mason" or vim.bo.filetype == "lazy" then
+                    vim.cmd("bdelete")
+                end
+                if args ~= nil then
+                    fun(args())
+                else
+                    fun()
+                end
+            end
+        end
+
         local builtin = require("telescope.builtin")
-        vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Fuzzy find files [<Leader>/]" })
-        vim.keymap.set("n", "<leader>/", builtin.find_files, { desc = "Fuzzy find files" })
+        local find_files = prepare_handler(builtin.find_files)
+        local show_buffers = prepare_handler(builtin.buffers)
+        local show_recentfile = prepare_handler(builtin.oldfiles)
+        local show_help = prepare_handler(builtin.help_tags)
+        local fuzzy_find_in_cur_buf = prepare_handler(builtin.current_buffer_fuzzy_find)
+        local fuzzy_find_tuc_in_ws = prepare_handler(builtin.grep_string)
+        local fuzzy_find_tuc_in_cur_buf = prepare_handler(builtin.grep_string, function()
+            return { search_dirs = { vim.fn.expand('%:p'), } }
+        end)
+        -- local show_grep = prepare_handler(builtin.live_grep)
+        local live_grep = prepare_handler(require('telescope').extensions.live_grep_args.live_grep_args)
 
-        vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "List open files [<Leader>Tab]" })
-        vim.keymap.set("n", "<leader>,", builtin.buffers, { desc = "List open files" })
+        vim.keymap.set("n", "<leader>ff", find_files, { desc = "Fuzzy find files [<Leader>/]" })
+        vim.keymap.set("n", "<leader>/", find_files, { desc = "Fuzzy find files" })
 
-        vim.keymap.set("n", "<leader>fr", builtin.oldfiles, { desc = "Find recent open files" })
-        -- vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Find text" })
-        vim.keymap.set("n", "<leader>fg", require('telescope').extensions.live_grep_args.live_grep_args,
-            { desc = "Find text" })
-        vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Show help tags" })
+        vim.keymap.set("n", "<leader>fb", show_buffers, { desc = "List open files [<Leader>Tab]" })
+        vim.keymap.set("n", "<leader>,", show_buffers, { desc = "List open files" })
 
-        vim.keymap.set("n", "<leader>f.", builtin.current_buffer_fuzzy_find, { desc = "Find text (in current buffer)" })
-        vim.keymap.set("n", "<leader>fW", builtin.grep_string, { desc = "Find text under cursor (in workspace)" })
-        vim.keymap.set("n", "<leader>fw", function()
-            builtin.grep_string({ search_dirs = { vim.fn.expand('%:p'), } })
-        end, { desc = "Find text under cursor (in current buffer)" })
+        vim.keymap.set("n", "<leader>fr", show_recentfile, { desc = "Find recent open files" })
+        vim.keymap.set("n", "<leader>fg", live_grep, { desc = "Find text" })
+        vim.keymap.set("n", "<leader>fh", show_help, { desc = "Show help tags" })
+        vim.keymap.set("n", "<leader>f.", fuzzy_find_in_cur_buf, { desc = "Find text (in buffer)" })
+        vim.keymap.set("n", "<leader>fW", fuzzy_find_tuc_in_ws, { desc = "Find text under cursor (in workspace)" })
+        vim.keymap.set("n", "<leader>fw", fuzzy_find_tuc_in_cur_buf, { desc = "Find text under cursor (in buffer)" })
     end,
 }

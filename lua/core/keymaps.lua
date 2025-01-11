@@ -48,15 +48,6 @@ keymap.set("n", "<leader>bP", function()
         print("Copied - " .. bufdir)
     end
 end, { noremap = true, silent = true, desc = "Copy file directory path" })
--- Quickfix keymaps
-------------------------------
--- Quick list management : For telescope C+q add search results to quick list.
-keymap.set("n", "<leader>qo", ":copen<CR>", { noremap = true, silent = true, desc = "Open list" })
-keymap.set("n", "<leader>qq", ":cclose<CR>", { noremap = true, silent = true, desc = "Close list" })
-keymap.set("n", "<leader>qf", ":cfirst<CR>", { noremap = true, silent = true, desc = "Jump to first" })
-keymap.set("n", "<leader>qn", ":cnext<CR>", { noremap = true, silent = true, desc = "Jump to next" })
-keymap.set("n", "<leader>qp", ":cprev<CR>", { noremap = true, silent = true, desc = "Jump to prev" })
-keymap.set("n", "<leader>ql", ":clast<CR>", { noremap = true, silent = true, desc = "Jump to last" })
 
 -- Buffer management
 -----------------------------------------------
