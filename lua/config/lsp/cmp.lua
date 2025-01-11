@@ -75,7 +75,7 @@ local function setup()
             { name = "luasnip" },
             { name = "path" },
         }, {
-            { name = "buffer", keyword_length = 3 },
+            { name = "buffer", keyword_length = 2 },
         }),
     })
 
@@ -103,7 +103,7 @@ end
 local load_snippets = (function()
     local first_time = require("core.util.sys").first_time
     return function(file_type)
-        if first_time(file_type) then
+        if first_time.check(file_type) then
             local custo_snippet_path = vim.fn.stdpath("data") .. "/snippets/"
             local snippet_path = "lua/snippets/"
             for _, ft_path1 in ipairs(vim.api.nvim_get_runtime_file(snippet_path .. file_type .. "*.lua", true)) do
@@ -112,6 +112,7 @@ local load_snippets = (function()
             for _, ft_path2 in ipairs(vim.split(vim.fn.glob(custo_snippet_path .. file_type .. "*.lua"), '\n', { trimempty = true })) do
                 loadfile(ft_path2)()
             end
+            first_time.setFalse(file_type)
         end
     end
 end)()

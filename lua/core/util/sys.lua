@@ -188,7 +188,7 @@ return {
         end
         return false
     end,
-    get_curbuf_name_without_ext = function ()
+    get_curbuf_name_without_ext = function()
         local filename = vim.fs.basename(vim.fn.bufname())
         return rm_ext_from_filename(filename)
     end,
@@ -268,13 +268,17 @@ return {
     end,
     get_path_sep = get_path_sep,
     first_time = (function()
-        local t = {}
-        return function(key)
-            if t[key] == nil then
-                t[key] = true
-                return true
+        local accessed = {}
+        return {
+            check = function(key)
+                if accessed[key] == nil then
+                    return true
+                end
+                return false
+            end,
+            setFalse = function(key)
+                accessed[key] = true
             end
-            return false
-        end
+        }
     end)(),
 }

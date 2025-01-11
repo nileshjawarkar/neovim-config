@@ -2,6 +2,7 @@ local jdtls = require("jdtls")
 local jdtls_util = require("config.jdtls.util")
 local mvn_util = require("core.mvn")
 local sys = require("core.util.sys")
+local first_time = sys.first_time
 
 local on_attach = function(_, bufnr)
     -- Filetype-specific keymaps (these can be done in the ftplugin directory instead if you prefer)
@@ -26,12 +27,13 @@ local on_attach = function(_, bufnr)
         { noremap = true, silent = true, buffer = bufnr, desc = "Current test" })
 
 
-    if sys.first_time("jdtls_dap_init") then
+    if first_time.check("jdtls_dap_init") then
         local jdtls_dap = require('jdtls.dap')
         -- Use WS/.nvim/config.lua for defining the debug configurations
         -- jdtls_dap.setup_dap_main_class_configs()
         vim.lsp.codelens.refresh()
         jdtls_dap.setup_dap()
+        first_time.setFalse("jdtls_dap_init")
     end
 end
 
@@ -154,11 +156,12 @@ end)()
 
 return {
     setup = function()
-        if sys.first_time("jdtls_init") then
+        if first_time.check("jdtls_init") then
             vim.api.nvim_create_user_command("DapPrintSrcPath", function()
                 local paths = require("core.mvn.util").find_src_paths(nil, true, false)
                 require("core.util.table").dump(paths)
             end, {})
+            first_time.setFalse("jdtls_init")
         end
         jdtls.start_or_attach(prepare_config())
     end,

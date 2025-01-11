@@ -1,7 +1,8 @@
 local first_time = require("core.util.sys").first_time
+local cmp_config = require("config.lsp.cmp")
 
 local setup_keymaps = function(ev)
-    if first_time("LspKeyInit") then
+    if first_time.check("LspKeyInit") then
         -- This block will be executed only once
         -- Setup keymap for diagnostics
         ---------------------------------
@@ -14,11 +15,13 @@ local setup_keymaps = function(ev)
         local dap_conf = require("config.dap")
         dap_conf.setup_keys()
         dap_conf.setup_dap_config()
+
+        first_time.setFalse("LspKeyInit")
     end
 
     -- Load user snippets - once for each filetype
     ---------------------------------------------
-    require("config.lsp.cmp").load_snippets(vim.bo.filetype)
+    cmp_config.load_snippets(vim.bo.filetype)
 
     -- Define key bindings
     ----------------------
@@ -132,7 +135,7 @@ return {
         })
 
         require("config.lsp.ui").setup()
-        require("config.lsp.cmp").setup()
+        cmp_config.setup()
         setup_auto_attach()
     end,
 }
