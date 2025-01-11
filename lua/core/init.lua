@@ -1,3 +1,3 @@
-require("core.options")
-require("core.keymaps")
-require("core.quickfix")
+require("core.nvim.options")
+require("core.nvim.keymaps")
+require("core.nvim.quickfix")
