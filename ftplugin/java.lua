@@ -1,5 +1,5 @@
 
-local version, err = require("core.java").get_java_version()
+local version, err = require("core.rt.java").get_java_version()
 local jtls_err = "Error - Lsp server (jdtls) start failed."
 if err ~= nil then
     print(jtls_err .. " " .. err)

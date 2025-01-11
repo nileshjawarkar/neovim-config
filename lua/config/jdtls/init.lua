@@ -53,7 +53,7 @@ local prepare_config = (function()
         -- Modify one property called resolveAdditionalTextEditsSupport and set it to true
         local extendedClientCapabilities = jdtls.extendedClientCapabilities
         extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
-        local java, _ = require("core.java").get_java_path()
+        local java, _ = require("core.rt.java").get_java_path()
         return {
             on_attach = on_attach,
             cmd = {

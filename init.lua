@@ -1,3 +1,3 @@
-require("core")
+require("core.nvim")
 require("plug_man")
 require("commands")

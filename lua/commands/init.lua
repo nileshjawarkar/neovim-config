@@ -13,7 +13,7 @@ vim.api.nvim_create_autocmd("ExitPre", {
 
 -- User commands
 vim.api.nvim_create_user_command("JavaVersion", function()
-    local v, err = require("core.java").get_java_version()
+    local v, err = require("core.rt.java").get_java_version()
     if err == nil and v ~= nil then
         print("Java version [" .. v.major .. "." .. v.minor .. "." .. v.patch .. "]")
     end
