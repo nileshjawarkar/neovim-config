@@ -59,7 +59,7 @@ local function setup_keys()
     end, { desc = "Terminate debug" })
 
     -- utility ui
-    vim.keymap.set("n", "<leader>Dl", "<cmd>lua require'dap'.run_last()<cr>", { desc = "Run last", })
+    vim.keymap.set("n", "<leader>Dl", dap.run_last, { desc = "Run last", })
     vim.keymap.set("n", '<leader>Df', '<cmd>Telescope dap frames<cr>', { desc = "Show frames", })
     vim.keymap.set("n", '<leader>Dh', '<cmd>Telescope dap commands<cr>', { desc = "Show commands", })
     vim.keymap.set("n", '<leader>D?', function()
@@ -90,7 +90,7 @@ local function setup()
     -- gain access to the dap plugin and its functions
     local dap = require("dap")
     local dapui = require("dapui")
-    local settings = {
+    local debug_settings = {
         controls = {
             element = "repl",
             enabled = false,
@@ -112,7 +112,7 @@ local function setup()
         } },
     }
 
-    dapui.setup(settings)
+    dapui.setup(debug_settings)
 
     -- setup an event listener for when the debugger is launched
     dap.listeners.before.attach.dapui_config = dap_open
@@ -128,7 +128,7 @@ return {
     setup = setup,
     setup_keys = setup_keys,
     setup_dap_config = require("config.lsp.ws_config").dap_setup,
-    is_dap_open = function ()
-       return isDapOpen
+    is_dap_open = function()
+        return isDapOpen
     end
 }

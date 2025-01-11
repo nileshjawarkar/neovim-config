@@ -1,6 +1,7 @@
 local jdtls_config = require('config.jdtls')
+local jdtls_util = require('config.jdtls.util')
 
-local version, err = jdtls_config.get_java_version()
+local version, err = jdtls_util.get_java_version()
 local jtls_err = "Error - Lsp server (jdtls) start failed."
 if err ~= nil then
     print(jtls_err .. " " .. err)

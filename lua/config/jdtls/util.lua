@@ -89,24 +89,9 @@ local function get_java_version()
     return version, err
 end
 
-local setup_dap = (function()
-    local init = false
-    return function()
-        local jdtls_dap = require('jdtls.dap')
-        -- Use WS/.nvim/config.lua for defining the debug configurations
-        -- jdtls_dap.setup_dap_main_class_configs()
-        vim.lsp.codelens.refresh()
-        if init == false then
-            jdtls_dap.setup_dap()
-            init = true
-        end
-    end
-end)()
-
 return {
     get_java_path = get_java_path,
     get_java_version = get_java_version,
     get_jdtls_options = get_jdtls_options,
     rm_jdtls_ws = rm_jdtls_ws,
-    setup_dap = setup_dap,
 }

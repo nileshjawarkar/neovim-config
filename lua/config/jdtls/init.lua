@@ -25,8 +25,14 @@ local on_attach = function(_, bufnr)
     keymap.set("n", "<leader>tt", jdtls.test_nearest_method,
         { noremap = true, silent = true, buffer = bufnr, desc = "Current test" })
 
-    -- 2) Init
-    jdtls_util.setup_dap()
+
+    if sys.first_time("jdtls_dap_init") then
+        local jdtls_dap = require('jdtls.dap')
+        -- Use WS/.nvim/config.lua for defining the debug configurations
+        -- jdtls_dap.setup_dap_main_class_configs()
+        vim.lsp.codelens.refresh()
+        jdtls_dap.setup_dap()
+    end
 end
 
 
@@ -150,14 +156,10 @@ return {
     setup = function()
         if sys.first_time("jdtls_init") then
             vim.api.nvim_create_user_command("DapPrintSrcPath", function()
-                local paths = require("config.jdtls").find_src_paths(nil, true, false)
+                local paths = require("core.mvn.util").find_src_paths(nil, true, false)
                 require("core.util.table").dump(paths)
             end, {})
         end
         jdtls.start_or_attach(prepare_config())
     end,
-    get_java_path = jdtls_util.get_java_path,
-    get_java_version = jdtls_util.get_java_version,
-    find_src_paths = jdtls_util.find_src_paths,
-    find_root = sys.find_root,
 }
