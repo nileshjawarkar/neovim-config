@@ -23,7 +23,7 @@ local function remove_from_qf_list()
     vim.fn.setqflist(qfall, 'r')
 
     -- Reopen quickfix window to refresh the list
-    vim.cmd('copen')
+    -- vim.cmd('copen')
 
     -- If not at the end of the list, stay at the same index, otherwise, go one up.
     local new_idx = curqfidx < #qfall and curqfidx or math.max(curqfidx - 1, 1)
@@ -38,6 +38,7 @@ local function clear_qf_list()
     vim.fn.setqflist({}, 'r')
 end
 
+--[[
 local function add_to_qf_list()
     if vim.bo.filetype == "qf" then
         return
@@ -53,8 +54,9 @@ local function add_to_qf_list()
     -- Add curbuf file to list
     table.insert(qfall, curfile)
     vim.fn.setqflist(qfall, 'r')
-end
+end 
+keymap.set("n", "<leader>qa", add_to_qf_list, { noremap = true, silent = true, desc = "Add current file" })
+]]
 
 keymap.set("n", "<leader>qd", remove_from_qf_list, { noremap = true, silent = true, desc = "Delete line" })
 keymap.set("n", "<leader>qc", clear_qf_list, { noremap = true, silent = true, desc = "Clear list" })
-keymap.set("n", "<leader>qa", add_to_qf_list, { noremap = true, silent = true, desc = "Add current file" })

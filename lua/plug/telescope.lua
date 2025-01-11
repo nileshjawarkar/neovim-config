@@ -14,6 +14,7 @@ return {
         { "nvim-telescope/telescope-live-grep-args.nvim", version = "^1.0.0", },
     },
     config = function()
+
         local actions = require("telescope.actions")
         require("telescope").setup({
             defaults = {

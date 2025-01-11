@@ -31,10 +31,11 @@ return {
             },
         })
         wk.add({
-            { "<leader>f", group = "Find using telescope", },
+            { "<leader>f", group = "Search", },
             { "<leader>e", group = "Tree view", },
-            { "<leader>l", group = "Code Lsp", },
+            { "<leader>l", group = "Lsp", },
             { "<leader>b", group = "Buffer", },
+            { "<leader>ba", group = "Add to selected list", },
             { "<leader>B", group = "Breakpoint", },
             { "<leader>lw", group = "Workspace", },
             { "<leader>w", group = "Window", },
