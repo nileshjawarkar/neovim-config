@@ -38,7 +38,7 @@ local function clear_qf_list()
     vim.fn.setqflist({}, 'r')
 end
 
---[[
+--[[ Need to add checks to avoid duplicate entry
 local function add_to_qf_list()
     if vim.bo.filetype == "qf" then
         return
