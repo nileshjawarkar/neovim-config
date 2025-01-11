@@ -101,18 +101,17 @@ local function setup()
 end
 
 local load_snippets = (function()
-    local init_file_types = {}
+    local first_time = require("core.util.sys").first_time
     return function(file_type)
-        local custo_snippet_path = vim.fn.stdpath("data") .. "/snippets/"
-        local snippet_path = "lua/snippets/"
-        if init_file_types[file_type] == nil then
+        if first_time(file_type) then
+            local custo_snippet_path = vim.fn.stdpath("data") .. "/snippets/"
+            local snippet_path = "lua/snippets/"
             for _, ft_path1 in ipairs(vim.api.nvim_get_runtime_file(snippet_path .. file_type .. "*.lua", true)) do
                 loadfile(ft_path1)()
             end
             for _, ft_path2 in ipairs(vim.split(vim.fn.glob(custo_snippet_path .. file_type .. "*.lua"), '\n', { trimempty = true })) do
                 loadfile(ft_path2)()
             end
-            init_file_types[file_type] = true
         end
     end
 end)()

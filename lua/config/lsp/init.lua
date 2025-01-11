@@ -1,11 +1,5 @@
 local first_time = require("core.util.sys").first_time
 
-local load_snippets = function(filetype)
-    if first_time(filetype) then
-        require("config.lsp.cmp").load_snippets(filetype)
-    end
-end
-
 local setup_keymaps = function(ev)
     if first_time("LspKeyInit") then
         -- This block will be executed only once
@@ -24,7 +18,8 @@ local setup_keymaps = function(ev)
 
     -- Load user snippets - once for each filetype
     ---------------------------------------------
-    load_snippets(vim.bo.filetype)
+    require("config.lsp.cmp").load_snippets(vim.bo.filetype)
+
     -- Define key bindings
     ----------------------
     local vim_lbuf = vim.lsp.buf
