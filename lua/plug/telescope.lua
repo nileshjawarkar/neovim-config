@@ -14,7 +14,6 @@ return {
         { "nvim-telescope/telescope-live-grep-args.nvim", version = "^1.0.0", },
     },
     config = function()
-
         local actions = require("telescope.actions")
         require("telescope").setup({
             defaults = {
@@ -48,10 +47,23 @@ return {
         pcall(require('telescope').load_extension, 'live_grep_args')
         pcall(require('telescope').load_extension, 'fzf')
 
+        local function execute_checks_and_preqs()
+            local buftype = vim.bo.filetype
+            if buftype == "mason" or vim.bo.filetype == "lazy" then
+                vim.cmd("bdelete")
+            elseif buftype == "dapui_watches" or buftype == "dapui_scopes"
+                or buftype == "dapui_stacks" or buftype == "dapui_console"
+                or buftype == "qf" then
+                print("Telescope is disabled for (" .. buftype .. ") type of buffer.")
+                return false
+            end
+            return true
+        end
+
         local function prepare_handler(fun, args)
             return function()
-                if vim.bo.filetype == "mason" or vim.bo.filetype == "lazy" then
-                    vim.cmd("bdelete")
+                if not execute_checks_and_preqs() then
+                    return
                 end
                 if args ~= nil then
                     fun(args())
