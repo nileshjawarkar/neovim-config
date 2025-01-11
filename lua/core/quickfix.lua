@@ -58,5 +58,5 @@ end
 keymap.set("n", "<leader>qa", add_to_qf_list, { noremap = true, silent = true, desc = "Add current file" })
 ]]
 
-keymap.set("n", "<leader>qd", remove_from_qf_list, { noremap = true, silent = true, desc = "Delete line" })
-keymap.set("n", "<leader>qc", clear_qf_list, { noremap = true, silent = true, desc = "Clear list" })
+keymap.set("n", "<leader>qr", remove_from_qf_list, { noremap = true, silent = true, desc = "Delete line" })
+keymap.set("n", "<leader>qR", clear_qf_list, { noremap = true, silent = true, desc = "Delete all lines" })
