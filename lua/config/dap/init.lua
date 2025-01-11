@@ -127,7 +127,7 @@ end
 return {
     setup = setup,
     setup_keys = setup_keys,
-    setup_dap_config = require("config.lsp.ws_config").dap_setup,
+    setup_dap_config = require("config.ws").dap_setup,
     is_dap_open = function()
         return isDapOpen
     end

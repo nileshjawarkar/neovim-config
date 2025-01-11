@@ -13,7 +13,7 @@ vim.api.nvim_create_autocmd("ExitPre", {
 
 -- User commands
 vim.api.nvim_create_user_command("JavaVersion", function()
-    local v, err = require("config.jdtls.util").get_java_version()
+    local v, err = require("core.java").get_java_version()
     if err == nil and v ~= nil then
         print("Java version [" .. v.major .. "." .. v.minor .. "." .. v.patch .. "]")
     end
@@ -25,7 +25,7 @@ vim.api.nvim_create_user_command("PrjInitConfig", function()
 end, {})
 
 vim.api.nvim_create_user_command("PrjReloadConfig", function()
-    local config = require("config.lsp.ws_config")
+    local config = require("config.ws")
     config.reload_config()
 end, {})
 
