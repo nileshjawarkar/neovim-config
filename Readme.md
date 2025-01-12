@@ -14,7 +14,7 @@
     - fd
     - curl
     - make
-- Optinal
+- Optional
     - Neovide
 
 ## Preqs installation -
