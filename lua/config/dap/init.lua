@@ -20,8 +20,8 @@ end
 local isDapOpen = false;
 local function dap_open()
     require("dap").repl.close()
-    require("dapui").open()
     require("config.filemanager").closeTreeView()
+    require("dapui").open()
     isDapOpen = true
 end
 
@@ -37,14 +37,20 @@ end
 local function setup_keys()
     local dap = require("dap")
 
+    local function continue()
+        if vim.bo.filetype == "NvimTree" then
+            vim.cmd("buffer")
+        end
+        dap.continue()
+    end
     -- debug session navigation
-    vim.keymap.set("n", "<F8>", dap.continue, { desc = "Continue" })
+    vim.keymap.set("n", "<F8>", continue, { desc = "Continue" })
     vim.keymap.set("n", "<F6>", dap.step_over, { desc = "Step over" })
     vim.keymap.set("n", "<F5>", dap.step_into, { desc = "Step into" })
     vim.keymap.set("n", "<F4>", dap.step_out, { desc = "Step out" })
     vim.keymap.set("n", "<F7>", dap.run_to_cursor, { desc = "Run to cursor" })
 
-    vim.keymap.set("n", "<leader>Dc", dap.continue, { desc = "Continue [<F8>]" })
+    vim.keymap.set("n", "<leader>Dc", continue, { desc = "Continue [<F8>]" })
     vim.keymap.set("n", "<leader>Dj", dap.step_over, { desc = "Step over [<F6>]" })
     vim.keymap.set("n", "<leader>Dk", dap.step_into, { desc = "Step into [<F5>]" })
     vim.keymap.set("n", "<leader>Do", dap.step_out, { desc = "Step out [<F4>]" })
@@ -130,5 +136,6 @@ return {
     setup_dap_config = require("config.ws").dap_setup,
     is_dap_open = function()
         return isDapOpen
-    end
+    end,
+    close = dap_close,
 }

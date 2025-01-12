@@ -84,14 +84,23 @@ local m = (function()
             },
         })
 
-
         local api = require("nvim-tree.api")
-        vim.keymap.set("n", "<leader>el", function()
+        local function preq_close()
+            local dap = require("config.dap")
+            if dap ~= nil then
+                if dap.is_dap_open() then
+                    dap.close()
+                end
+            end
             treeHandler.closeOil()
+        end
+
+        vim.keymap.set("n", "<leader>el", function()
+            preq_close()
             vim.cmd("NvimTreeFindFile")
         end, { desc = "Locate file" })
         vim.keymap.set("n", "<leader>ee", function()
-            treeHandler.closeOil()
+            preq_close()
             api.tree.toggle()
         end, { desc = "Toggle tree" })
         vim.keymap.set("n", "<leader>ek", api.tree.collapse_all, { desc = "Collapse tree" })
