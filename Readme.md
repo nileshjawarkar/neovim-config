@@ -32,13 +32,20 @@ for these operating systems**
 - Git
     - [Download Link](https://github.com/git-for-windows/git/releases/download/v2.47.1.windows.1/PortableGit-2.47.1-64-bit.7z.exe)
     - [Web side](https://git-scm.com/downloads/win)
+- curl
+    - [Web side](https://curl.se/windows/)
+- make
+    - [Web side](https://gnuwin32.sourceforge.net/packages/make.htm)
+- Java
+    - [Web side](https://developer.ibm.com/languages/java/semeru-runtimes/downloads/)
+- Neovide
+    - [GitHub Link](https://github.com/neovide/neovide)
 - FZF
     - [GitHub Link](https://github.com/junegunn/fzf)
 - RipGrep
     - [GitHub Link](https://github.com/BurntSushi/ripgrep)
 - Fd
     - [GitHub Link](https://github.com/sharkdp/fd)
-    
 
 
 
