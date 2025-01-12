@@ -29,10 +29,16 @@ local on_attach = function(_, bufnr)
 
     if first_time.check("jdtls_dap_init") then
         -- Use WS/.nvim/config.lua for defining the debug configurations
-        -- jdtls_dap.setup_dap_main_class_configs()
-        vim.lsp.codelens.refresh()
-        require('jdtls.dap').setup_dap()
-        first_time.setFalse("jdtls_dap_init")
+        local jdtls_dap = require('jdtls.dap')
+        if jdtls_dap ~= nil then
+            -- Commented following libe to avoid deplicate entries
+            -----------------------------------------------------
+            -- jdtls_dap.setup_dap_main_class_configs()
+            -----------------------------------------------------
+            vim.lsp.codelens.refresh()
+            jdtls_dap.setup_dap()
+            first_time.setFalse("jdtls_dap_init")
+        end
     end
 end
 
