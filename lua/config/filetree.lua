@@ -21,7 +21,6 @@ local m = (function()
             view = {
                 width = 40,
                 side = "left",
-                adaptive_size = true,
                 preserve_window_proportions = true,
             },
             git = {
