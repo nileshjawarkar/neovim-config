@@ -1,7 +1,6 @@
-local first_time = require("core.util.sys").first_time
-local cmp_config = require("config.lsp.cmp")
 
 local setup_keymaps = function(ev)
+    local first_time = require("core.util.sys").first_time
     if first_time.check("LspKeyInit") then
         -- This block will be executed only once
         -- Setup keymap for diagnostics
@@ -27,7 +26,7 @@ local setup_keymaps = function(ev)
 
     -- Load user snippets - once for each filetype
     ---------------------------------------------
-    cmp_config.load_snippets(vim.bo.filetype)
+    require("config.lsp.cmp").load_snippets(vim.bo.filetype)
 
     -- Define key bindings
     ----------------------
@@ -77,6 +76,9 @@ local setup_keymaps = function(ev)
         { buffer = ev.buf, desc = "Code actions" })
     vim.keymap.set("n", "<leader>lf", function() vim.lsp.buf.format({ async = true }) end,
         { buffer = ev.buf, desc = "Format code" })
+
+    -- Experimental
+    vim.lsp.codelens.refresh()
 end
 
 local function configure_ui()
@@ -151,15 +153,6 @@ return {
                     srv_config["settings"] = {
                         Lua = {
                             diagnostics = { globals = { "vim" }, },
-                            workspace = { library = { vim.env.VIMRUNTIME } },
-                            format = {
-                                enable = true,
-                                defaultConfig = {
-                                    align_continuous_assign_statement = false,
-                                    align_continuous_rect_table_field = false,
-                                    align_array_table = false,
-                                },
-                            },
                         },
                     }
                 end
@@ -171,6 +164,7 @@ return {
         })
 
         configure_ui()
+        require("config.lsp.cmp").setup()
 
         -- Use LspAttach autocommand to only map the following keys
         -- after the language server attaches to the current buffer

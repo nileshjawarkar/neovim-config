@@ -26,18 +26,18 @@ local on_attach = function(_, bufnr)
     keymap.set("n", "<leader>tt", jdtls.test_nearest_method,
         { noremap = true, silent = true, buffer = bufnr, desc = "Current test" })
 
-
     if first_time.check("jdtls_dap_init") then
         -- Use WS/.nvim/config.lua for defining the debug configurations
         local jdtls_dap = require('jdtls.dap')
         if jdtls_dap ~= nil then
-            -- Commented following libe to avoid deplicate entries
-            -----------------------------------------------------
-            -- jdtls_dap.setup_dap_main_class_configs()
-            -----------------------------------------------------
             require("config.dap.java").set_defaults()
-
-            vim.lsp.codelens.refresh()
+            -- Override this method to avoid serching for main classes
+            -- Not working as expected so commenting it
+            --[[
+            ---@diagnostic disable-next-line: unused-local
+            ---@diagnostic disable-next-line: duplicate-set-field
+            jdtls_dap.fetch_main_configs = function(_, _) end
+            ]]
             jdtls_dap.setup_dap()
             first_time.setFalse("jdtls_dap_init")
         end
