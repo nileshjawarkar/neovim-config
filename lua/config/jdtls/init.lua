@@ -35,6 +35,8 @@ local on_attach = function(_, bufnr)
             -----------------------------------------------------
             -- jdtls_dap.setup_dap_main_class_configs()
             -----------------------------------------------------
+            require("config.dap.java").set_defaults()
+
             vim.lsp.codelens.refresh()
             jdtls_dap.setup_dap()
             first_time.setFalse("jdtls_dap_init")

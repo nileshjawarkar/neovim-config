@@ -19,9 +19,7 @@ return {
         vim.keymap.set("n", "<leader>G", function()
             local dap = require("config.dap")
             if dap ~= nil then
-                if dap.is_dap_open() then
-                    dap.close()
-                end
+                dap.close()
             end
             require("config.filetree").close()
             neogit.open({ kind = "replace" })

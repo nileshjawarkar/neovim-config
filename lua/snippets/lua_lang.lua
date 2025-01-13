@@ -38,38 +38,23 @@ ls.add_snippets("lua", {
     }),
 
     s("dap_config_java", fmt([[
-    local dap = require('dap')
-    dap.configurations.java = {{
-      {{
-        type = 'java';
-        request = 'attach';
-        name = "Debug (Attach) - Remote";
-        hostName = "127.0.0.1";
-        port = 8000;
-      }},
-      {{
+    local dap_config = require("config.dap.java")
+    dap_config.add({{
         type = "java",
         -- classPaths = "",
         -- modulePaths = "",
         -- javaExec = "/path/to/your/bin/java",
-        projectName = "Valid Project Name",
+        -- projectName = "Valid Project Name",
         mainClass = "your.package.name.MainClassName",
-        name = "Launch MainClassName",
+        name = "Launch class",
         request = "launch",
-      }}
-    }}
+    }})
     ]], {})),
 
-    s("dap_config_c_cpp", fmt([[
+    s("dap_config_lldb", fmt([[
     local root_dir = vim.fn.getcwd()
     local function dap_setup()
         local dap = require('dap')
-        dap.adapters.gdb = {{
-            id = 'gdb',
-            type = 'executable',
-            command = 'gdb',
-            args = {{ '--quiet', '--interpreter=dap' }},
-        }}
         dap.adapters.cppdbg = {{
             id = 'cppdbg',
             type = 'executable',
@@ -105,29 +90,6 @@ ls.add_snippets("lua", {
                 miDebuggerPath = vim.fn.exepath('gdb'),
                 cwd = root_dir,
                 program = find_executable,
-            }}, {{
-                name = "Run executable (GDB)",
-                type = "gdb", -- 'cppdbg'
-                request = "launch",
-                program = find_executable,
-                cwd = root_dir,
-                stopAtEntry = true,
-            }}, {{
-                name = 'Run executable with arguments (GDB)',
-                type = 'gdb',
-                request = 'launch',
-                program = find_executable,
-                args = function()
-                    local args_str = vim.fn.input({{
-                        prompt = 'Arguments: ',
-                    }})
-                    return vim.split(args_str, ' +')
-                end,
-            }}, {{
-                name = 'Attach to process (GDB)',
-                type = 'gdb',
-                request = 'attach',
-                processId = require('dap.utils').pick_process,
             }}, {{
                 name = 'Run executable (using LLDB)',
                 type = 'codelldb',
@@ -169,6 +131,61 @@ ls.add_snippets("lua", {
                 -- "--query-driver=/home/nilesh/.local/zig/zig_cc.sh",
             }},
         }},
+    }}
+    ]], {})),
+
+
+    s("dap_config_dbg", fmt([[
+    local root_dir = vim.fn.getcwd()
+    local function dap_setup()
+        local dap = require('dap')
+        dap.adapters.gdb = {{
+            id = 'gdb',
+            type = 'executable',
+            command = 'gdb',
+            args = {{ '--quiet', '--interpreter=dap' }},
+        }}
+
+        local function find_executable()
+            local path = vim.fn.input({{
+                prompt = 'Path to executable: ',
+                default = root_dir .. '/',
+                completion = 'file',
+            }})
+            return (path and path ~= '') and path or dap.ABORT
+        end
+
+        dap.configurations.c = {{
+            {{
+                name = "Run executable (GDB)",
+                type = "gdb", -- 'cppdbg'
+                request = "launch",
+                program = find_executable,
+                cwd = root_dir,
+                stopAtEntry = true,
+            }}, {{
+                name = 'Run executable with arguments (GDB)',
+                type = 'gdb',
+                request = 'launch',
+                program = find_executable,
+                args = function()
+                    local args_str = vim.fn.input({{
+                        prompt = 'Arguments: ',
+                    }})
+                    return vim.split(args_str, ' +')
+                end,
+            }}, {{
+                name = 'Attach to process (GDB)',
+                type = 'gdb',
+                request = 'attach',
+                processId = require('dap.utils').pick_process,
+            }},
+        }}
+        dap.configurations.cpp = dap.configurations.c
+    end
+
+    return {{
+        dap_setup = dap_setup,
     }}
     ]], {})),
 })

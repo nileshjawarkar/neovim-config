@@ -133,9 +133,9 @@ end
 return {
     setup = setup,
     setup_keys = setup_keys,
-    setup_dap_config = require("config.ws").dap_setup,
-    is_dap_open = function()
-        return isDapOpen
+    close = function()
+        if true == isDapOpen then
+            dap_close()
+        end
     end,
-    close = dap_close,
 }

@@ -4,34 +4,9 @@ local t = ls.text_node
 local i = ls.insert_node
 local f = ls.function_node
 local fmt = require('luasnip.extras.fmt').fmt
+
 local sys = require("core.util.sys")
-local str_util = require("core.util.string")
-
-local get_pkg = function()
-    local parent_path = sys.get_curbuf_dir()
-    local pkg, idx = "", -1
-    str_util.split(parent_path, sys.get_path_sep(), function(dir_name)
-        if dir_name == "src" or dir_name == "Src" or dir_name == "SRC" then
-            idx = 0
-        elseif idx >= 0 then
-            idx = idx + 1
-            if idx == 1 and (dir_name == "main" or dir_name == "test") then
-            elseif idx == 2 and (dir_name == "java") then
-            else
-                if pkg ~= "" then
-                    pkg = pkg .. "."
-                end
-                pkg = pkg .. dir_name
-            end
-        end
-    end)
-    return pkg
-end
-
-
-local get_class = function()
-    return sys.get_curbuf_name_without_ext()
-end
+local javart = require("core.rt.java")
 
 local junit4_class_def = [[
 package {pkg};
@@ -88,7 +63,10 @@ public static class {name} implements Runnable {{
 
 
 ls.add_snippets("java", {
-    s("jclass4", fmt(junit4_class_def, { pkg = f(get_pkg), name = f(get_class), test_name = i(1, "test_name"), last = i(0) })),
+    s("jclass4",
+        fmt(junit4_class_def,
+            { pkg = f(javart.get_curbuf_as_pkg), name = f(sys.get_curbuf_name_without_ext), test_name = i(1, "test_name"), last =
+            i(0) })),
     s("jtest", fmt(jtest_method, { name = i(1, "test_name"), last = i(0) })),
 
     s("pusc", fmt(public_static_class, { name = i(1, "name"), last = i(0) })),

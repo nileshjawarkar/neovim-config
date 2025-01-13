@@ -13,9 +13,15 @@ local setup_keymaps = function(ev)
 
         -- Setup DAP
         local dap_conf = require("config.dap")
-        dap_conf.setup_keys()
-        dap_conf.setup_dap_config()
-
+        if nil ~= dap_conf then
+            dap_conf.setup_keys()
+        end
+        local ws_config = require("config.ws")
+        if nil ~= ws_config then
+            if ws_config.dap_setup ~= nil and type(ws_config.dap_setup) == "function" then
+                ws_config.dap_setup()
+            end
+        end
         first_time.setFalse("LspKeyInit")
     end
 
@@ -73,13 +79,36 @@ local setup_keymaps = function(ev)
         { buffer = ev.buf, desc = "Format code" })
 end
 
-local function setup_auto_attach()
-    -- Use LspAttach autocommand to only map the following keys
-    -- after the language server attaches to the current buffer
-    vim.api.nvim_create_autocmd("LspAttach", {
-        group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-        callback = setup_keymaps,
-    })
+local function configure_ui()
+    -- Define the diagnostic signs.
+    local diagnostic_icons = {
+        ERROR = 'x',
+        WARN = '*',
+        HINT = '*',
+        INFO = '*',
+    }
+    for severity, icon in pairs(diagnostic_icons) do
+        local hl = 'DiagnosticSign' .. severity:sub(1, 1) .. severity:sub(2):lower()
+        vim.fn.sign_define(hl, { text = icon, texthl = hl })
+    end
+
+    -- UI setup : Added rounded border
+    -- 1) Add border to lsp popup windows
+    ------------------------------------
+    require('lspconfig.ui.windows').default_options = {
+        border = "rounded",
+    }
+
+    -- 2) Add border to popup window for signature
+    ----------------------------------------------
+    vim.lsp.util.open_floating_preview = (function()
+        local open_floating_preview = vim.lsp.util.open_floating_preview
+        return function(contents, syntax, opts, ...)
+            opts = opts or {}
+            opts.border = "rounded"
+            return open_floating_preview(contents, syntax, opts, ...)
+        end
+    end)()
 end
 
 return {
@@ -141,8 +170,13 @@ return {
             end,
         })
 
-        require("config.lsp.ui").setup()
-        cmp_config.setup()
-        setup_auto_attach()
+        configure_ui()
+
+        -- Use LspAttach autocommand to only map the following keys
+        -- after the language server attaches to the current buffer
+        vim.api.nvim_create_autocmd("LspAttach", {
+            group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+            callback = setup_keymaps,
+        })
     end,
 }

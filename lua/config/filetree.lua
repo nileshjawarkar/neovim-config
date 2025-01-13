@@ -37,9 +37,7 @@ local m = (function()
         local function preq_close()
             local dap = require("config.dap")
             if dap ~= nil then
-                if dap.is_dap_open() then
-                    dap.close()
-                end
+                dap.close()
             end
         end
 
