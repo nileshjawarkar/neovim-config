@@ -18,7 +18,7 @@ local function setDefaults()
     add_config({
         type = "java",
         mainClass = javart.get_curbuf_as_class,
-        name = "Launch current main",
+        name = "Launch current class",
         request = "launch",
     })
     add_config({

@@ -38,8 +38,18 @@ local function setup_keys()
     local dap = require("dap")
 
     local function continue()
-        if vim.bo.filetype == "NvimTree" then
+        local buftype = vim.bo.filetype
+        if buftype == "NvimTree" then
             vim.cmd("buffer")
+            buftype = vim.bo.filetype
+        end
+
+        if buftype == "mason" or buftype == "lazy" or buftype == "NeogitStatus"
+            or buftype == "dapui_watches" or buftype == "dapui_scopes"
+            or buftype == "dapui_stacks" or buftype == "dapui_console"
+            or buftype == "qf" then
+            vim.notify("Current buffer not supported [" .. buftype .. "]", vim.log.levels.INFO)
+            return
         end
         dap.continue()
     end
