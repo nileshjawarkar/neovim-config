@@ -54,7 +54,7 @@ return {
             elseif buftype == "dapui_watches" or buftype == "dapui_scopes"
                 or buftype == "dapui_stacks" or buftype == "dapui_console"
                 or buftype == "qf" then
-                print("Telescope is disabled for (" .. buftype .. ") type of buffer.")
+                vim.notify("Telescope is disabled for (" .. buftype .. ") type of buffer.", vim.log.levels.INFO)
                 return false
             end
             return true

@@ -219,7 +219,7 @@ return {
                 file.write("-- This is neovim project configuration file")
             end)
         else
-            print(".nvim/config.lua - already exist")
+            vim.notify(".nvim/config.lua - already exist", vim.log.levels.INFO)
         end
     end,
     find_root = function()
@@ -255,12 +255,12 @@ return {
         end
         local parent = dir_list[0]
         if is_dir(parent) then
-            print("Directory already exit - " .. parent)
+            vim.notify("Directory already exit - " .. parent, vim.log.levels.INFO)
             return false
         end
         for _, dir in ipairs(dir_list) do
             if not create_dir(dir) then
-                print("Failed to create directory - " .. dir)
+                vim.notify("Failed to create directory - " .. dir, vim.log.levels.INFO)
                 return false
             end
         end

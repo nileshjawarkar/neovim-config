@@ -41,7 +41,7 @@ local setup_keymaps = function(ev)
     vim.keymap.set("n", "<leader>lwr", vim_lbuf.remove_workspace_folder,
         { buffer = ev.buf, desc = "Remove workspace folder" })
     vim.keymap.set("n", "<leader>lwl", function()
-        print(vim.inspect(vim_lbuf.list_workspace_folders()))
+        vim.notify(vim.inspect(vim_lbuf.list_workspace_folders()), vim.log.levels.INFO)
     end, { buffer = ev.buf, desc = "List workspace folders" })
 
     vim.keymap.set("n", "<leader>lD", vim_lbuf.declaration,

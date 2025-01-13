@@ -31,21 +31,21 @@ keymap.set("n", "<leader>bC", function()
     local fullpath = vim.fn.bufname()
     if fullpath ~= nil and fullpath ~= "" then
         vim.cmd("let @+ = \'" .. fullpath .. "\'")
-        print("Copied - " .. fullpath)
+        vim.notify("Copied - " .. fullpath, vim.log.levels.INFO)
     end
 end, { noremap = true, silent = true, desc = "Copy file path" })
 keymap.set("n", "<leader>bc", function()
     local bufname = sys.get_curbuf_name()
     if bufname ~= nil and bufname ~= "" then
         vim.cmd("let @+ = \'" .. bufname .. "\'")
-        print("Copied - " .. bufname)
+        vim.notify("Copied - " .. bufname, vim.log.levels.INFO)
     end
 end, { noremap = true, silent = true, desc = "Copy file name" })
 keymap.set("n", "<leader>bP", function()
     local bufdir = sys.get_curbuf_dir()
     if bufdir ~= nil and bufdir ~= "" then
         vim.cmd("let @+ = \'" .. bufdir .. "\'")
-        print("Copied - " .. bufdir)
+        vim.notify("Copied - " .. bufdir, vim.log.levels.INFO)
     end
 end, { noremap = true, silent = true, desc = "Copy file directory path" })
 

@@ -7,7 +7,7 @@ m.createMM_prj = function(self, root_dir, prj_type)
     -- preqs
     local sys = require("core.util.sys")
     if sys.is_file(root_dir .. "/pom.xml") then
-        print("Failed to create project - pom.xml already exit")
+        vim.notify("Failed to create project - pom.xml already exit", vim.log.levels.INFO)
         return
     end
 
@@ -28,14 +28,14 @@ m.createMM_prj = function(self, root_dir, prj_type)
         file.write(main_pom)
     end)
     if not st then
-        print("Failed to create - " .. root_dir .. "/pom.xml")
+        vim.notify("Failed to create - " .. root_dir .. "/pom.xml", vim.log.levels.INFO)
         return
     end
     st = sys.write_to(root_dir .. "/.gitignore", function(file)
         file.write(util.get_ignore_content())
     end)
     if not st then
-        print("Failed to create - " .. root_dir .. "/.gitignore")
+        vim.notify("Failed to create - " .. root_dir .. "/.gitignore", vim.log.levels.INFO)
         return
     end
 
@@ -43,10 +43,10 @@ m.createMM_prj = function(self, root_dir, prj_type)
     -- lib module
     local mod_deps = nil
     if false == self:createLib_module(root_dir, prj_type, modules[0], pkg, version, root_name, pkg, version, mod_deps) then
-        print("Failed to create module - " .. modules[0])
+        vim.notify("Failed to create module - " .. modules[0], vim.log.levels.INFO)
         return
     end
-    print("Created maven module - " .. modules[0])
+    vim.notify("Created maven module - " .. modules[0], vim.log.levels.INFO)
     if prj_type == "JEE" then
         mod_deps = {}
         mod_deps[0] = {
@@ -57,18 +57,18 @@ m.createMM_prj = function(self, root_dir, prj_type)
         }
 
         if false == self:createWar_module(root_dir, prj_type, modules[1], pkg, version, root_name, pkg, version, mod_deps) then
-            print("Failed to create module - " .. modules[1])
+            vim.notify("Failed to create module - " .. modules[1], vim.log.levels.INFO)
         end
-        print("Created maven module - " .. modules[1])
+        vim.notify("Created maven module - " .. modules[1], vim.log.levels.INFO)
     end
-    print("Created maven project - " .. root_name)
+    vim.notify("Created maven project - " .. root_name, vim.log.levels.INFO)
 end
 
 m.createLib_module = function(self, root_dir, prj_type, name, pkg, version, parent_name, parent_pkg, parent_version, deps)
     local mod_path = root_dir .. "/" .. name
     local sys = require("core.util.sys")
     if sys.is_dir(mod_path) then
-        print("Failed to create module - " .. name .. " already exit")
+        vim.notify("Failed to create module - " .. name .. " already exit", vim.log.levels.INFO)
         return false
     end
     local dirs_needed = {}
@@ -87,7 +87,7 @@ m.createLib_module = function(self, root_dir, prj_type, name, pkg, version, pare
             file.write(module_pom)
         end)
         if not st then
-            print("Failed to create - " .. mod_path .. "/pom.xml")
+            vim.notify("Failed to create - " .. mod_path .. "/pom.xml", vim.log.levels.INFO)
             return false
         end
         return true
@@ -100,7 +100,7 @@ m.createWar_module = function(self, root_dir, prj_type, name, pkg, version, pare
     local mod_path = root_dir .. "/" .. name
     local sys = require("core.util.sys")
     if sys.is_dir(mod_path) then
-        print("Failed to create module - " .. name .. " already exit")
+        vim.notify("Failed to create module - " .. name .. " already exit", vim.log.levels.INFO)
         return false
     end
 
@@ -119,7 +119,7 @@ m.createWar_module = function(self, root_dir, prj_type, name, pkg, version, pare
             file.write(module_pom)
         end)
         if not st then
-            print("Failed to create - " .. mod_path .. "/pom.xml")
+            vim.notify("Failed to create - " .. mod_path .. "/pom.xml", vim.log.levels.INFO)
             return false
         end
 
@@ -127,28 +127,28 @@ m.createWar_module = function(self, root_dir, prj_type, name, pkg, version, pare
             file.write(util.get_web_xml(root_name))
         end)
         if not st then
-            print("Failed to create - " .. mod_path .. "/src/main/webapp/WEB-INF/web.xml")
+            vim.notify("Failed to create - " .. mod_path .. "/src/main/webapp/WEB-INF/web.xml", vim.log.levels.INFO)
             return false
         end
         st = sys.write_to(mod_path .. "/src/main/webapp/WEB-INF/beans.xml", function(file)
             file.write(util.get_beans_xml())
         end)
         if not st then
-            print("Failed to create - " .. mod_path .. "/src/main/webapp/WEB-INF/beans.xml")
+            vim.notify("Failed to create - " .. mod_path .. "/src/main/webapp/WEB-INF/beans.xml", vim.log.levels.INFO)
             return false
         end
         st = sys.write_to(mod_path .. "/src/main/resources/application.properties", function(file)
             file.write(util.get_application_props())
         end)
         if not st then
-            print("Failed to create - " .. mod_path .. "/src/main/resources/application.properties")
+            vim.notify("Failed to create - " .. mod_path .. "/src/main/resources/application.properties", vim.log.levels.INFO)
             return false
         end
         st = sys.write_to(mod_path .. "/src/main/resources/META-INF/persistence.xml", function(file)
             file.write(util.get_persistence_xml())
         end)
         if not st then
-            print("Failed to create - " .. mod_path .. "/src/main/resources/META-INF/persistence.xml")
+            vim.notify("Failed to create - " .. mod_path .. "/src/main/resources/META-INF/persistence.xml", vim.log.levels.INFO)
             return false
         end
         return true

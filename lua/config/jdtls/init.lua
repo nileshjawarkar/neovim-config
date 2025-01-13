@@ -164,7 +164,7 @@ end)()
 return {
     setup = function()
         if first_time.check("jdtls_init") then
-            print("Please wait. Lsp starting..")
+            vim.notify("Please wait. Lsp starting..", vim.log.levels.INFO)
             vim.api.nvim_create_user_command("DapPrintSrcPath", function()
                 local paths = require("core.mvn.util").find_src_paths(nil, true, false)
                 require("core.util.table").dump(paths)

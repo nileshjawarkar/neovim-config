@@ -15,7 +15,7 @@ vim.api.nvim_create_user_command("JavaVersion", function()
     if rt_java ~= nil then
         local v, err = rt_java.get_java_version()
         if err == nil and v ~= nil then
-            print("Java version [" .. v.major .. "." .. v.minor .. "." .. v.patch .. "]")
+            vim.notify("Java version [" .. v.major .. "." .. v.minor .. "." .. v.patch .. "]", vim.log.levels.INFO)
         end
     end
 end, {})
