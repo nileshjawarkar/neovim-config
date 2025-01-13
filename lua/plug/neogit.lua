@@ -17,13 +17,13 @@ return {
             },
         })
         vim.keymap.set("n", "<leader>G", function()
-            -- Do not open when dap started
-            if require("config.dap").is_dap_open() then
-                print("Please close the DAP")
-                return
+            local dap = require("config.dap")
+            if dap ~= nil then
+                if dap.is_dap_open() then
+                    dap.close()
+                end
             end
-
-            require("config.filemanager").closeTreeView()
+            require("config.filetree").close()
             neogit.open({ kind = "replace" })
         end, { desc = "Open git view" })
     end,

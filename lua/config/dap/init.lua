@@ -20,7 +20,7 @@ end
 local isDapOpen = false;
 local function dap_open()
     require("dap").repl.close()
-    require("config.filemanager").closeTreeView()
+    require("config.filetree").close()
     require("dapui").open()
     isDapOpen = true
 end
