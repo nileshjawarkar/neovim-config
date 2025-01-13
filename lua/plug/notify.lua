@@ -9,6 +9,11 @@ return {
             stages = "fade",
             timeout = 1200,
         })
-        vim.notify = notify
+        vim.notify = function(msg, level, opt)
+            local buftype = vim.bo.filetype
+            if buftype ~= "NeogitStatus" then
+                notify(msg, level, opt)
+            end
+        end
     end
 }
