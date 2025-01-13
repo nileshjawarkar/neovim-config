@@ -49,12 +49,15 @@ return {
 
         local function execute_checks_and_preqs()
             local buftype = vim.bo.filetype
+            if buftype == "df" then
+                vim.cmd("buffer")
+                buftype = vim.bo.filetype
+            end
             if buftype == "mason" or vim.bo.filetype == "lazy" then
                 vim.cmd("bdelete")
             elseif buftype == "dapui_watches" or buftype == "dapui_scopes"
-                or buftype == "dapui_stacks" or buftype == "dapui_console"
-                or buftype == "qf" then
-                vim.notify("Telescope is disabled for (" .. buftype .. ") type of buffer.", vim.log.levels.INFO)
+                or buftype == "dapui_stacks" or buftype == "dapui_console" then
+                vim.notify("While in DAP, please use telescope from code buffer.", vim.log.levels.INFO)
                 return false
             end
             return true
