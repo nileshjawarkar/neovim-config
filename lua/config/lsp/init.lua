@@ -121,8 +121,15 @@ return {
                 elseif server_name == "lua_ls" then
                     srv_config["settings"] = {
                         Lua = {
-                            diagnostics = {
-                                globals = { "vim" },
+                            diagnostics = { globals = { "vim" }, },
+                            workspace = { library = { vim.env.VIMRUNTIME } },
+                            format = {
+                                enable = true,
+                                defaultConfig = {
+                                    align_continuous_assign_statement = false,
+                                    align_continuous_rect_table_field = false,
+                                    align_array_table = false,
+                                },
                             },
                         },
                     }
