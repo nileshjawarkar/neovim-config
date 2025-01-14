@@ -30,7 +30,7 @@ return {
                 "clang-format", "cpptools", "prettier",
                 "emmet-language-server", "java-debug-adapter",
                 "java-test", "xmlformatter",
-                -- "csharp_ls"
+                "codelldb",
             },
         })
         vim.api.nvim_command('MasonToolsInstall')

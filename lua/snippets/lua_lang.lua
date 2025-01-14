@@ -81,8 +81,7 @@ ls.add_snippets("lua", {
 
         dap.configurations.c = {{
             {{
-                -- This needs explicite use of command => "gdbserver localhost:8901 <program>"
-                -- to start the debug session manualy
+                -- Please start session manualy using => "gdbserver localhost:8901 <program>"
                 name = 'Attach to gdbserver (at 8901)',
                 type = 'cppdbg',
                 request = 'launch',
@@ -100,9 +99,16 @@ ls.add_snippets("lua", {
                 stopOnEntry = false,
                 args = {{}},
                 console = 'integratedTerminal',
-            }}
+            }}, {{
+                name = 'Attach to process (LLDB)',
+                type = 'codelldb',
+                request = 'attach',
+                processId = require('dap.utils').pick_process,
+            }},
         }}
         dap.configurations.cpp = dap.configurations.c
+        dap.configurations.zig = dap.configurations.c
+        dap.configurations.rust = dap.configurations.c
     end
 
     --+ Way to configure clangd compiler inputs
@@ -186,6 +192,8 @@ ls.add_snippets("lua", {
             }},
         }}
         dap.configurations.cpp = dap.configurations.c
+        dap.configurations.zig = dap.configurations.c
+        dap.configurations.rust = dap.configurations.c
     end
 
     return {{
