@@ -52,7 +52,8 @@ ls.add_snippets("lua", {
     ]], {})),
 
     s("dap_config_lldb", fmt([[
-    local root_dir = vim.fn.getcwd()
+    local sys = require("core.util.sys")
+    local root_path = sys.path_builder(vim.fn.getcwd()):append(""):build()
     local function dap_setup()
         local dap = require('dap')
         dap.adapters.cppdbg = {{
@@ -72,7 +73,7 @@ ls.add_snippets("lua", {
         local function find_executable()
             local path = vim.fn.input({{
                 prompt = 'Path to executable: ',
-                default = root_dir .. '/',
+                default = root_path,
                 completion = 'file',
             }})
             return (path and path ~= '') and path or dap.ABORT
@@ -88,14 +89,14 @@ ls.add_snippets("lua", {
                 MIMode = 'gdb',
                 miDebuggerServerAddress = 'localhost:8901',
                 miDebuggerPath = vim.fn.exepath('gdb'),
-                cwd = root_dir,
+                cwd = root_path,
                 program = find_executable,
             }}, {{
-                name = 'Run executable (using LLDB)',
+                name = 'Launch exe (using LLDB)',
                 type = 'codelldb',
                 request = 'launch',
                 program = find_executable,
-                cwd = root_dir,
+                cwd = root_path,
                 stopOnEntry = false,
                 args = {{}},
                 console = 'integratedTerminal',
@@ -134,9 +135,12 @@ ls.add_snippets("lua", {
     }}
     ]], {})),
 
+    s("dap_config_gdb", fmt([[
+    -- Please check version of gdb. 
+    -- DAP is supported by gdb version 1.14 on-wards
+    local sys = require("core.util.sys")
+    local root_path = sys.path_builder(vim.fn.getcwd()):append(""):build()
 
-    s("dap_config_dbg", fmt([[
-    local root_dir = vim.fn.getcwd()
     local function dap_setup()
         local dap = require('dap')
         dap.adapters.gdb = {{
@@ -149,7 +153,7 @@ ls.add_snippets("lua", {
         local function find_executable()
             local path = vim.fn.input({{
                 prompt = 'Path to executable: ',
-                default = root_dir .. '/',
+                default = root_path,
                 completion = 'file',
             }})
             return (path and path ~= '') and path or dap.ABORT
@@ -157,14 +161,14 @@ ls.add_snippets("lua", {
 
         dap.configurations.c = {{
             {{
-                name = "Run executable (GDB)",
-                type = "gdb", -- 'cppdbg'
+                name = "Launch executable (GDB)",
+                type = "gdb",
                 request = "launch",
                 program = find_executable,
-                cwd = root_dir,
+                cwd = root_path,
                 stopAtEntry = true,
             }}, {{
-                name = 'Run executable with arguments (GDB)',
+                name = 'Launch exe with arguments (GDB)',
                 type = 'gdb',
                 request = 'launch',
                 program = find_executable,
