@@ -29,15 +29,32 @@ return {
 
         vim.keymap.set("n", "<leader>bA", function() harpoon:list():add() end, { desc = "Add to selected list" })
 
-        local function replace_or_add(index)
-            return function()
-                if harpoon:list():length() < index then
-                    harpoon:list():add()
-                else
-                    harpoon:list():replace_at(index)
+        local replace_or_add = (function()
+            local function isBufSuported()
+                local buftype = vim.bo.filetype
+                if buftype == "NvimTree" or buftype == "mason"
+                    or buftype == "lazy" or buftype == "NeogitStatus"
+                    or buftype == "dapui_watches" or buftype == "dapui_scopes"
+                    or buftype == "dapui_stacks" or buftype == "dapui_console"
+                    or buftype == "qf" then
+                    vim.notify("Can not add \"" .. buftype .. "\" to the selected-file list", vim.log.levels.INFO)
+                    return false
+                end
+                return true
+            end
+            return function(index)
+                return function()
+                    if isBufSuported() == false then
+                        return
+                    end
+                    if harpoon:list():length() < index then
+                        harpoon:list():add()
+                    else
+                        harpoon:list():replace_at(index)
+                    end
                 end
             end
-        end
+        end)()
 
         vim.keymap.set("n", "<leader>ba1", replace_or_add(1), { desc = "@Index 1" })
         vim.keymap.set("n", "<leader>ba2", replace_or_add(2), { desc = "@Index 2" })
