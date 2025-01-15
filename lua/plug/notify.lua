@@ -15,7 +15,7 @@ return {
                     return {
                         relative = "editor",
                         anchor = "NE",
-                        width = state.message.width,
+                        width = state.message.width - 2,
                         height = state.message.height,
                         col = vim.opt.columns:get(),
                         row = next_row,
