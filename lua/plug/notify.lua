@@ -57,7 +57,7 @@ return {
             max_height = 5,
             render = "wrapped-compact",
             -- stages = "fade_in_slide_out",
-            stages = slide_out(stages_util.DIRECTION.TOP_DOWN),
+            stages = slide_out(stages_util.DIRECTION.BOTTOM_UP),
             timeout = 1700,
         })
         vim.notify = notify
