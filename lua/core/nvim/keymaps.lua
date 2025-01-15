@@ -22,6 +22,11 @@ keymap.set("n", "<C-k>", "<C-w>k", { noremap = true, silent = true })
 keymap.set("v", "<", "<gv", { desc = "Indent left in visual mode" })
 keymap.set("v", ">", ">gv", { desc = "Indent right in visual mode" })
 
+keymap.set("i", "<C-h>", "<left>", { noremap = true, silent = true })
+keymap.set("i", "<C-l>", "<right>", { noremap = true, silent = true })
+keymap.set("i", "<C-j>", "<down>", { noremap = true, silent = true })
+keymap.set("i", "<C-k>", "<up>", { noremap = true, silent = true })
+
 -- Utillity key binding
 ------------------------------
 keymap.set("i", "jk", "<ESC>", { noremap = true, silent = true })
