@@ -21,7 +21,7 @@ return {
             if dap ~= nil then
                 dap.close()
             end
-            require("config.filetree").close()
+            require("config.nvimtree").close()
             neogit.open({ kind = "replace" })
         end, { desc = "Open git view" })
     end,

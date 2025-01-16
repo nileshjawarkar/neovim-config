@@ -20,7 +20,7 @@ end
 local isDapOpen = false;
 local function dap_open()
     require("dap").repl.close()
-    require("config.filetree").close()
+    require("config.nvimtree").close()
     require("dapui").open()
     isDapOpen = true
 end
@@ -60,29 +60,29 @@ local function setup_keys()
     vim.keymap.set("n", "<F4>", dap.step_out, { desc = "Step out" })
     vim.keymap.set("n", "<F7>", dap.run_to_cursor, { desc = "Run to cursor" })
 
-    vim.keymap.set("n", "<leader>Dc", continue, { desc = "Continue [<F8>]" })
-    vim.keymap.set("n", "<leader>Dj", dap.step_over, { desc = "Step over [<F6>]" })
-    vim.keymap.set("n", "<leader>Dk", dap.step_into, { desc = "Step into [<F5>]" })
-    vim.keymap.set("n", "<leader>Do", dap.step_out, { desc = "Step out [<F4>]" })
-    vim.keymap.set("n", "<leader>DC", dap.run_to_cursor, { desc = "Run to cursor [<F7>]" })
-    vim.keymap.set("n", '<leader>Dd', function()
+    vim.keymap.set("n", "<leader>dc", continue, { desc = "Continue [<F8>]" })
+    vim.keymap.set("n", "<leader>dj", dap.step_over, { desc = "Step over [<F6>]" })
+    vim.keymap.set("n", "<leader>dk", dap.step_into, { desc = "Step into [<F5>]" })
+    vim.keymap.set("n", "<leader>do", dap.step_out, { desc = "Step out [<F4>]" })
+    vim.keymap.set("n", "<leader>dC", dap.run_to_cursor, { desc = "Run to cursor [<F7>]" })
+    vim.keymap.set("n", '<leader>dq', function()
         dap_close()
         dap.disconnect();
     end, { desc = "Disconnect debug" })
-    vim.keymap.set("n", '<leader>Dt', function()
+    vim.keymap.set("n", '<leader>dt', function()
         dap_close()
         dap.terminate();
     end, { desc = "Terminate debug" })
 
     -- utility ui
-    vim.keymap.set("n", "<leader>Dl", dap.run_last, { desc = "Run last", })
-    vim.keymap.set("n", '<leader>Df', '<cmd>Telescope dap frames<cr>', { desc = "Show frames", })
-    vim.keymap.set("n", '<leader>Dh', '<cmd>Telescope dap commands<cr>', { desc = "Show commands", })
-    vim.keymap.set("n", '<leader>D?', function()
+    vim.keymap.set("n", "<leader>dl", dap.run_last, { desc = "Run last", })
+    vim.keymap.set("n", '<leader>df', '<cmd>Telescope dap frames<cr>', { desc = "Show frames", })
+    vim.keymap.set("n", '<leader>dh', '<cmd>Telescope dap commands<cr>', { desc = "Show commands", })
+    vim.keymap.set("n", '<leader>d?', function()
         local widgets = require "dap.ui.widgets"; widgets.centered_float(widgets.scopes)
     end, { desc = "Open scopes" })
-    vim.keymap.set("n", "<leader>Da", dap_open, { desc = "Open DapUI" })
-    vim.keymap.set("n", "<leader>Dr", function()
+    vim.keymap.set("n", "<leader>du", dap_open, { desc = "Open DapUI" })
+    vim.keymap.set("n", "<leader>dr", function()
         dap.repl.toggle()
     end, { desc = "Toggle repl", })
 
@@ -113,8 +113,8 @@ local function setup()
         },
         layouts = { {
             elements = {
-                { id = "watches", size = 0.20 },
-                { id = "scopes",  size = 0.40 },
+                { id = "watches", size = 0.25 },
+                { id = "scopes",  size = 0.35 },
                 { id = "stacks",  size = 0.40 },
             },
             position = "left",

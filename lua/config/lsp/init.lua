@@ -6,7 +6,7 @@ local setup_keymaps = function(ev)
         -- Setup keymap for diagnostics
         ---------------------------------
         local diagnostics = vim.diagnostic
-        vim.keymap.set("n", "<leader>dl", diagnostics.open_float, { desc = "Show diagnostics" })
+        vim.keymap.set("n", "<leader>dL", diagnostics.open_float, { desc = "Show diagnostics" })
         vim.keymap.set("n", "<leader>dp", diagnostics.goto_prev, { desc = "Previous diagnostics" })
         vim.keymap.set("n", "<leader>dn", diagnostics.goto_next, { desc = "Next diagnostics" })
 
@@ -76,6 +76,9 @@ local setup_keymaps = function(ev)
         { buffer = ev.buf, desc = "Code actions" })
     vim.keymap.set("n", "<leader>lf", function() vim.lsp.buf.format({ async = true }) end,
         { buffer = ev.buf, desc = "Format code" })
+
+    vim.keymap.set("n", "<leader>lL", vim.ls.codelens.refresh,
+        { buffer = ev.buf, desc = "Refresh Lsp" })
 
     -- Experimental
     vim.lsp.codelens.refresh()

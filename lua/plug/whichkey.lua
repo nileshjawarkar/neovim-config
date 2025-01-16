@@ -40,8 +40,7 @@ return {
             { "<leader>lw", group = "Workspace", },
             { "<leader>w", group = "Window", },
             { "<leader>q", group = "Quickfix list", },
-            { "<leader>d", group = "Diagnostics", },
-            { "<leader>D", group = "Debug", },
+            { "<leader>d", group = "Debug/Diagnostics", },
             { "<leader>t", group = "Run test", },
         })
     end
