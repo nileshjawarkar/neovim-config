@@ -34,9 +34,13 @@ local m = (function()
 
         local api = require("nvim-tree.api")
         local function preq_close()
-            local dap = require("config.dap")
-            if dap ~= nil then
-                dap.close()
+            if vim.bo.filetype == "NeogitStatus" then
+                vim.cmd("bdelete")
+            else
+                local dap = require("config.dap")
+                if dap ~= nil then
+                    dap.close()
+                end
             end
         end
 
