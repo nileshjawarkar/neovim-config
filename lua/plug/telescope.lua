@@ -41,6 +41,9 @@ return {
                     previewer = false,
                 },
             },
+            extensions = {
+                fzf = {},
+            }
         })
 
         -- Enable Telescope extensions if they are installed
