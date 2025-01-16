@@ -77,7 +77,7 @@ local setup_keymaps = function(ev)
     vim.keymap.set("n", "<leader>lf", function() vim.lsp.buf.format({ async = true }) end,
         { buffer = ev.buf, desc = "Format code" })
 
-    vim.keymap.set("n", "<leader>lL", vim.ls.codelens.refresh,
+    vim.keymap.set("n", "<leader>lL", vim.lsp.codelens.refresh,
         { buffer = ev.buf, desc = "Refresh Lsp" })
 
     -- Experimental
