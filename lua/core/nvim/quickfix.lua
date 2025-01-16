@@ -36,6 +36,7 @@ end
 
 local function clear_qf_list()
     vim.fn.setqflist({}, 'r')
+    vim.cmd("cclose")
 end
 
 --[[ Need to add checks to avoid duplicate entry
