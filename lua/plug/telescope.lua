@@ -94,15 +94,14 @@ return {
 
         vim.keymap.set("n", "<leader>ff", find_files, { desc = "Fuzzy find files [<Leader>/]" })
         vim.keymap.set("n", "<leader>/", find_files, { desc = "Fuzzy find files" })
-
-        vim.keymap.set("n", "<leader>fb", show_buffers, { desc = "List open files [<Leader>Tab]" })
-        vim.keymap.set("n", "<leader>,", show_buffers, { desc = "List open files" })
-
         vim.keymap.set("n", "<leader>fr", show_recentfile, { desc = "Find recent open files" })
         vim.keymap.set("n", "<leader>fg", live_grep, { desc = "Find text" })
         vim.keymap.set("n", "<leader>fh", show_help, { desc = "Show help tags" })
         vim.keymap.set("n", "<leader>f.", fuzzy_find_in_cur_buf, { desc = "Find text (in buffer)" })
         vim.keymap.set("n", "<leader>fW", fuzzy_find_tuc_in_ws, { desc = "Find text under cursor (in workspace)" })
         vim.keymap.set("n", "<leader>fw", fuzzy_find_tuc_in_cur_buf, { desc = "Find text under cursor (in buffer)" })
+        vim.keymap.set("n", "<leader>fb", show_buffers, { desc = "List open files [<Leader>," })
+        vim.keymap.set("n", "<leader>,", show_buffers, {desc = "List open files"})
+
     end,
 }
