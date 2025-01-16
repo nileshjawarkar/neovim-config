@@ -4,11 +4,20 @@ return {
         "nvim-tree/nvim-web-devicons",
     },
     config = function()
-        -- NvimTree extension
-        local function treeName()
-            return [[FILES]]
-        end
-        local nvimtree_ext = { sections = { lualine_a = { treeName }, lualine_b = { "branch" }, lualine_z = { "location" }, }, filetypes = { 'NvimTree' } }
+        local extensions = (function()
+            local prepare_name = function(name)
+                return function()
+                    return name
+                end
+            end
+            return {
+                nvimtree_ext = { sections = { lualine_a = { prepare_name("FILES") }, lualine_b = { "branch" }, lualine_z = { "location" }, }, filetypes = { 'NvimTree' } },
+                qf_ext = { sections = { lualine_a = { prepare_name("QUICK LIST") }, lualine_b = { }, lualine_z = { "location" }, }, filetypes = { 'qf' } },
+                lazy_ext = { sections = { lualine_a = { prepare_name("LAZY PLUGINS") }, lualine_b = { }, lualine_z = { "location" }, }, filetypes = { 'lazy' } },
+                mason_ext = { sections = { lualine_a = { prepare_name("MASON") }, lualine_b = { }, lualine_z = { "location" }, }, filetypes = { 'mason' } },
+                telescope_ext = { sections = { lualine_a = { prepare_name("TELESCOPE") }, lualine_b = { }, lualine_z = { "location" }, }, filetypes = { 'TelescopePrompt' } },
+            }
+        end)()
 
         require("lualine").setup({
             options = {
@@ -27,8 +36,8 @@ return {
             },
             sections = {
                 lualine_a = { "mode" },
-                lualine_b = { "diff", "diagnostics" },
-                lualine_c = { "filename" },
+                lualine_b = { "filename" },
+                lualine_c = { "diff", "diagnostics" },
                 lualine_x = { "encoding", "filetype" },
                 lualine_y = {},
                 lualine_z = { "location" },
@@ -44,9 +53,7 @@ return {
             tabline = {},
             winbar = {},
             inactive_winbar = {},
-            extensions = {
-                nvimtree_ext,
-            },
+            extensions = extensions,
         })
     end,
 }
