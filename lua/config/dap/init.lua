@@ -65,7 +65,7 @@ local function setup_keys()
     vim.keymap.set("n", "<leader>dk", dap.step_into, { desc = "Step into [<F5>]" })
     vim.keymap.set("n", "<leader>do", dap.step_out, { desc = "Step out [<F4>]" })
     vim.keymap.set("n", "<leader>dC", dap.run_to_cursor, { desc = "Run to cursor [<F7>]" })
-    vim.keymap.set("n", '<leader>dq', function()
+    vim.keymap.set("n", '<leader>dd', function()
         dap_close()
         dap.disconnect();
     end, { desc = "Disconnect debug" })

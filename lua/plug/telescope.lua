@@ -85,7 +85,7 @@ return {
 
         local builtin = require("telescope.builtin")
         local find_files = prepare_handler(builtin.find_files)
-        -- local show_buffers = prepare_handler(builtin.buffers)
+        local show_buffers = prepare_handler(builtin.buffers)
         local show_recentfile = prepare_handler(builtin.oldfiles)
         local show_help = prepare_handler(builtin.help_tags)
         local fuzzy_find_in_cur_buf = prepare_handler(builtin.current_buffer_fuzzy_find)
@@ -104,9 +104,10 @@ return {
         vim.keymap.set("n", "<leader>f.", fuzzy_find_in_cur_buf, key_ops("Find text (in buffer)"))
         vim.keymap.set("n", "<leader>fW", fuzzy_find_tuc_in_ws, key_ops("Find text under cursor (in workspace)"))
         vim.keymap.set("n", "<leader>fw", fuzzy_find_tuc_in_cur_buf, key_ops("Find text under cursor (in buffer)"))
-        -- vim.keymap.set("n", "<leader>fb", show_buffers, key_ops("List open files [<Leader>,]"))
-        -- vim.keymap.set("n", "<leader>,", show_buffers, key_ops("List open files"))
+        vim.keymap.set("n", "<leader>fb", show_buffers, key_ops("List open files [<Leader>,]"))
+        vim.keymap.set("n", "<leader>,", show_buffers, key_ops("List open files"))
 
+        --[[
         local function get_buffers()
             local cwd = vim.fn.getcwd()                 -- Get the current working directory
             local function get_relative_bufname(bufnr)
@@ -143,5 +144,6 @@ return {
         -- Map a keybinding to open the custom buffer picker
         vim.keymap.set('n', '<leader>fb', list_non_term_buffers, key_ops("List open files"))
         vim.keymap.set('n', '<leader>,', list_non_term_buffers, key_ops("List open files"))
+        ]]
     end,
 }
