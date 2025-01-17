@@ -85,7 +85,7 @@ return {
 
         local builtin = require("telescope.builtin")
         local find_files = prepare_handler(builtin.find_files)
-        local show_buffers = prepare_handler(builtin.buffers)
+        -- local show_buffers = prepare_handler(builtin.buffers)
         local show_recentfile = prepare_handler(builtin.oldfiles)
         local show_help = prepare_handler(builtin.help_tags)
         local fuzzy_find_in_cur_buf = prepare_handler(builtin.current_buffer_fuzzy_find)
@@ -107,18 +107,12 @@ return {
         -- vim.keymap.set("n", "<leader>fb", show_buffers, key_ops("List open files [<Leader>,]"))
         -- vim.keymap.set("n", "<leader>,", show_buffers, key_ops("List open files"))
 
-        -- current impl builtin.buffers will also list terminal buffers, which i didnt want
-        local function get_relative_bufname(bufnr)
-            local bufname = vim.api.nvim_buf_get_name(bufnr)
-            local cwd = vim.fn.getcwd()                     -- Get the current working directory
-            return vim.fn.fnamemodify(bufname, ":." .. cwd) -- Strip cwd from the file path
-        end
-
-        local function list_non_term_buffers()
-            if not execute_checks_and_preqs() then
-                return
+        local function get_buffers()
+            local cwd = vim.fn.getcwd()                 -- Get the current working directory
+            local function get_relative_bufname(bufnr)
+                local bufname = vim.api.nvim_buf_get_name(bufnr)
+                return vim.fn.fnamemodify(bufname, ":." .. cwd) -- Strip cwd from the file path
             end
-            local conf = require("telescope.config").values
             local buffers = {}
             for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
                 local buftype = vim.bo[bufnr].buftype -- Use vim.bo to get the buffer option
@@ -127,7 +121,15 @@ return {
                     table.insert(buffers, buf_name)
                 end
             end
+            return buffers
+        end
 
+        local function list_non_term_buffers()
+            if not execute_checks_and_preqs() then
+                return
+            end
+            local conf = require("telescope.config").values
+            local buffers = get_buffers()
             require("telescope.pickers").new({}, {
                 prompt_title = "Buffers",
                 finder = require("telescope.finders").new_table({
