@@ -299,7 +299,7 @@ M.path_builder = function(value)
             end
             return self
         end,
-        build = function(self)
+        build = function(_)
             return path
         end
     }
