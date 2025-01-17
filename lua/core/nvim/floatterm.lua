@@ -53,7 +53,18 @@ local function toggle_floating_term()
     end
 end
 
-vim.keymap.set("n", "<leader>T", toggle_floating_term, { noremap = true, silent = true, desc = "Show/Hide Terminal" })
+vim.keymap.set("n", "<leader>T", toggle_floating_term,
+    { noremap = true, silent = true, desc = "Show/Hide Terminal (C-t)" })
+
 vim.api.nvim_create_user_command("FloatTermToggle", function()
     toggle_floating_term()
 end, {})
+
+local function exeToggleTerm()
+    if vim.bo.buftype == 'terminal' then
+        vim.api.nvim_feedkeys([[<C-\><C-n>]], 'n', true)
+    end
+    toggle_floating_term()
+end
+vim.keymap.set({"n", "t"}, "<C-t>", exeToggleTerm, {noremap = true, silent = true})
+
