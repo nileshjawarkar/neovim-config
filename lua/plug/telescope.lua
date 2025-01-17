@@ -101,7 +101,31 @@ return {
         vim.keymap.set("n", "<leader>fW", fuzzy_find_tuc_in_ws, { desc = "Find text under cursor (in workspace)" })
         vim.keymap.set("n", "<leader>fw", fuzzy_find_tuc_in_cur_buf, { desc = "Find text under cursor (in buffer)" })
         vim.keymap.set("n", "<leader>fb", show_buffers, { desc = "List open files [<Leader>,]" })
-        vim.keymap.set("n", "<leader>,", show_buffers, {desc = "List open files"})
+        vim.keymap.set("n", "<leader>,", show_buffers, { desc = "List open files" })
 
+
+        local function list_non_term_buffers()
+            local conf = require("telescope.config").values
+            local buffers = {}
+            for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+                local buftype = vim.bo[bufnr].buftype -- Use vim.bo to get the buffer option
+                if buftype ~= "terminal" then
+                    local buf_name = vim.api.nvim_buf_get_name(bufnr)
+                    table.insert(buffers, buf_name)
+                end
+            end
+
+            require("telescope.pickers").new({}, {
+                prompt_title = "Buffers",
+                finder = require("telescope.finders").new_table({
+                    results = buffers,
+                }),
+                previewer = false,
+                sorter = conf.generic_sorter({}),
+            }):find()
+        end
+
+        -- Map a keybinding to open the custom buffer picker
+        vim.keymap.set('n', '<leader>f,', list_non_term_buffers, { noremap = true, silent = true })
     end,
 }
