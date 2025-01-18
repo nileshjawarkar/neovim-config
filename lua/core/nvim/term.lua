@@ -86,7 +86,7 @@ local function open_or_hide_terminal()
     -- split max size window and create new
     if term_buf == nil then
         split_and_set_terminal()
-        return
+        return 0
     end
     -- Step 3 - If terminal buffer exists,
     -- check if it is hidden, if hidden split max sise window
@@ -96,11 +96,12 @@ local function open_or_hide_terminal()
     local win_id = vim.fn.bufwinid(term_buf)
     if win_id == -1 then
         split_and_set_terminal(term_buf)
-        return
+        return 0
     end
     -- Step 4 - If we are here, it means it  is active window
     -- and hide it for toggle
     vim.api.nvim_win_hide(win_id)
+    return 1
 end
 
 local function toggleTerm()
@@ -109,11 +110,15 @@ local function toggleTerm()
         vim.api.nvim_feedkeys([[<C-\><C-n>]], 'n', true)
     end
     -- open or hide terminal
-    open_or_hide_terminal()
+    if 0 == open_or_hide_terminal() then
+        require("config.dap").close()
+        require("config.nvimtree").close()
+    end
 end
 
 vim.keymap.set({ "n" }, "<Leader>T", toggleTerm, { noremap = true, silent = true, desc = "Terminal (C-t)" })
 vim.keymap.set({ "n", "t" }, "<C-t>", toggleTerm, { noremap = true, silent = true })
+vim.keymap.set({ "n", "t" }, "<M-t>", toggleTerm, { noremap = true, silent = true })
 
 return {
     split_horizontally = split_horizontally,
