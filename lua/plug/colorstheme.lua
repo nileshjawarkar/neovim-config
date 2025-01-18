@@ -1,7 +1,9 @@
 return {
     "folke/tokyonight.nvim",
-    priority = 1000, -- make sure to load this before all the other start plugins
+    priority = 1000,
     config = function()
-        vim.cmd([[colorscheme tokyonight]])
+        vim.cmd([[colorscheme tokyonight-storm]])
+        -- vim.cmd([[colorscheme tokyonight-night]])
+        -- vim.cmd([[colorscheme tokyonight-moon]])
     end,
 }
