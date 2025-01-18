@@ -8,8 +8,8 @@ end
 
 local function get_port()
     local port = vim.fn.input({
-        prompt = 'Port number :',
-        default = '8080',
+        prompt = 'Port number: ',
+        default = '8000',
     })
     return (port and port ~= '') and tonumber(port) or dap.ABORT
 end
