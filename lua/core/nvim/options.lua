@@ -23,9 +23,6 @@ opt.smartcase = true  -- If you include mixed case in your search, assumes you w
 
 opt.inccommand = "nosplit"
 
--- Highlight the current cursor line
-opt.cursorline = true
-
 -- Appearance Config
 
 -- Turn on termguicolors for nightfly color scheme to work
@@ -91,4 +88,23 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     callback = function()
         vim.highlight.on_yank()
     end,
+})
+
+-- Disable cursorline globally
+vim.opt.cursorline = false
+
+-- Automatically enable cursorline only in the active window
+vim.api.nvim_create_autocmd("WinEnter", {
+  pattern = "*",
+  callback = function()
+    vim.wo.cursorline = true
+  end,
+})
+
+-- Disable cursorline when switching away from a window
+vim.api.nvim_create_autocmd("WinLeave", {
+  pattern = "*",
+  callback = function()
+    vim.wo.cursorline = false
+  end,
 })
