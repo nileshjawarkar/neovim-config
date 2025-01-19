@@ -1,3 +1,4 @@
+-- Function to create a new horizontal split with a specified height
 local function split_horizontally(height)
     -- Create a new horizontal split and open it
     vim.api.nvim_command('new')
@@ -26,6 +27,8 @@ local function find_max_size_window()
     return max_win_id
 end
 
+-- Function to split the window with the maximum size
+-- and return the new split window ID
 local function split_max_size_window(min_size_percent)
     local max_win_id = find_max_size_window()
     if not max_win_id then
@@ -40,14 +43,16 @@ local function split_max_size_window(min_size_percent)
     return split_horizontally(smaller_window_lines)
 end
 
+-- Function to check if a buffer is a terminal buffer
 local function is_buf_terminal(buf)
     local bufname = vim.api.nvim_buf_get_name(buf)
-    if bufname:find("term://") then
-        return true
+    if bufname ~= nil then
+        return bufname:find("term://") ~= nil
     end
     return false
 end
 
+-- Function to find an existing terminal buffer
 local function find_terminal_buf()
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
         if is_buf_terminal(buf) then
