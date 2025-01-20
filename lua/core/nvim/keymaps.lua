@@ -67,3 +67,14 @@ keymap.set("t", "<C-k>", "<C-\\><C-n><C-w>k", { noremap = true, silent = true })
 keymap.set("t", "<C-l>", "<C-\\><C-n><C-w>l", { noremap = true, silent = true })
 keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h", { noremap = true, silent = true })
 keymap.set("t", "<C-j>", "<C-\\><C-n><C-w>j", { noremap = true, silent = true })
+
+keymap.set("n", "<M-q>", function()
+    if vim.bo.filetype == "qf" then
+        vim.cmd("cclose")
+    else
+        local windows = vim.api.nvim_tabpage_list_wins(0)
+        if #windows > 1 then
+            vim.api.nvim_command('q')
+        end
+    end
+end, {noremap = true, silent = true})

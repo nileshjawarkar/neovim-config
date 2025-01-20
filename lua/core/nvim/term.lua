@@ -1,3 +1,6 @@
+-- local/private variables
+local term_buf = nil
+
 -- Function to create a new horizontal split with a specified height
 local function split_horizontally(height)
     -- Create a new horizontal split and open it
@@ -63,7 +66,7 @@ local function find_terminal_buf()
 end
 
 -- Function to split the maximum size window and open terminal
-local function split_and_set_terminal(term_buf)
+local function split_and_set_terminal()
     local win_id = split_max_size_window(0.30)
     if win_id == nil then return end
     vim.api.nvim_set_current_win(win_id)
@@ -79,34 +82,33 @@ local function split_and_set_terminal(term_buf)
     vim.cmd('startinsert')
 end
 
+local function hide_term()
+    if term_buf ~= nil then
+        local win_id = vim.fn.bufwinid(term_buf)
+        -- Here win_id == -1, indicate hidden window
+        if win_id ~= -1 then
+            vim.api.nvim_win_hide(win_id)
+            return true
+        end
+    end
+    return false
+end
 
-local term_buf = nil
 local function open_or_hide_terminal()
     -- Step 1 - Find buffer of type terminal
     -- Do it only if term_buf is nil and not of type term_buf
     if term_buf == nil or not is_buf_terminal(term_buf) then
         term_buf = find_terminal_buf()
     end
-    -- Step 2 - if no terminal buffer found..
-    -- split max size window and create new
-    if term_buf == nil then
-        split_and_set_terminal()
-        return 0
-    end
-    -- Step 3 - If terminal buffer exists,
-    -- check if it is hidden, if hidden split max sise window
-    -- and set it to new window.
 
-    -- Here win_id == -1, indicate hidden window
-    local win_id = vim.fn.bufwinid(term_buf)
-    if win_id == -1 then
-        split_and_set_terminal(term_buf)
-        return 0
+    -- If window active hide it
+    if hide_term() then
+        return 1
     end
-    -- Step 4 - If we are here, it means it  is active window
-    -- and hide it for toggle
-    vim.api.nvim_win_hide(win_id)
-    return 1
+
+    -- if term_buf nil or hidden, create new window
+    split_and_set_terminal()
+    return 0
 end
 
 local function toggleTerm()
@@ -114,12 +116,15 @@ local function toggleTerm()
     if vim.bo.buftype == 'terminal' then
         vim.api.nvim_feedkeys([[<C-\><C-n>]], 'n', true)
     end
+
     -- open or hide terminal
     if 0 == open_or_hide_terminal() then
-        require("config.dap").close()
-        require("config.nvimtree").close()
+        require("core.nvim.handlers").close({ "dap" })
     end
 end
+
+
+require("core.nvim.handlers").register_close_handler("term", hide_term)
 
 vim.keymap.set({ "n" }, "<Leader>T", toggleTerm, { noremap = true, silent = true, desc = "Terminal (C-t)" })
 vim.keymap.set({ "n", "t" }, "<C-t>", toggleTerm, { noremap = true, silent = true })

@@ -19,8 +19,8 @@ end
 
 local isDapOpen = false;
 local function dap_open()
+    require("core.nvim.handlers").close({"qf", "tree", "term"})
     require("dap").repl.close()
-    require("config.nvimtree").close()
     require("dapui").open()
     isDapOpen = true
 end
@@ -140,12 +140,11 @@ local function setup()
     ]]
 end
 
+require("core.nvim.handlers").register_close_handler("dap", dap_close, function()
+   return isDapOpen
+end)
+
 return {
     setup = setup,
     setup_keys = setup_keys,
-    close = function()
-        if true == isDapOpen then
-            dap_close()
-        end
-    end,
 }
