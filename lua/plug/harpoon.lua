@@ -28,9 +28,8 @@ return {
             }):find()
         end
 
-        vim.keymap.set("n", "<leader>fe", function() toggle_telescope(harpoon:list()) end,
+        vim.keymap.set("n", "<leader>fl", function() toggle_telescope(harpoon:list()) end,
             { desc = "Show selected list" })
-
         vim.keymap.set("n", "<leader>bA", function() harpoon:list():add() end, { desc = "Add to selected list" })
 
         local replace_or_add = (function()
