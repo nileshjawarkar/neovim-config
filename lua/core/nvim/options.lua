@@ -21,7 +21,14 @@ opt.hlsearch = false
 opt.ignorecase = true -- Ignore case when searching
 opt.smartcase = true  -- If you include mixed case in your search, assumes you want case-sensitive
 
-opt.inccommand = "nosplit"
+-- Minimal number of screen lines to keep above and below the cursor.
+opt.scrolloff = 10
+
+opt.inccommand = "split"
+
+-- Sets how neovim will display certain whitespace characters in the editor.
+opt.list = true
+opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Appearance Config
 
@@ -44,10 +51,19 @@ end)
 opt.splitright = true
 opt.splitbelow = true
 
+-- Enable break indent
+opt.breakindent = true
 -- Turn off swapfile
 opt.swapfile = false
+-- Save undo history
+opt.undofile = true
+-- Decrease update time
+vim.opt.updatetime = 250
+-- Decrease mapped sequence wait time
+vim.opt.timeoutlen = 300
 
 opt.mouse = ""
+
 
 -- Open completion menu even for single item
 -- Do not auto insert items from completion menu

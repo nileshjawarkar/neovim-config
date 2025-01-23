@@ -84,6 +84,9 @@ return {
         end
 
         local builtin = require("telescope.builtin")
+
+        local find_diagnostics = prepare_handler(builtin.diagnostics)
+        local resume = prepare_handler(builtin.resume)
         local find_files = prepare_handler(builtin.find_files)
         local show_buffers = prepare_handler(builtin.buffers)
         local show_recentfile = prepare_handler(builtin.oldfiles)
@@ -97,53 +100,41 @@ return {
         local live_grep = prepare_handler(require('telescope').extensions.live_grep_args.live_grep_args)
 
         vim.keymap.set("n", "<leader>ff", find_files, key_ops("Fuzzy find files [<Leader>/]"))
-        vim.keymap.set("n", "<leader>/", find_files, key_ops("Fuzzy find files"))
-        vim.keymap.set("n", "<leader>fr", show_recentfile, key_ops("Find recent open files"))
+        vim.keymap.set("n", "<leader><leader>", find_files, key_ops("Fuzzy find files"))
+        vim.keymap.set("n", "<leader>fR", show_recentfile, key_ops("Find recent open files"))
         vim.keymap.set("n", "<leader>fg", live_grep, key_ops("Find text"))
         vim.keymap.set("n", "<leader>fh", show_help, key_ops("Show help tags"))
-        vim.keymap.set("n", "<leader>f.", fuzzy_find_in_cur_buf, key_ops("Find text (in buffer)"))
+        -- vim.keymap.set("n", "<leader>f.", fuzzy_find_in_cur_buf, key_ops("Find text (in buffer)"))
         vim.keymap.set("n", "<leader>fW", fuzzy_find_tuc_in_ws, key_ops("Find text under cursor (in workspace)"))
         vim.keymap.set("n", "<leader>fw", fuzzy_find_tuc_in_cur_buf, key_ops("Find text under cursor (in buffer)"))
         vim.keymap.set("n", "<leader>fb", show_buffers, key_ops("List open files [<Leader>,]"))
         vim.keymap.set("n", "<leader>,", show_buffers, key_ops("List open files"))
+        vim.keymap.set('n', '<leader>fd', find_diagnostics, { desc = 'Show diagnostics' })
+        vim.keymap.set('n', '<leader>fr', resume, { desc = 'Resume search' })
 
-        --[[
-        local function get_buffers()
-            local cwd = vim.fn.getcwd()                 -- Get the current working directory
-            local function get_relative_bufname(bufnr)
-                local bufname = vim.api.nvim_buf_get_name(bufnr)
-                return vim.fn.fnamemodify(bufname, ":." .. cwd) -- Strip cwd from the file path
-            end
-            local buffers = {}
-            for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
-                local buftype = vim.bo[bufnr].buftype -- Use vim.bo to get the buffer option
-                if buftype ~= "terminal" then
-                    local buf_name = get_relative_bufname(bufnr)
-                    table.insert(buffers, buf_name)
-                end
-            end
-            return buffers
-        end
-
-        local function list_non_term_buffers()
-            if not execute_checks_and_preqs() then
-                return
-            end
-            local conf = require("telescope.config").values
-            local buffers = get_buffers()
-            require("telescope.pickers").new({}, {
-                prompt_title = "Buffers",
-                finder = require("telescope.finders").new_table({
-                    results = buffers,
-                }),
+        local find_in_curr_buf = prepare_handler(function()
+            builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+                winblend = 10,
                 previewer = false,
-                sorter = conf.generic_sorter({}),
-            }):find()
-        end
+            })
+        end)
 
-        -- Map a keybinding to open the custom buffer picker
-        vim.keymap.set('n', '<leader>fb', list_non_term_buffers, key_ops("List open files"))
-        vim.keymap.set('n', '<leader>,', list_non_term_buffers, key_ops("List open files"))
-        ]]
+        vim.keymap.set('n', '<leader>.', find_in_curr_buf, { desc = 'Find in buffer' })
+        vim.keymap.set('n', '<leader>f.', find_in_curr_buf, { desc = 'Find in buffer' })
+
+        local find_in_open_bufs = prepare_handler(function()
+            builtin.live_grep {
+                grep_open_files = true,
+                prompt_title = 'Live Grep in Open Files',
+            }
+        end)
+
+        vim.keymap.set('n', '<leader>f/', find_in_open_bufs, { desc = 'Find in Open Files' })
+        vim.keymap.set('n', '<leader>/', find_in_open_bufs, { desc = 'Find in Open Files' })
+
+        -- Shortcut for searching your Neovim configuration files
+        vim.keymap.set('n', '<leader>fn', function()
+            builtin.find_files { cwd = vim.fn.stdpath 'config' }
+        end, { desc = 'Search neovim files' })
     end,
 }
