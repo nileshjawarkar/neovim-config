@@ -58,11 +58,11 @@ opt.swapfile = false
 -- Save undo history
 opt.undofile = true
 -- Decrease update time
-vim.opt.updatetime = 250
+opt.updatetime = 250
 -- Decrease mapped sequence wait time
-vim.opt.timeoutlen = 300
+opt.timeoutlen = 300
 
-opt.mouse = ""
+opt.mouse = ''
 
 
 -- Open completion menu even for single item
