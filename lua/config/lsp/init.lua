@@ -1,4 +1,3 @@
-
 local setup_keymaps = function(ev)
     local first_time = require("core.util.sys").first_time
     if first_time.check("LspKeyInit") then
@@ -26,7 +25,7 @@ local setup_keymaps = function(ev)
 
     -- Load user snippets - once for each filetype
     ---------------------------------------------
-    require("config.lsp.cmp").load_snippets(vim.bo.filetype)
+    require("config.cmp").load_snippets(vim.bo.filetype)
 
     -- Define key bindings
     ----------------------
@@ -36,13 +35,6 @@ local setup_keymaps = function(ev)
     vim.bo[ev.buf].omnifunc = "v:lua.vim_lsp.omnifunc"
 
     local lsp_buildin = require("telescope.builtin")
-    vim.keymap.set("n", "<leader>lwa", vim_lbuf.add_workspace_folder,
-        { buffer = ev.buf, desc = "Add workspace folder" })
-    vim.keymap.set("n", "<leader>lwr", vim_lbuf.remove_workspace_folder,
-        { buffer = ev.buf, desc = "Remove workspace folder" })
-    vim.keymap.set("n", "<leader>lwl", function()
-        vim.notify(vim.inspect(vim_lbuf.list_workspace_folders()), vim.log.levels.INFO)
-    end, { buffer = ev.buf, desc = "List workspace folders" })
 
     vim.keymap.set("n", "<leader>lD", vim_lbuf.declaration,
         { buffer = ev.buf, desc = "Go to declaration [<gD>]" })
@@ -79,9 +71,13 @@ local setup_keymaps = function(ev)
 
     vim.keymap.set("n", "<leader>lL", vim.lsp.codelens.refresh,
         { buffer = ev.buf, desc = "Refresh Lsp" })
-
-    -- Experimental
-    vim.lsp.codelens.refresh()
+    vim.keymap.set("n", "<leader>lwa", vim_lbuf.add_workspace_folder,
+        { buffer = ev.buf, desc = "Add workspace folder" })
+    vim.keymap.set("n", "<leader>lwr", vim_lbuf.remove_workspace_folder,
+        { buffer = ev.buf, desc = "Remove workspace folder" })
+    vim.keymap.set("n", "<leader>lwl", function()
+        vim.notify(vim.inspect(vim_lbuf.list_workspace_folders()), vim.log.levels.INFO)
+    end, { buffer = ev.buf, desc = "List workspace folders" })
 end
 
 local function configure_ui()
@@ -167,13 +163,19 @@ return {
         })
 
         configure_ui()
-        require("config.lsp.cmp").setup()
 
         -- Use LspAttach autocommand to only map the following keys
         -- after the language server attaches to the current buffer
         vim.api.nvim_create_autocmd("LspAttach", {
-            group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+            group = vim.api.nvim_create_augroup("UserLspBufAttach", {}),
             callback = setup_keymaps,
+        })
+
+        vim.api.nvim_create_autocmd('LspDetach', {
+            group = vim.api.nvim_create_augroup('UserLspBufDettach', { clear = true }),
+            callback = function(_)
+                vim.lsp.buf.clear_references()
+            end,
         })
     end,
 }

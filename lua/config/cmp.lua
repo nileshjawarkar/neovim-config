@@ -32,6 +32,8 @@ local function setup()
             documentation = cmp.config.window.bordered(),
         },
         mapping = cmp.mapping.preset.insert({
+            ['<C-y>'] = cmp.mapping.confirm { select = true },
+            ['<C-Space>'] = cmp.mapping.complete {},
             ['<CR>'] = cmp.mapping(function(fallback)
                 if cmp.visible() then
                     cmp.confirm({ select = true, })
@@ -71,6 +73,10 @@ local function setup()
         }),
 
         sources = cmp.config.sources({
+            {
+                name = 'lazydev',
+                group_index = 0,
+            },
             { name = "nvim_lsp" },
             { name = "luasnip" },
             { name = "path" },
