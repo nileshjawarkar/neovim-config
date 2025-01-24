@@ -1,3 +1,6 @@
+if not require("mason-registry").is_installed("jdtls") then
+    return
+end
 
 local version, err = require("core.rt.java").get_java_version()
 local jtls_err = "Error - Lsp server (jdtls) start failed."

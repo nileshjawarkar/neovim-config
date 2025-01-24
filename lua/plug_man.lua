@@ -11,7 +11,23 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-    { import = "plug" },
+    -- { import = "plug" },
+    require("plug.colorstheme"),
+    require("plug.lualine"),
+    require("plug.indent-line"),
+    require("plug.dressing"),
+    require("plug.whichkey"),
+    require("plug.nvimtree"),
+    require("plug.treesitter"),
+    require("plug.harpoon"),
+    require("plug.telescope"),
+    require("plug.neogit"),
+    require("plug.markdown"),
+    require("plug.cmp"),
+    require("plug.formatter"),
+    require("plug.lsp"),
+    require("plug.jdtls"),
+    require("plug.dap"),
 }, {
     ui = { border = 'rounded' },
     install = {

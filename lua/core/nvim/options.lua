@@ -27,8 +27,8 @@ opt.scrolloff = 10
 opt.inccommand = "split"
 
 -- Sets how neovim will display certain whitespace characters in the editor.
-opt.list = true
-opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+-- opt.list = true
+-- opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Appearance Config
 
