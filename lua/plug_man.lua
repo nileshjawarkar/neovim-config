@@ -14,7 +14,7 @@ require("lazy").setup({
     -- { import = "plug" },
     require("plug.colorstheme"),
     require("plug.lualine"),
-    require("plug.indent-line"),
+    -- require("plug.indent-line"),
     require("plug.dressing"),
     require("plug.whichkey"),
     require("plug.nvimtree"),
