@@ -23,15 +23,7 @@ return {
             },
         })
         require('mason-tool-installer').setup({
-            ensure_installed = {
-                "lua_ls", "clangd", "pyright", "bashls",
-                "jsonls", "yamlls", "dockerls", "jdtls",
-                "quick_lint_js", "cssls", "ts_ls",
-                "clang-format", "cpptools", "prettier",
-                "emmet-language-server", "java-debug-adapter",
-                "java-test", "xmlformatter",
-                "codelldb",
-            },
+            ensure_installed = require("config.req_tools").mason_req,
         })
         vim.api.nvim_command('MasonToolsInstall')
         require("mason-lspconfig").setup_handlers(lsp_config)
