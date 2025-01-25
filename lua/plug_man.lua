@@ -13,6 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     -- { import = "plug" },
     require("plug.colorstheme"),
+    require("plug.colorizer"),
     require("plug.lualine"),
     require("plug.dressing"),
     require("plug.whichkey"),
