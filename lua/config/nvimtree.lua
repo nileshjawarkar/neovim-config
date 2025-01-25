@@ -4,6 +4,10 @@ M.setup = function()
     vim.g.loaded_netrwPlugin = 1
     vim.opt.termguicolors = true
 
+    local function get_width()
+        return (vim.api.nvim_get_option_value("columns", {}) + 2)
+    end
+
     require("nvim-tree").setup({
         renderer = {
             add_trailing = false,
@@ -20,7 +24,7 @@ M.setup = function()
         },
         view = {
             -- width = 35,
-            width = vim.api.nvim_get_option_value("columns", {}),
+            width = get_width,
             side = "left",
             preserve_window_proportions = true,
         },
