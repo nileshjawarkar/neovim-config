@@ -23,7 +23,7 @@ require("lazy").setup({
     require("plug.neogit"),
     require("plug.markdown"),
     require("plug.cmp"),
-    require("plug.formatter"),
+    require("plug.conform"),
     require("plug.lsp"),
     require("plug.jdtls"),
     require("plug.dap"),
