@@ -96,8 +96,6 @@ return {
             return { search_dirs = { vim.fn.expand('%:p'), } }
         end)
 
-        -- local fuzzy_find_in_cur_buf = prepare_handler(builtin.current_buffer_fuzzy_find)
-        -- local show_grep = prepare_handler(builtin.live_grep)
         local live_grep = prepare_handler(require('telescope').extensions.live_grep_args.live_grep_args)
 
         vim.keymap.set("n", "<leader>ff", find_files, key_ops("Fuzzy find files [<Leader><Leader>]"))
@@ -112,23 +110,23 @@ return {
         vim.keymap.set('n', '<leader>fd', find_diagnostics, { desc = 'List diagnostics' })
         vim.keymap.set('n', '<leader>fr', resume, { desc = 'Resume search' })
 
-        local find_in_curr_buf = prepare_handler(function()
-            builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-                winblend = 10,
+        local find_in_cur_buf = prepare_handler(function()
+            builtin.live_grep {
+                search_dirs = { vim.fn.expand('%:p'), },
                 previewer = false,
-            })
+                prompt_title = 'Search in current file',
+            }
         end)
-
-        vim.keymap.set('n', '<leader>.', find_in_curr_buf, { desc = 'Find in buffer' })
-        vim.keymap.set('n', '<leader>f.', find_in_curr_buf, { desc = 'Find in buffer' })
+        vim.keymap.set('n', '<leader>f.', find_in_cur_buf, { desc = 'Find in buffer' })
+        vim.keymap.set('n', '<leader>.', find_in_cur_buf, { desc = 'Find in buffer' })
 
         local find_in_open_bufs = prepare_handler(function()
             builtin.live_grep {
                 grep_open_files = true,
-                prompt_title = 'Live Grep in Open Files',
+                previewer = false,
+                prompt_title = 'Search in open files',
             }
         end)
-
         vim.keymap.set('n', '<leader>f/', find_in_open_bufs, { desc = 'Find in Open Files' })
         vim.keymap.set('n', '<leader>/', find_in_open_bufs, { desc = 'Find in Open Files' })
 
