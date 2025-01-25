@@ -5,7 +5,7 @@ M.setup = function()
     vim.opt.termguicolors = true
 
     local function get_width()
-        return (vim.api.nvim_get_option_value("columns", {}) + 1)
+        return vim.api.nvim_get_option_value("columns", {})
     end
 
     require("nvim-tree").setup({
