@@ -19,7 +19,8 @@ M.setup = function()
             dotfiles = false,
         },
         view = {
-            width = 35,
+            -- width = 35,
+            width = vim.api.nvim_get_option_value("columns", {}),
             side = "left",
             preserve_window_proportions = true,
         },
@@ -30,6 +31,14 @@ M.setup = function()
             threshold = vim.log.levels.WARN,
             absolute_path = false,
         },
+        actions = {
+            open_file = {
+                window_picker = {
+                    enable = false,
+                },
+                quit_on_open = true,
+            },
+        },
     })
 
     local api = require("nvim-tree.api")
@@ -38,7 +47,7 @@ M.setup = function()
     end
     vim.keymap.set("n", "<leader>el", function()
         preq_close()
-        api.tree.open({find_file = true})
+        api.tree.open({ find_file = true })
     end, { desc = "Locate file" })
     vim.keymap.set("n", "<leader>ee", function()
         preq_close()
