@@ -5,10 +5,13 @@ M.setup = function()
     vim.opt.termguicolors = true
 
     local function get_width()
-        return (vim.api.nvim_get_option_value("columns", {}) + 2)
+        return (vim.api.nvim_get_option_value("columns", {}) + 1)
     end
 
     require("nvim-tree").setup({
+        sort = { sorter = "case_sensitive", },
+        filters = { dotfiles = false, },
+        git = { enable = false, },
         renderer = {
             add_trailing = false,
             group_empty = false,
@@ -16,20 +19,10 @@ M.setup = function()
             highlight_opened_files = 'none',
             root_folder_modifier = ':t',
         },
-        sort = {
-            sorter = "case_sensitive",
-        },
-        filters = {
-            dotfiles = false,
-        },
         view = {
-            -- width = 35,
             width = get_width,
             side = "left",
             preserve_window_proportions = true,
-        },
-        git = {
-            enable = false,
         },
         notify = {
             threshold = vim.log.levels.WARN,
@@ -37,9 +30,6 @@ M.setup = function()
         },
         actions = {
             open_file = {
-                window_picker = {
-                    enable = false,
-                },
                 quit_on_open = true,
             },
         },
