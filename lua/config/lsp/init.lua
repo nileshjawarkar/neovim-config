@@ -114,7 +114,6 @@ end
 
 return {
     setup = function()
-        require("lazydev").setup({})
         local lsp_config = require("lspconfig")
         local root_dir = require("core.util.sys").find_root
         local ws_config = require("config.ws").lsp_config
@@ -149,6 +148,7 @@ return {
                         },
                     }
                 elseif server_name == "lua_ls" then
+                    require("lazydev").setup({})
                     srv_config["settings"] = {
                         Lua = {
                             diagnostics = { globals = { "vim" }, },
