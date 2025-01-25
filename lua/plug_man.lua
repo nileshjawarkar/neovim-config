@@ -27,6 +27,7 @@ require("lazy").setup({
     require("plug.lsp"),
     require("plug.jdtls"),
     require("plug.dap"),
+    require("plug.lint"),
 }, {
     ui = { border = 'rounded' },
     install = {

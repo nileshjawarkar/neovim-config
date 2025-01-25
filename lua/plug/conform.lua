@@ -40,12 +40,18 @@ return {
             formatters_by_ft.html = fmt
             formatters_by_ft.css = fmt
             formatters_by_ft.markdown = fmt
+            formatters_by_ft.flow = fmt
+            formatters_by_ft.graphql = fmt
+            formatters_by_ft.jsx = fmt
+            formatters_by_ft.less = fmt
+            formatters_by_ft.scss = fmt
+            formatters_by_ft.vue = fmt
         end
 
-        if registry.is_installed("xmlformat") then
+        if registry.is_installed("xmlformatter") then
             local fmt = {
                 "xmlformat",
-                args = { '--preserve "pre,literal" --blanks --selfclose --indent 3 --indent-char " " --disable-inlineformatting --disable-correction --eof-newline', '-', },
+                args = { '--preserve "pre,literal" --blanks false --selfclose false  --overwrite --disable-inlineformatting --disable-correction --eof-newline', '-', },
             }
             formatters_by_ft.xml = fmt
         end

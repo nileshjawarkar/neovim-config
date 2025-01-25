@@ -69,7 +69,7 @@ local setup_keymaps = function(ev)
     vim.keymap.set("n", "<leader>lf", function() vim.lsp.buf.format({ async = true }) end,
         { buffer = ev.buf, desc = "Format code" })
 
-    vim.keymap.set("n", "<leader>lL", vim.lsp.codelens.refresh,
+    vim.keymap.set("n", "<leader>lc", vim.lsp.codelens.refresh,
         { buffer = ev.buf, desc = "Refresh Lsp" })
     vim.keymap.set("n", "<leader>lwa", vim_lbuf.add_workspace_folder,
         { buffer = ev.buf, desc = "Add workspace folder" })
