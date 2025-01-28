@@ -154,9 +154,6 @@ return {
                             diagnostics = { globals = { "vim" }, },
                         },
                     }
-                elseif server_name == "cssls" then
-                    lsp_config[server_name].setup(srv_config)
-                    pcall(require('nvim-highlight-colors').setup, {})
                 end
 
                 if server_name ~= "jdtls" then
