@@ -20,12 +20,14 @@ local setup_keymaps = function(ev)
                 ws_config.dap_setup()
             end
         end
+
+        -- Load user snippets - once for each filetype
+        ---------------------------------------------
+        require("config.cmp").load_snippets(vim.bo.filetype)
+
         first_time.setFalse("LspKeyInit")
     end
 
-    -- Load user snippets - once for each filetype
-    ---------------------------------------------
-    require("config.cmp").load_snippets(vim.bo.filetype)
 
     -- Define key bindings
     ----------------------

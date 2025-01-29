@@ -161,16 +161,41 @@ local prepare_config = (function()
     end
 end)()
 
+local perform_checks = function()
+    if not require("mason-registry").is_installed("jdtls") then
+        return false
+    end
+
+    local version, err = require("core.rt.java").get_java_version()
+    local jtls_err = "Error - Lsp server (jdtls) start failed."
+    if err ~= nil then
+        vim.notify(jtls_err .. " " .. err, vim.log.levels.INFO)
+        return false
+    elseif version == nil then
+        vim.notify(jtls_err .. " Failed to retrieve java version.", vim.log.levels.INFO)
+        return false
+    elseif version.major < 17 then
+        vim.notify("Error : Current java version \"" .. version.major .. "\", minimum required \"17\".",
+            vim.log.levels.INFO)
+        return false
+    end
+    return true
+end
+
+local startReq = false
 return {
     setup = function()
         if first_time.check("jdtls_init") then
-            vim.notify("Please wait. Lsp starting..", vim.log.levels.INFO)
-            vim.api.nvim_create_user_command("DapPrintSrcPath", function()
-                local paths = require("core.mvn.util").find_src_paths(nil, true, false)
-                require("core.util.table").dump(paths)
-            end, {})
+            startReq = perform_checks()
+            if startReq then
+                vim.notify("Please wait. Lsp starting..", vim.log.levels.INFO)
+                vim.api.nvim_create_user_command("DapPrintSrcPath", function()
+                    local paths = require("core.mvn.util").find_src_paths(nil, true, false)
+                    require("core.util.table").dump(paths)
+                end, {})
+            end
             first_time.setFalse("jdtls_init")
         end
-        jdtls.start_or_attach(prepare_config())
+        if startReq then jdtls.start_or_attach(prepare_config()) end
     end,
 }
