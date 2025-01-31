@@ -165,21 +165,19 @@ local perform_checks = function()
     if not require("mason-registry").is_installed("jdtls") then
         return false
     end
-
     local version, err = require("core.rt.java").get_java_version()
     local jtls_err = "Error - Lsp server (jdtls) start failed."
     if err ~= nil then
         vim.notify(jtls_err .. " " .. err, vim.log.levels.INFO)
-        return false
     elseif version == nil then
         vim.notify(jtls_err .. " Failed to retrieve java version.", vim.log.levels.INFO)
-        return false
     elseif version.major < 17 then
         vim.notify("Error : Current java version \"" .. version.major .. "\", minimum required \"17\".",
             vim.log.levels.INFO)
-        return false
+    else
+        return true
     end
-    return true
+    return false
 end
 
 local startReq = false
