@@ -7,7 +7,7 @@ return {
             rgb_fn   = true, hsl_fn   = true,
             css      = true, css_fn   = true,
         }
-        require 'colorizer'.setup {
+        require('colorizer').setup {
             scss = opts, css = opts,
             javascript = opts,
             yaml = opts, svg = opts,
