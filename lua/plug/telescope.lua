@@ -65,7 +65,7 @@ return {
                 vim.notify("While in DAP, please use telescope from code buffer.", vim.log.levels.INFO)
                 return false
             end
-            require("core.nvim.handlers").close({"term"})
+            require("core.nvim.handlers").close({ "term" })
             return true
         end
 
@@ -100,7 +100,7 @@ return {
             }
         end)
 
-        -- This need tobe a function not table to feed runtime value 
+        -- This need tobe a function not table to feed runtime value
         -- of current buffer.
         local function buf_search_op()
             return {
@@ -112,29 +112,29 @@ return {
         local find_in_cur_buf = prepare_handler(builtin.live_grep, buf_search_op)
 
         -- Define key maps
-        local function key_ops(desc)
-            return { noremap = true, silent = true, desc = desc }
+        local function keymap(m, key, handler, desc)
+            vim.keymap.set(m, key, handler, { noremap = true, silent = true, desc = desc })
         end
 
-        vim.keymap.set("n", "<leader>ff", find_files, key_ops("Fuzzy find files [<Leader><Leader>]"))
-        vim.keymap.set("n", "<leader><leader>", find_files, key_ops("Fuzzy find files"))
-        vim.keymap.set("n", "<leader>fR", show_recentfile, key_ops("Find recent open files"))
-        vim.keymap.set("n", "<leader>fg", live_grep, key_ops("Find text"))
-        vim.keymap.set("n", "<leader>fh", show_help, key_ops("Show help tags"))
-        vim.keymap.set("n", "<leader>fW", fuzzy_find_tuc_in_ws, key_ops("Find text under cursor (in workspace)"))
-        vim.keymap.set("n", "<leader>fw", fuzzy_find_tuc_in_cur_buf, key_ops("Find text under cursor (in buffer)"))
-        vim.keymap.set("n", "<leader>fb", show_buffers, key_ops("List open files [<Leader>,]"))
-        vim.keymap.set("n", "<leader>,", show_buffers, key_ops("List open files"))
-        vim.keymap.set('n', '<leader>fd', find_diagnostics, key_ops('List diagnostics'))
-        vim.keymap.set('n', '<leader>fr', resume, key_ops('Resume search'))
-        vim.keymap.set('n', '<leader>f.', find_in_cur_buf, key_ops('Find in buffer'))
-        vim.keymap.set('n', '<leader>.', find_in_cur_buf, key_ops('Find in buffer'))
-        vim.keymap.set('n', '<leader>f/', find_in_open_bufs, key_ops('Find in open files'))
-        vim.keymap.set('n', '<leader>/', find_in_open_bufs, key_ops('Find in open files'))
+        keymap("n", "<leader>ff", find_files, "Fuzzy find files [<Leader><Leader>]")
+        keymap("n", "<leader><leader>", find_files, "Fuzzy find files")
+        keymap("n", "<leader>fR", show_recentfile, "Find recent open files")
+        keymap("n", "<leader>fg", live_grep, "Find text")
+        keymap("n", "<leader>fh", show_help, "Show help tags")
+        keymap("n", "<leader>fW", fuzzy_find_tuc_in_ws, "Find text under cursor (in workspace)")
+        keymap("n", "<leader>fw", fuzzy_find_tuc_in_cur_buf, "Find text under cursor (in buffer)")
+        keymap("n", "<leader>fb", show_buffers, "List open files [<Leader>,]")
+        keymap("n", "<leader>,", show_buffers, "List open files")
+        keymap('n', '<leader>fd', find_diagnostics, 'List diagnostics')
+        keymap('n', '<leader>fr', resume, 'Resume search')
+        keymap('n', '<leader>f.', find_in_cur_buf, 'Find in buffer')
+        keymap('n', '<leader>.', find_in_cur_buf, 'Find in buffer')
+        keymap('n', '<leader>f/', find_in_open_bufs, 'Find in open files')
+        keymap('n', '<leader>/', find_in_open_bufs, 'Find in open files')
 
         -- Shortcut for searching your Neovim configuration files
-        vim.keymap.set('n', '<leader>fn', function()
+        keymap('n', '<leader>fn', function()
             builtin.find_files { cwd = vim.fn.stdpath 'config' }
-        end, key_ops('Search neovim files'))
+        end, 'Search neovim files')
     end,
 }
