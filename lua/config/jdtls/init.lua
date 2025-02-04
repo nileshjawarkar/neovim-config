@@ -6,25 +6,19 @@ local first_time = sys.first_time
 
 local on_attach = function(_, bufnr)
     -- Filetype-specific keymaps (these can be done in the ftplugin directory instead if you prefer)
-    local keymap = vim.keymap
-    keymap.set("n", "<leader>lo", jdtls.organize_imports,
-        { noremap = true, silent = true, buffer = bufnr, desc = "Organize imports" })
-    keymap.set("n", "<leader>lu", jdtls.update_projects_config,
-        { noremap = true, silent = true, buffer = bufnr, desc = "Update project config" })
-    keymap.set("n", "<leader>le", jdtls.extract_variable,
-        { noremap = true, silent = true, buffer = bufnr, desc = "Extract variable" })
-    keymap.set("n", "<leader>lE", jdtls.extract_constant,
-        { noremap = true, silent = true, buffer = bufnr, desc = "Extract constant" })
-    keymap.set("v", "<leader>lm", [[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]],
-        { noremap = true, silent = true, buffer = bufnr, desc = "Extract method" })
+    local function keymap(m, key, handler, desc)
+        vim.keymap.set(m, key, handler, { noremap = true, buffer = bufnr, silent = true, desc = desc })
+    end
+
+    keymap("n", "<leader>lo", jdtls.organize_imports, "Organize imports")
+    keymap("n", "<leader>lu", jdtls.update_projects_config, "Update project config")
+    keymap("n", "<leader>le", jdtls.extract_variable, "Extract variable")
+    keymap("n", "<leader>lE", jdtls.extract_constant, "Extract constant")
+    keymap("v", "<leader>lm", [[<ESC><CMD>lua require('jdtls').extract_method(true)<CR>]], "Extract method")
 
     -- For debugging & running Unit tests
-    -------------------------------------------
-    -- 1) Define keymaps :
-    keymap.set("n", "<leader>tc", jdtls.test_class,
-        { noremap = true, silent = true, buffer = bufnr, desc = "All class tests" })
-    keymap.set("n", "<leader>tt", jdtls.test_nearest_method,
-        { noremap = true, silent = true, buffer = bufnr, desc = "Current test" })
+    keymap("n", "<leader>tc", jdtls.test_class, "All class tests")
+    keymap("n", "<leader>tt", jdtls.test_nearest_method, "Current test")
 
     if first_time.check("jdtls_dap_init") then
         -- Use WS/.nvim/config.lua for defining the debug configurations

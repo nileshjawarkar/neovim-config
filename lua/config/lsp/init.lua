@@ -32,54 +32,37 @@ local setup_keymaps = function(ev)
     -- Define key bindings
     ----------------------
     local vim_lbuf = vim.lsp.buf
-
     -- Enable completion triggered by <c-x><c-o>
     vim.bo[ev.buf].omnifunc = "v:lua.vim_lsp.omnifunc"
 
     local lsp_buildin = require("telescope.builtin")
+    local function keymap(m, key, handler, desc)
+        vim.keymap.set(m, key, handler, { buffer = ev.buf, silent = true, desc = desc })
+    end
 
-    vim.keymap.set("n", "<leader>lD", vim_lbuf.declaration,
-        { buffer = ev.buf, desc = "Go to declaration [<gD>]" })
-    vim.keymap.set("n", "gD", vim_lbuf.declaration,
-        { buffer = ev.buf, desc = "Go to declaration" })
-
-    vim.keymap.set("n", "<leader>lt", vim_lbuf.type_definition,
-        { buffer = ev.buf, desc = "Go to type definition [<gO>]" })
-    vim.keymap.set("n", "gO", vim_lbuf.type_definition, { buffer = ev.buf, desc = "Go to type definition" })
-
-    vim.keymap.set("n", "<leader>ld", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition [<gd>]" })
-    vim.keymap.set("n", "gd", vim_lbuf.definition, { buffer = ev.buf, desc = "Go to definition" })
-
-    vim.keymap.set("n", "<leader>lI", lsp_buildin.lsp_implementations,
-        { buffer = ev.buf, desc = "Go to implementation [<gI>]" })
-    vim.keymap.set("n", "gI", lsp_buildin.lsp_implementations, { buffer = ev.buf, desc = "Go to implementation" })
-
-    vim.keymap.set("n", "<leader>lr", lsp_buildin.lsp_references,
-        { buffer = ev.buf, desc = "List references" })
-
-    vim.keymap.set("n", "<leader>ll", lsp_buildin.lsp_document_symbols, { desc = "List document symbols" })
-
-    vim.keymap.set("n", "<leader>lg", vim_lbuf.hover, { buffer = ev.buf, desc = "Hover [<gK>]" })
-    vim.keymap.set("n", "gK", vim_lbuf.hover, { buffer = ev.buf, desc = "Hover" })
-
-    vim.keymap.set("n", "<leader>ls", vim_lbuf.signature_help, { buffer = ev.buf, desc = "Signature help [<gs>]" })
-    vim.keymap.set("n", "gs", vim_lbuf.signature_help, { buffer = ev.buf, desc = "Signature help" })
-
-    vim.keymap.set("n", "<leader>lR", vim_lbuf.rename, { buffer = ev.buf, desc = "Rename" })
-    vim.keymap.set({ "n", "v" }, "<leader>la", vim_lbuf.code_action,
-        { buffer = ev.buf, desc = "Code actions" })
-    vim.keymap.set("n", "<leader>lf", function() vim.lsp.buf.format({ async = true }) end,
-        { buffer = ev.buf, desc = "Format code" })
-
-    vim.keymap.set("n", "<leader>lL", vim.lsp.codelens.refresh,
-        { buffer = ev.buf, desc = "Refresh Lsp" })
-    vim.keymap.set("n", "<leader>lwa", vim_lbuf.add_workspace_folder,
-        { buffer = ev.buf, desc = "Add workspace folder" })
-    vim.keymap.set("n", "<leader>lwr", vim_lbuf.remove_workspace_folder,
-        { buffer = ev.buf, desc = "Remove workspace folder" })
-    vim.keymap.set("n", "<leader>lwl", function()
+    keymap("n", "<leader>lD", vim_lbuf.declaration, "Go to declaration [<gD>]")
+    keymap("n", "gD", vim_lbuf.declaration, "Go to declaration")
+    keymap("n", "<leader>lt", vim_lbuf.type_definition, "Go to type definition [<gO>]")
+    keymap("n", "gO", vim_lbuf.type_definition, "Go to type definition")
+    keymap("n", "<leader>ld", vim_lbuf.definition, "Go to definition [<gd>]")
+    keymap("n", "gd", vim_lbuf.definition, "Go to definition")
+    keymap("n", "<leader>lI", lsp_buildin.lsp_implementations, "Go to implementation [<gI>]")
+    keymap("n", "gI", lsp_buildin.lsp_implementations, "Go to implementation")
+    keymap("n", "<leader>lr", lsp_buildin.lsp_references, "List references")
+    keymap("n", "<leader>ll", lsp_buildin.lsp_document_symbols, "List document symbols")
+    keymap("n", "<leader>lg", vim_lbuf.hover, "Hover [<gK>]")
+    keymap("n", "gK", vim_lbuf.hover, "Hover")
+    keymap("n", "<leader>ls", vim_lbuf.signature_help, "Signature help [<gs>]")
+    keymap("n", "gs", vim_lbuf.signature_help, "Signature help")
+    keymap("n", "<leader>lR", vim_lbuf.rename, "Rename")
+    keymap({ "n", "v" }, "<leader>la", vim_lbuf.code_action, "Code actions")
+    keymap("n", "<leader>lf", function() vim.lsp.buf.format({ async = true }) end, "Format code")
+    keymap("n", "<leader>lL", vim.lsp.codelens.refresh, "Refresh Lsp")
+    keymap("n", "<leader>lwa", vim_lbuf.add_workspace_folder, "Add workspace folder")
+    keymap("n", "<leader>lwr", vim_lbuf.remove_workspace_folder, "Remove workspace folder")
+    keymap("n", "<leader>lwl", function()
         vim.notify(vim.inspect(vim_lbuf.list_workspace_folders()), vim.log.levels.INFO)
-    end, { buffer = ev.buf, desc = "List workspace folders" })
+    end, "List workspace folders")
 end
 
 local function configure_ui()
