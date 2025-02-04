@@ -50,6 +50,8 @@ return {
         pcall(require('telescope').load_extension, 'live_grep_args')
         pcall(require('telescope').load_extension, 'fzf')
 
+        -- This function will close terminal, quick list, mason and lazy buffers
+        -- before starting telescope.
         local function execute_checks_and_preqs()
             local buftype = vim.bo.filetype
             if buftype == "df" then
@@ -67,6 +69,8 @@ return {
             return true
         end
 
+        -- This function will build the handlers function will call
+        -- preq-check-exec function before calling telescope specific function.
         local function prepare_handler(fun, args)
             return function()
                 if not execute_checks_and_preqs() then return end
@@ -78,17 +82,7 @@ return {
             end
         end
 
-        local function buf_search_op()
-            return {
-                previewer = false,
-                search_dirs = { vim.fn.expand('%:p'), },
-                prompt_title = 'Search in current file',
-            }
-        end
-        local function key_ops(desc)
-            return { noremap = true, silent = true, desc = desc }
-        end
-
+        -- Define local key handlers
         local builtin = require("telescope.builtin")
 
         local find_diagnostics = prepare_handler(builtin.diagnostics)
@@ -98,8 +92,6 @@ return {
         local show_recentfile = prepare_handler(builtin.oldfiles)
         local show_help = prepare_handler(builtin.help_tags)
         local fuzzy_find_tuc_in_ws = prepare_handler(builtin.grep_string)
-        local fuzzy_find_tuc_in_cur_buf = prepare_handler(builtin.grep_string, buf_search_op)
-        local find_in_cur_buf = prepare_handler(builtin.live_grep, buf_search_op)
         local live_grep = prepare_handler(require('telescope').extensions.live_grep_args.live_grep_args)
         local find_in_open_bufs = prepare_handler(function()
             builtin.live_grep {
@@ -107,6 +99,23 @@ return {
                 prompt_title = 'Search in open files',
             }
         end)
+
+        -- This need tobe a function not table to feed runtime value 
+        -- of current buffer.
+        local function buf_search_op()
+            return {
+                search_dirs = { vim.fn.expand('%:p'), },
+                prompt_title = 'Search in current file',
+            }
+        end
+        local fuzzy_find_tuc_in_cur_buf = prepare_handler(builtin.grep_string, buf_search_op)
+        local find_in_cur_buf = prepare_handler(builtin.live_grep, buf_search_op)
+
+        -- Define key maps
+        local function key_ops(desc)
+            return { noremap = true, silent = true, desc = desc }
+        end
+
         vim.keymap.set("n", "<leader>ff", find_files, key_ops("Fuzzy find files [<Leader><Leader>]"))
         vim.keymap.set("n", "<leader><leader>", find_files, key_ops("Fuzzy find files"))
         vim.keymap.set("n", "<leader>fR", show_recentfile, key_ops("Find recent open files"))
