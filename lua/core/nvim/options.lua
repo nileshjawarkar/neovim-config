@@ -1,8 +1,10 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-local opt = vim.opt
+-- Disable the spacebar key's default behavior in Normal and Visual modes
+vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
+local opt = vim.opt
 opt.cmdheight = 1
 opt.relativenumber = true -- Show relative line numbers
 opt.number = true         -- Shows absolute line number on cursor line (when relative number is on)

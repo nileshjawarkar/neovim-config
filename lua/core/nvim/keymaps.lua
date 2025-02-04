@@ -1,7 +1,13 @@
 local sys = require("core.util.sys")
+
 local keymap = vim.keymap
+
+-- Disable the spacebar key's default behavior in Normal and Visual modes
+keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+-- delete single character without copying into register
+keymap.set('n', 'x', '"_x', { noremap = true, silent = true})
+
 -- Window management
-------------------------------
 keymap.set("n", "<leader>wv", "<C-w>v", { noremap = true, silent = true, desc = "Split vertically" })
 keymap.set("n", "<leader>ws", "<C-w>s", { noremap = true, silent = true, desc = "Split horizontally" })
 keymap.set("n", "<leader>wh", "<C-w>h", { noremap = true, silent = true, desc = "Move right [<C-h>]" })
@@ -28,7 +34,6 @@ keymap.set("i", "<C-j>", "<down>", { noremap = true, silent = true })
 keymap.set("i", "<C-k>", "<up>", { noremap = true, silent = true })
 
 -- Utillity key binding
-------------------------------
 keymap.set("i", "jk", "<ESC>", { noremap = true, silent = true })
 keymap.set({ "i", "n" }, "<C-s>", "<ESC><CMD>:silent wa<CR>", { noremap = true, silent = true, desc = "Save session" })
 
@@ -55,13 +60,12 @@ keymap.set("n", "<leader>bP", function()
 end, { noremap = true, silent = true, desc = "Copy file directory path" })
 
 -- Buffer management
------------------------------------------------
 keymap.set("n", "<leader>bq", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close" })
 keymap.set("n", "<leader>bn", ":bn<CR>", { noremap = true, silent = true, desc = "Move next" })
 keymap.set("n", "<leader>bp", ":bp<CR>", { noremap = true, silent = true, desc = "Move prev" })
+keymap.set("n", "<leader>bw", "<cmd>set wrap!<CR>", { noremap = true, silent = true, desc = "Toggle word-wrap" })
 
 -- terminal management
---------------------------
 keymap.set("t", "<ESC><ESC>", "<C-\\><C-n>", { noremap = true, silent = true })
 keymap.set("t", "<C-k>", "<C-\\><C-n><C-w>k", { noremap = true, silent = true })
 keymap.set("t", "<C-l>", "<C-\\><C-n><C-w>l", { noremap = true, silent = true })
@@ -75,6 +79,8 @@ keymap.set("n", "<M-q>", function()
         local windows = vim.api.nvim_tabpage_list_wins(0)
         if #windows > 1 then
             vim.api.nvim_command('q')
+        else
+            vim.api.nvim_command('bd')
         end
     end
 end, {noremap = true, silent = true})

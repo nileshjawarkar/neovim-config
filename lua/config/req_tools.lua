@@ -18,4 +18,5 @@ return {
         "clang-format", "prettier", "xmlformatter",  -- Formatting
         "codespell", -- check spells in code
     },
+
 }
