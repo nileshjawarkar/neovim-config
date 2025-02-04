@@ -64,7 +64,6 @@ opt.timeoutlen = 300
 
 opt.mouse = ''
 
-
 -- Open completion menu even for single item
 -- Do not auto insert items from completion menu
 -- @warning - preview is removed. When it's on, default LSP opens a vertical tab

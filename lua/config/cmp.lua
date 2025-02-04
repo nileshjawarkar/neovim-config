@@ -7,6 +7,43 @@ local function setup()
     -- nvim-cmp setup
     local cmp = require("cmp")
     local lspkind = require("lspkind")
+
+    -- Define key handlers
+    local function select_handler(fallback)
+        if cmp.visible() then
+            cmp.confirm({ select = true, })
+        elseif luasnip.expandable() then
+            luasnip.expand()
+        else
+            fallback()
+        end
+    end
+    local function next_handler(fallback)
+        if cmp.visible() then
+            cmp.select_next_item()
+        elseif luasnip.expand_or_jumpable() then
+            luasnip.expand_or_jump()
+        else
+            fallback()
+        end
+    end
+    local function prev_handler(fallback)
+        if cmp.visible() then
+            cmp.select_prev_item()
+        elseif luasnip.locally_jumpable(-1) then
+            luasnip.jump(-1)
+        else
+            fallback()
+        end
+    end
+    local function choice_handler(fallback)
+        if luasnip.choice_active() then
+            luasnip.change_choice(1)
+        else
+            fallback()
+        end
+    end
+
     cmp.setup({
         completion = {
             completeopt = "menu,menuone,preview,noselect",
@@ -32,56 +69,30 @@ local function setup()
             documentation = cmp.config.window.bordered(),
         },
         mapping = cmp.mapping.preset.insert({
-            ['<C-y>'] = cmp.mapping.confirm { select = true },
+            -- Manually trigger a completion from nvim-cmp.
+            -- Generally you don't need this, because nvim-cmp will display
+            -- completions whenever it has completion options available.
             ['<C-Space>'] = cmp.mapping.complete {},
-            ['<CR>'] = cmp.mapping(function(fallback)
-                if cmp.visible() then
-                    cmp.confirm({ select = true, })
-                elseif luasnip.expandable() then
-                    luasnip.expand()
-                else
-                    fallback()
-                end
-            end),
-            ["<C-n>"] = cmp.mapping(function(fallback)
-                if cmp.visible() then
-                    cmp.select_next_item()
-                elseif luasnip.expand_or_jumpable() then
-                    luasnip.expand_or_jump()
-                else
-                    fallback()
-                end
-            end, { "i", "s" }),
-            ["<C-p>"] = cmp.mapping(function(fallback)
-                if cmp.visible() then
-                    cmp.select_prev_item()
-                elseif luasnip.locally_jumpable(-1) then
-                    luasnip.jump(-1)
-                else
-                    fallback()
-                end
-            end, { "i", "s" }),
-            ["<C-l>"] = cmp.mapping(function(fallback)
-                if luasnip.choice_active() then
-                    luasnip.change_choice(1)
-                else
-                    fallback()
-                end
-            end, { "i", "s" }),
+
+            ["<C-l>"] = cmp.mapping(choice_handler),
             ['<C-b>'] = cmp.mapping.scroll_docs(-4),
             ['<C-f>'] = cmp.mapping.scroll_docs(4),
+            -- group 1 : Vimified
+            ['<C-y>'] = cmp.mapping(select_handler),
+            ["<C-n>"] = cmp.mapping(next_handler),
+            ["<C-p>"] = cmp.mapping(prev_handler),
+            -- group 2 : Microsoft style
+            ['<CR>'] = cmp.mapping(select_handler),
+            ["<Tab>"] = cmp.mapping(next_handler),
+            ["<S-Tab>"] = cmp.mapping(prev_handler),
         }),
 
         sources = cmp.config.sources({
-            {
-                name = 'lazydev',
-                group_index = 0,
-            },
+            { name = 'lazydev', group_index = 0, },
             { name = "nvim_lsp" },
             { name = "luasnip" },
+            { name = "buffer",  keyword_length = 2 },
             { name = "path" },
-        }, {
-            { name = "buffer", keyword_length = 2 },
         }),
     })
 
@@ -91,7 +102,7 @@ local function setup()
     cmp.setup.cmdline({ "/", "?" }, {
         mapping = cmp.mapping.preset.cmdline(),
         sources = {
-            { name = "buffer", keyword_length = 2 },
+            { name = "buffer", },
         },
     })
 
@@ -100,7 +111,6 @@ local function setup()
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
             { name = "path" },
-        }, {
             { name = "cmdline" },
         }),
     })
