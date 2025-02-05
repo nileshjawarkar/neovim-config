@@ -99,11 +99,8 @@ local function get_os()
     return "Other"
 end
 
-local function get_path_sep()
-    if get_os() == "Windows" then
-        return "\\"
-    end
-    return "/"
+local get_path_sep = function()
+    return  package.config:sub(1, 1)
 end
 
 local function rm_ext_from_filename(filename)
