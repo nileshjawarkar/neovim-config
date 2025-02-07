@@ -79,7 +79,6 @@ keymap.set("n", "<M-q>", function()
         local windows = vim.api.nvim_tabpage_list_wins(0)
         if #windows > 1 then
             vim.api.nvim_command('q')
-            require("core.nvim.handlers").close({"dap"})
         else
             vim.api.nvim_command('bd')
         end
