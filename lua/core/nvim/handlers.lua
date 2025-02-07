@@ -20,24 +20,29 @@ M.close = function(required)
     if handlers.close == nil then
         return
     end
+    -- Execute in order as give in input
     for _, v in pairs(required) do
         if handlers.close[v] ~= nil then
             local v_handler = handlers.close[v]
-            if type(v_handler) == "table" then
+            if type(v_handler) == "function" then
+                v_handler()
+            -- if v_handler is table, it means we have trigger function to check
+            -- if trigger function return true then we can execute close handler
+            elseif type(v_handler) == "table" then
                 if v_handler.trigger ~= nil and v_handler.handler ~= nil then
                     if v_handler.trigger() == true then
                         v_handler.handler()
                     end
                 end
-            elseif type(v_handler) == "function" then
-                v_handler()
             end
         end
     end
 end
 
 M.register_close_handler("qf", function()
-    vim.cmd('cclose')
+    if vim.bo.filetype == "qf" then
+        vim.cmd('cclose')
+    end
 end)
 
 return M

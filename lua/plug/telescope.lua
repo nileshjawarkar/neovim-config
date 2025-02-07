@@ -54,10 +54,6 @@ return {
         -- before starting telescope.
         local function execute_checks_and_preqs()
             local buftype = vim.bo.filetype
-            if buftype == "df" then
-                vim.cmd("buffer")
-                buftype = vim.bo.filetype
-            end
             if buftype == "mason" or vim.bo.filetype == "lazy" then
                 vim.cmd("bdelete")
             elseif buftype == "dapui_watches" or buftype == "dapui_scopes"
@@ -65,7 +61,7 @@ return {
                 vim.notify("While in DAP, please use telescope from code buffer.", vim.log.levels.INFO)
                 return false
             end
-            require("core.nvim.handlers").close({ "term" })
+            require("core.nvim.handlers").close({ "term", "qf" })
             return true
         end
 

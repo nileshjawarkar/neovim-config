@@ -51,6 +51,10 @@ M.setup = function()
     vim.keymap.set("n", "<leader>ed", api.tree.change_root_to_node, { desc = "Set as root" })
 end
 
-require("core.nvim.handlers").register_close_handler("tree", require("nvim-tree.api").tree.close)
+require("core.nvim.handlers").register_close_handler("tree", function()
+    if vim.bo.filetype == "NvimTree" then
+        require("nvim-tree.api").tree.close()
+    end
+end)
 
 return M

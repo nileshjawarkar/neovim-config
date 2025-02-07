@@ -77,6 +77,7 @@ local function split_and_set_terminal()
     else
         vim.cmd('terminal')
         term_buf = vim.api.nvim_win_get_buf(0)
+        vim.bo.filetype = "term"
     end
     -- start insert mode
     vim.cmd('startinsert')
@@ -123,8 +124,11 @@ local function toggleTerm()
     end
 end
 
-
-require("core.nvim.handlers").register_close_handler("term", hide_term)
+require("core.nvim.handlers").register_close_handler("term", function()
+    if vim.bo.filetype == "term" then
+        hide_term()
+    end
+end)
 
 vim.keymap.set({ "n" }, "<Leader>T", toggleTerm, { noremap = true, silent = true, desc = "Terminal (C-t)" })
 vim.keymap.set({ "n", "t" }, "<C-t>", toggleTerm, { noremap = true, silent = true })

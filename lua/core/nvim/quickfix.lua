@@ -23,13 +23,17 @@ local function remove_from_qf_list()
     vim.api.nvim_win_set_cursor(winid, { new_idx, 0 })
 end
 
-
 local function clear_qf_list()
     vim.fn.setqflist({}, 'r')
     vim.cmd("cclose")
 end
 
-keymap.set("n", "<leader>qo", ":copen<CR>", { noremap = true, silent = true, desc = "Open list" })
+local function open_qf()
+    require("core.nvim.handlers").close({"tree", "dap"})
+    vim.cmd("copen")
+end
+
+keymap.set("n", "<leader>qo", open_qf, { noremap = true, silent = true, desc = "Open list" })
 keymap.set("n", "<leader>qq", ":cclose<CR>", { noremap = true, silent = true, desc = "Close list" })
 keymap.set("n", "<leader>qf", ":cfirst<CR>", { noremap = true, silent = true, desc = "Jump to first" })
 keymap.set("n", "<leader>qn", ":cnext<CR>", { noremap = true, silent = true, desc = "Jump to next" })
