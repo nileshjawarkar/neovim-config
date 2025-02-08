@@ -127,7 +127,9 @@ end
 require("core.nvim.handlers").register_close_handler("term", function()
     if vim.bo.filetype == "term" then
         hide_term()
+        return true
     end
+    return false
 end)
 
 vim.keymap.set({ "n" }, "<Leader>T", toggleTerm, { noremap = true, silent = true, desc = "Terminal (C-t)" })

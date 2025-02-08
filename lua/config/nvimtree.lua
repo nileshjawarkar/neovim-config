@@ -54,7 +54,9 @@ end
 require("core.nvim.handlers").register_close_handler("tree", function()
     if vim.bo.filetype == "NvimTree" then
         require("nvim-tree.api").tree.close()
+        return true
     end
+    return false
 end)
 
 return M

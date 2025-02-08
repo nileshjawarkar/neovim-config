@@ -140,8 +140,12 @@ local function setup()
     ]]
 end
 
-require("core.nvim.handlers").register_close_handler("dap", dap_close, function()
-   return isDapOpen
+require("core.nvim.handlers").register_close_handler("dap", function()
+    if isDapOpen then
+        dap_close()
+        return true
+    end
+    return false
 end)
 
 return {

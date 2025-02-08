@@ -24,7 +24,9 @@ return {
         require("core.nvim.handlers").register_close_handler("git", function()
             if vim.bo.filetype == "NeogitStatus" then
                 vim.cmd("bdelete")
+                return true
             end
+            return false
         end)
     end,
 }

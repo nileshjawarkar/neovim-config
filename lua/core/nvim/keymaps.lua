@@ -5,7 +5,7 @@ local keymap = vim.keymap
 -- Disable the spacebar key's default behavior in Normal and Visual modes
 keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- delete single character without copying into register
-keymap.set('n', 'x', '"_x', { noremap = true, silent = true})
+keymap.set('n', 'x', '"_x', { noremap = true, silent = true })
 
 -- Window management
 keymap.set("n", "<leader>wv", "<C-w>v", { noremap = true, silent = true, desc = "Split vertically" })
@@ -72,15 +72,13 @@ keymap.set("t", "<C-l>", "<C-\\><C-n><C-w>l", { noremap = true, silent = true })
 keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h", { noremap = true, silent = true })
 keymap.set("t", "<C-j>", "<C-\\><C-n><C-w>j", { noremap = true, silent = true })
 
-keymap.set("n", "<M-q>", function()
-    if vim.bo.filetype == "qf" then
-        vim.cmd("cclose")
-    else
-        local windows = vim.api.nvim_tabpage_list_wins(0)
-        if #windows > 1 then
+keymap.set({ "n", "i", "v", "t" }, "<M-q>", function()
+    local windows = vim.api.nvim_tabpage_list_wins(0)
+    if #windows > 1 then
+        if 0 == require("core.nvim.handlers").closeAny({ "df", "tree", "dap", "term" }) then
             vim.api.nvim_command('q')
-        else
-            vim.api.nvim_command('bd')
         end
+    else
+        vim.api.nvim_command('bd')
     end
-end, {noremap = true, silent = true})
+end, { noremap = true, silent = true })
