@@ -93,6 +93,7 @@ local function setup()
             { name = "luasnip" },
             { name = "buffer",  keyword_length = 2 },
             { name = "path" },
+            { name = 'render-markdown' },
         }),
     })
 
@@ -102,7 +103,7 @@ local function setup()
     cmp.setup.cmdline({ "/", "?" }, {
         mapping = cmp.mapping.preset.cmdline(),
         sources = {
-            { name = "buffer", keyword_length = 2},
+            { name = "buffer", keyword_length = 2 },
         },
     })
 
@@ -111,9 +112,10 @@ local function setup()
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
             { name = "path" },
-            { name = "cmdline", keyword_length = 2},
+            { name = "cmdline"},
         }),
     })
+
 end
 
 local load_snippets = (function()
