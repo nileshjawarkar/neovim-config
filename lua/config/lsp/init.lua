@@ -2,12 +2,7 @@ local setup_keymaps = function(ev)
     local first_time = require("core.util.sys").first_time
     if first_time.check("LspKeyInit") then
         -- This block will be executed only once
-        -- Setup keymap for diagnostics
-        ---------------------------------
-        local diagnostics = vim.diagnostic
-        vim.keymap.set("n", "<leader>dL", diagnostics.open_float, { desc = "Show diagnostics" })
-        vim.keymap.set("n", "<leader>dp", diagnostics.goto_prev, { desc = "Previous diagnostics" })
-        vim.keymap.set("n", "<leader>dn", diagnostics.goto_next, { desc = "Next diagnostics" })
+        -- Delayed DAP setup and snippet loading based on file type
 
         -- Setup DAP
         local dap_conf = require("config.dap")
@@ -22,7 +17,6 @@ local setup_keymaps = function(ev)
         end
 
         -- Load user snippets - once for each filetype
-        ---------------------------------------------
         require("config.cmp").load_snippets(vim.bo.filetype)
 
         first_time.setFalse("LspKeyInit")
@@ -148,6 +142,13 @@ return {
         })
 
         configure_ui()
+
+        -- Setup keymap for diagnostics
+        ---------------------------------
+        local diagnostics = vim.diagnostic
+        vim.keymap.set("n", "<leader>dL", diagnostics.open_float, { desc = "Show diagnostics" })
+        vim.keymap.set("n", "<leader>dp", diagnostics.goto_prev, { desc = "Previous diagnostics" })
+        vim.keymap.set("n", "<leader>dn", diagnostics.goto_next, { desc = "Next diagnostics" })
 
         -- Use LspAttach autocommand to only map the following keys
         -- after the language server attaches to the current buffer

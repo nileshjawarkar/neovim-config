@@ -42,6 +42,7 @@ end
 local prepare_config = (function()
     -- Things that need to executed only once
     ----------------------------------------
+    local jdtls_options = jdtls_util.get_jdtls_options()
     jdtls_util.rm_jdtls_ws()
     local root_dir = sys.find_root()
     mvn_util.find_src_paths(root_dir, false, false)
@@ -49,7 +50,6 @@ local prepare_config = (function()
     -- actual config preparation method
     ----------------------------------
     return function()
-        local jdtls_options = jdtls_util.get_jdtls_options()
         local src_paths = mvn_util.find_src_paths(nil, true, false)
         -- Get the default extended client capablities of the JDTLS language server
         -- Modify one property called resolveAdditionalTextEditsSupport and set it to true

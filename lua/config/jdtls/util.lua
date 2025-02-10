@@ -1,4 +1,4 @@
-local get_jdtls_options = (function()
+local function get_jdtls_options()
     local data_path = vim.fn.stdpath("data")
     local sys = require("core.util.sys")
     local project_name = sys.get_curdir_name()
@@ -33,16 +33,14 @@ local get_jdtls_options = (function()
     end
 
     -- require("core.util.table").dump(bundles)
-    return function()
-        return {
-            project_dir = workspace_dir,
-            javaagent = javaagent,
-            launcher = launcher,
-            configuration = configuration,
-            dap_bundles = bundles,
-        }
-    end
-end)()
+    return {
+        project_dir = workspace_dir,
+        javaagent = javaagent,
+        launcher = launcher,
+        configuration = configuration,
+        dap_bundles = bundles,
+    }
+end
 
 local function rm_jdtls_ws()
     local data_path = vim.fn.stdpath("data")
