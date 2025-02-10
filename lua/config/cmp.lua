@@ -83,8 +83,6 @@ local function setup()
             ["<C-p>"] = cmp.mapping(prev_handler),
             -- group 2 : Microsoft style
             ['<CR>'] = cmp.mapping(select_handler),
-            ["<Tab>"] = cmp.mapping(next_handler),
-            ["<S-Tab>"] = cmp.mapping(prev_handler),
         }),
 
         sources = cmp.config.sources({

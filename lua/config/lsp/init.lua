@@ -1,4 +1,4 @@
-local setup_keymaps = function(ev)
+local setup_keymaps = function(event)
     local first_time = require("core.util.sys").first_time
     if first_time.check("LspKeyInit") then
         -- This block will be executed only once
@@ -27,11 +27,11 @@ local setup_keymaps = function(ev)
     ----------------------
     local vim_lbuf = vim.lsp.buf
     -- Enable completion triggered by <c-x><c-o>
-    vim.bo[ev.buf].omnifunc = "v:lua.vim_lsp.omnifunc"
+    vim.bo[event.buf].omnifunc = "v:lua.vim_lsp.omnifunc"
 
     local lsp_buildin = require("telescope.builtin")
     local function keymap(m, key, handler, desc)
-        vim.keymap.set(m, key, handler, { buffer = ev.buf, silent = true, desc = desc })
+        vim.keymap.set(m, key, handler, { buffer = event.buf, silent = true, desc = desc })
     end
 
     keymap("n", "<leader>lD", vim_lbuf.declaration, "Go to declaration [<gD>]")
@@ -57,6 +57,38 @@ local setup_keymaps = function(ev)
     keymap("n", "<leader>lwl", function()
         vim.notify(vim.inspect(vim_lbuf.list_workspace_folders()), vim.log.levels.INFO)
     end, "List workspace folders")
+
+    local client = vim.lsp.get_client_by_id(event.data.client_id)
+    if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+        local highlight_augroup = vim.api.nvim_create_augroup('UserLspBufHighlight', { clear = false })
+        vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+            buffer = event.buf,
+            group = highlight_augroup,
+            callback = vim.lsp.buf.document_highlight,
+        })
+
+        vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+            buffer = event.buf,
+            group = highlight_augroup,
+            callback = vim.lsp.buf.clear_references,
+        })
+
+        vim.api.nvim_create_autocmd('LspDetach', {
+            group = vim.api.nvim_create_augroup('UserLspBufDetach', { clear = true }),
+            callback = function(event2)
+                vim.lsp.buf.clear_references()
+                vim.api.nvim_clear_autocmds { group = 'UserLspBufHighlight', buffer = event2.buf }
+            end,
+        })
+    end
+
+    -- The following code creates a keymap to toggle inlay hints in your
+    -- code, if the language server you are using supports them
+    if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+        keymap("n", "<leader>lh", function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+        end, 'Toggle inlay hints')
+    end
 end
 
 local function configure_ui()
@@ -127,7 +159,6 @@ return {
                         },
                     }
                 elseif server_name == "lua_ls" then
-                    require("lazydev").setup({})
                     srv_config["settings"] = {
                         Lua = {
                             diagnostics = { globals = { "vim" }, },
@@ -155,13 +186,6 @@ return {
         vim.api.nvim_create_autocmd("LspAttach", {
             group = vim.api.nvim_create_augroup("UserLspBufAttach", {}),
             callback = setup_keymaps,
-        })
-
-        vim.api.nvim_create_autocmd('LspDetach', {
-            group = vim.api.nvim_create_augroup('UserLspBufDettach', { clear = true }),
-            callback = function(_)
-                vim.lsp.buf.clear_references()
-            end,
         })
     end,
 }

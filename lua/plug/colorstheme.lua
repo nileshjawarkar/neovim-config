@@ -5,5 +5,6 @@ return {
         vim.cmd([[colorscheme tokyonight-storm]])
         -- vim.cmd([[colorscheme tokyonight-night]])
         -- vim.cmd([[colorscheme tokyonight-moon]])
+        vim.cmd([[hi Comment gui=none]])
     end,
 }

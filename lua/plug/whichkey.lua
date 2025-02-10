@@ -1,11 +1,12 @@
 return {
     "folke/which-key.nvim",
-    event = "VeryLazy",
+    event = 'VimEnter',
     config = function()
         vim.o.timeout = true
         vim.o.timeoutlen = 550
         local wk = require("which-key")
         wk.setup({
+            delay = 0,
             preset = "modern",
             show_help = false,
             show_keys = false,
@@ -31,17 +32,17 @@ return {
             },
         })
         wk.add({
-            { "<leader>f", group = "Search", },
-            { "<leader>e", group = "Tree view", },
-            { "<leader>l", group = "Lsp", },
-            { "<leader>b", group = "Buffer", },
+            { "<leader>f",  group = "Search", },
+            { "<leader>e",  group = "Tree view", },
+            { "<leader>l",  group = "Lsp", },
+            { "<leader>b",  group = "Buffer", },
             { "<leader>ba", group = "Add to selected list", },
-            { "<leader>B", group = "Breakpoint", },
+            { "<leader>B",  group = "Breakpoint", },
             { "<leader>lw", group = "Workspace", },
-            { "<leader>w", group = "Window", },
-            { "<leader>q", group = "Quickfix list", },
-            { "<leader>d", group = "Debug/Diagnostics", },
-            { "<leader>t", group = "Run test", },
+            { "<leader>w",  group = "Window", },
+            { "<leader>q",  group = "Quickfix list", },
+            { "<leader>d",  group = "Debug/Diagnostics", },
+            { "<leader>t",  group = "Run test", },
         })
     end
 }
