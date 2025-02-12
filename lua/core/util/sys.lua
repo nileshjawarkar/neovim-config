@@ -99,8 +99,18 @@ local function get_os()
     return "Other"
 end
 
+local sep = nil
+(function()
+    local base_dir = vim.fn.getcwd()
+    if string.find(base_dir, "\\") then
+        sep = "\\"
+    else
+        sep = "/"
+    end
+end)()
+
 local get_path_sep = function()
-    return  package.config:sub(1, 1)
+    return sep
 end
 
 local function rm_ext_from_filename(filename)
@@ -286,7 +296,6 @@ M.get_path_sep = get_path_sep
 
 M.path_builder = function(value)
     local path = value
-    local sep = get_path_sep()
     return {
         append = function(self, value1)
             if path == nil then
