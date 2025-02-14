@@ -29,6 +29,7 @@ require("lazy").setup({
     require("plug.jdtls"),
     require("plug.dap"),
     require("plug.lint"),
+    require("plug.gitsigns"),
     require("plug.other"),
 }, {
     ui = { border = 'rounded' },

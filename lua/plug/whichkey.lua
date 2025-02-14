@@ -43,6 +43,7 @@ return {
             { "<leader>q",  group = "Quickfix list", },
             { "<leader>d",  group = "Debug/Diagnostics", },
             { "<leader>t",  group = "Run test", },
+            { "<leader>h",  group = "Git-Signs", },
         })
     end
 }
