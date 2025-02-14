@@ -10,7 +10,7 @@ return {
         end, { noremap = true, silent = true, desc = "Prev. hunk", })
         vim.keymap.set({ "n", "v" }, "<leader>hs", gs.stage_hunk,
             { noremap = true, silent = true, desc = "Stage hunk", })
-        vim.keymap.set({ "n", "v" }, "<leader>hP", gs.preview_hunk,
+        vim.keymap.set({ "n", "v" }, "<leader>hP", gs.preview_hunk_inline,
             { noremap = true, silent = true, desc = "Preview hunk", })
         vim.keymap.set('n', '<leader>hd', gs.diffthis, { noremap = true, silent = true, desc = "Diff this", })
         vim.keymap.set('n', '<leader>hQ', function() gs.setqflist('all') end,
