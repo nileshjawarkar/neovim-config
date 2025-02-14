@@ -13,10 +13,8 @@ return {
         vim.keymap.set({ "n", "v" }, "<leader>hP", gs.preview_hunk_inline,
             { noremap = true, silent = true, desc = "Preview hunk", })
         vim.keymap.set('n', '<leader>hd', gs.diffthis, { noremap = true, silent = true, desc = "Diff this", })
-        vim.keymap.set('n', '<leader>hQ', function() gs.setqflist('all') end,
-            { noremap = true, silent = true, desc = "List modifications (all)", })
-        vim.keymap.set('n', '<leader>hq', gs.setqflist,
-            { noremap = true, silent = true, desc = "List modifications (cur. buf.)", })
+        vim.keymap.set('n', '<leader>hq', function() gs.setqflist('all') end,
+            { noremap = true, silent = true, desc = "List modifications", })
 
         gs.setup({
             signs = {
