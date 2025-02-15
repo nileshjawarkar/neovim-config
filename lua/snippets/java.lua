@@ -61,6 +61,14 @@ public static class {name} implements Runnable {{
 }}
 ]]
 
+local public_thread = [[
+public static class {name} extends Thread {{
+    @Override
+    public void run() {{
+        {last}
+    }}
+}}
+]]
 
 ls.add_snippets("java", {
     s("jclass4",
@@ -69,12 +77,22 @@ ls.add_snippets("java", {
             i(0) })),
     s("jtest", fmt(jtest_method, { name = i(1, "test_name"), last = i(0) })),
 
-    s("pusc", fmt(public_static_class, { name = i(1, "name"), last = i(0) })),
-    s("pusr", fmt(public_runnable, { name = i(1, "name"), last = i(0) })),
+    s("psc", fmt(public_static_class, { name = i(1, "name"), last = i(0) })),
     s("prsc", fmt(private_static_class, { name = i(1, "name"), last = i(0) })),
-    s("newrunnable", fmt(new_runnable, { last = i(0) })),
+    s("psrun", fmt(public_runnable, { name = i(1, "name"), last = i(0) })),
+    s("psthread", fmt(public_thread, { name = i(1, "name"), last = i(0) })),
+    s("newrun", fmt(new_runnable, { last = i(0) })),
 
-    s("prsf", {
+    s("prsif", {
+        t("private static "),
+        i(1, "int"),
+        t(" "),
+        i(2, "name"),
+        t(";"),
+        i(0)
+    }),
+
+    s("prssf", {
         t("private static "),
         i(1, "String"),
         t(" "),
@@ -83,7 +101,16 @@ ls.add_snippets("java", {
         i(0)
     }),
 
-    s("pusf", {
+    s("psif", {
+        t("public static "),
+        i(1, "int"),
+        t(" "),
+        i(2, "name"),
+        t(";"),
+        i(0)
+    }),
+
+    s("pssf", {
         t("public static "),
         i(1, "String"),
         t(" "),
