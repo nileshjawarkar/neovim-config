@@ -1,7 +1,7 @@
 return {
     treesitter_req = {
         "json", "yaml", "vim", "vimdoc", -- Basic/Tools
-        -- "make", -- Basic.Tools optional
+        "make", -- Basic.Tools optional
         "lua", "c", "cpp", "java",       -- languages
         -- "c_sharp", -- languages optional
         -- "css", "html", "javascript", -- Web
@@ -12,9 +12,9 @@ return {
         "lua_ls", "jsonls", "yamlls",
         -- "bashls", "dockerls",
         -- "quick_lint_js", "cssls", "ts_ls", "emmet-language-server", -- Web
+        -- "pyright", -- Python
         "jdtls", "java-debug-adapter", "java-test", -- Java
         "clangd", "codelldb", "cpptools", "cpplint",  -- C, CPP
-        -- "pyright", -- Python
         "clang-format", "prettier", "xmlformatter",  -- Formatting
         "codespell", -- check spells in code
     },
