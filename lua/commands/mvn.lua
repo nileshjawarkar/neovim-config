@@ -1,5 +1,5 @@
 vim.api.nvim_create_user_command("MvnCreateJavaProject", function()
-    local cur_dir = vim.fn.getcwd()
+    local cur_dir = require("core.util.sys").get_cwd()
     local mvn = require("core.mvn")
     if cur_dir ~= nil and mvn ~= nil then
         -- mvn.create_prj("java", cur_dir)
@@ -8,7 +8,7 @@ vim.api.nvim_create_user_command("MvnCreateJavaProject", function()
 end, {})
 
 vim.api.nvim_create_user_command("MvnCreateJEEProject", function()
-    local cur_dir = vim.fn.getcwd()
+    local cur_dir = require("core.util.sys").get_cwd()
     local mvn = require("core.mvn")
     if cur_dir ~= nil and mvn ~= nil then
         -- mvn.create_prj("jee", cur_dir)

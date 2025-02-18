@@ -23,8 +23,7 @@ end, {})
 vim.api.nvim_create_user_command("PrjInitConfig", function()
     local sys = require("core.util.sys")
     if sys ~= nil then
-        local cur_dir = vim.fn.getcwd()
-        sys.create_project_config(cur_dir)
+        sys.create_project_config(sys.get_cwd())
     end
 end, {})
 

@@ -63,6 +63,10 @@ local function write_to(filename, callback)
     return false
 end
 
+local function get_cwd()
+   return vim.fs.normalize(vim.fn.getcwd())
+end
+
 local function dir_has_any_file_or_file_with_ext(dir, filename_list, fileext_list)
     local files = vim.fn.readdir(dir)
     for _, curfile in ipairs(files) do
@@ -101,7 +105,7 @@ end
 
 local sep = nil
 (function()
-    local base_dir = vim.fn.getcwd()
+    local base_dir = get_cwd()
     if string.find(base_dir, "\\") then
         sep = "\\"
     else
@@ -203,6 +207,8 @@ M.is_file = function(filepath)
     return false
 end
 
+M.get_cwd = get_cwd
+
 M.get_curbuf_name_without_ext = function()
     local filename = vim.fs.basename(vim.fn.bufname())
     return rm_ext_from_filename(filename)
@@ -251,7 +257,7 @@ M.find_root = function()
     local prj_ext_marker = { "sln", "csproj" }
     -- Step 1: In current directory file project-tool related files,
     -- if found any of them return cur-dir as root-dir
-    local cwd = vim.fn.getcwd()
+    local cwd = get_cwd()
     if true == dir_has_any_file_or_file_with_ext(cwd, prj_markers, prj_ext_marker) then
         return cwd
     end

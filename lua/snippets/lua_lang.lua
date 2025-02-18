@@ -53,7 +53,7 @@ ls.add_snippets("lua", {
 
     s("dap_config_lldb", fmt([[
     local sys = require("core.util.sys")
-    local root_path = sys.path_builder(vim.fn.getcwd()):append(""):build()
+    local root_path = sys.path_builder(sys.get_cwd()):append(""):build()
     local function dap_setup()
         local dap = require('dap')
         dap.adapters.cppdbg = {{
@@ -145,7 +145,7 @@ ls.add_snippets("lua", {
     -- Please check version of gdb. 
     -- DAP is supported by gdb version 1.14 on-wards
     local sys = require("core.util.sys")
-    local root_path = sys.path_builder(vim.fn.getcwd()):append(""):build()
+    local root_path = sys.path_builder(sys.get_cwd()):append(""):build()
 
     local function dap_setup()
         local dap = require('dap')
