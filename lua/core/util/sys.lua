@@ -103,16 +103,7 @@ local function get_os()
     return "Other"
 end
 
-local sep = nil
-(function()
-    local base_dir = get_cwd()
-    if string.find(base_dir, "\\") then
-        sep = "\\"
-    else
-        sep = "/"
-    end
-end)()
-
+local sep = "/"
 local get_path_sep = function()
     return sep
 end
