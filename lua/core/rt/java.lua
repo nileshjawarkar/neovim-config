@@ -39,7 +39,7 @@ local get_curbuf_as_pkg = function()
     local str_util = require("core.util.string")
     local parent_path = sys.get_curbuf_dir()
     local pkg, idx = "", -1
-    str_util.split(parent_path, sys.get_path_sep(), function(dir_name)
+    str_util.split(parent_path, "/", function(dir_name)
         if dir_name == "src" or dir_name == "Src" or dir_name == "SRC" then
             idx = 0
         elseif idx >= 0 then

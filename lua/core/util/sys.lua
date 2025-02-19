@@ -103,11 +103,6 @@ local function get_os()
     return "Other"
 end
 
-local sep = "/"
-local get_path_sep = function()
-    return sep
-end
-
 local function rm_ext_from_filename(filename)
     local ext = string.match(filename, "^.*(%..+)$")
     if ext ~= nil then
@@ -289,8 +284,6 @@ M.create_dirs = function(dir_list)
     return true
 end
 
-M.get_path_sep = get_path_sep
-
 M.path_builder = function(value)
     local path = value
     return {
@@ -298,7 +291,7 @@ M.path_builder = function(value)
             if path == nil then
                 path = value1
             else
-                path = path .. sep .. value1
+                path = path .. "/" .. value1
             end
             return self
         end,
