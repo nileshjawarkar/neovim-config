@@ -16,15 +16,6 @@ return {
         vim.keymap.set('n', '<leader>hq', function() gs.setqflist('all') end,
             { noremap = true, silent = true, desc = "List modifications", })
 
-        gs.setup({
-            signs = {
-                add = { text = '+' },
-                change = { text = '~' },
-                delete = { text = '-' },
-                topdelete = { text = '-' },
-                changedelete = { text = '_' },
-                untracked = { text = "=" },
-            },
-        })
+        gs.setup()
     end,
 }

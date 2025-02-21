@@ -67,7 +67,7 @@ local function get_cwd()
    return vim.fs.normalize(vim.fn.getcwd())
 end
 
-local function dir_has_any_file_or_file_with_ext(dir, filename_list, fileext_list)
+local function dir_has_file_with_ext(dir, filename_list, fileext_list)
     local files = vim.fn.readdir(dir)
     for _, curfile in ipairs(files) do
         for _, fname in ipairs(filename_list) do
@@ -90,7 +90,7 @@ local function dir_has_any_file_or_file_with_ext(dir, filename_list, fileext_lis
 end
 
 local function dir_has_any(dir, filename_list)
-    return dir_has_any_file_or_file_with_ext(dir, filename_list, nil)
+    return dir_has_file_with_ext(dir, filename_list, nil)
 end
 
 local function get_os()
@@ -244,7 +244,7 @@ M.find_root = function()
     -- Step 1: In current directory file project-tool related files,
     -- if found any of them return cur-dir as root-dir
     local cwd = get_cwd()
-    if true == dir_has_any_file_or_file_with_ext(cwd, prj_markers, prj_ext_marker) then
+    if true == dir_has_file_with_ext(cwd, prj_markers, prj_ext_marker) then
         return cwd
     end
     -- Step 2: Get bufname, if not empty/nil
