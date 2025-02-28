@@ -24,6 +24,7 @@ return {
             }
             formatters_by_ft.c = fmt
             formatters_by_ft.cpp = fmt
+            formatters_by_ft.ino = fmt
             formatters_by_ft.java = {
                 "clang-format",
                 lsp_format = "fallback",
