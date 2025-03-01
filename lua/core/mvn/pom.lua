@@ -121,7 +121,7 @@ local new_pom_builder = function()
         end
 
         -- Indent last end tag
-       local gg = "\n\t\t\t"
+        local gg = "\n\t\t\t"
         if hasGoal == true then
             gg = string.format(str_goal, goal) .. "\n\t\t\t"
             -- Adjust indentetion if config is empty
@@ -157,7 +157,8 @@ local new_pom_builder = function()
         if _modules_builder ~= nil then
             modules = _modules_builder:build()
         end
-        return string.format(str_pom, _name, _pkg, _name, _version, _bt, _parent, props, _dm, deps, _dm_end, plugins, modules);
+        return string.format(str_pom, _name, _pkg, _name, _version, _bt, _parent, props, _dm, deps, _dm_end, plugins,
+            modules);
     end
     return m
 end
@@ -170,8 +171,8 @@ return {
         builder:addProp("project.build.sourceEncoding", "UTF-8")
         builder:addProp("skipTests", "true")
         builder:addProp("skipChecks", "true")
-        builder:addProp("maven.compiler.source", "17")
-        builder:addProp("maven.compiler.target", "17")
+        builder:addProp("maven.compiler.source", "21")
+        builder:addProp("maven.compiler.target", "21")
         builder:setModuleType("pom")
 
         -- Add plugins
@@ -179,21 +180,24 @@ return {
         plug_config_builder:add_child("skipTests", "${skipTests}")
         builder:addPluginMid("maven-surefire-plugin", "org.apache.maven.plugins", "3.5.2", plug_config_builder:build())
 
-        builder:addPluginMin("maven-compiler-plugin", "org.apache.maven.plugins", "3.13.0")
-        builder:addPluginMin("maven-install-plugin", "org.apache.maven.plugins", "3.1.3")
+        builder:addPluginMin("maven-compiler-plugin", "org.apache.maven.plugins", "3.14.0")
+        builder:addPluginMin("maven-install-plugin", "org.apache.maven.plugins", "3.1.4")
         builder:addPluginMin("maven-jar-plugin", "org.apache.maven.plugins", "3.4.2")
-        builder:addPluginMin("maven-clean-plugin", "org.apache.maven.plugins", "3.4.0")
+        builder:addPluginMin("maven-clean-plugin", "org.apache.maven.plugins", "3.4.1")
         builder:addPluginMin("maven-release-plugin", "org.apache.maven.plugins", "3.1.1")
 
         local owasp_config = new_xmltag_builder("configuration", "\n\t\t\t\t")
         owasp_config:add_child("skip", "${skipChecks}")
-        builder:addPlugin("dependency-check-maven", "org.owasp", "11.1.1", owasp_config:build(), "check")
+        builder:addPlugin("dependency-check-maven", "org.owasp", "12.1.0", owasp_config:build(), "check")
 
         if prj_type == "JEE" then
             builder:addPlugin("maven-war-plugin", "org.apache.maven.plugins", "3.4.0", "")
         end
 
         -- Add dependencies
+        builder:addDependancy("slf4j-api", "org.slf4j", "2.0.17", "")
+        builder:addDependancy("logback-core", "ch.qos.logback", "1.5.17", "")
+        builder:addDependancy("logback-classic", "ch.qos.logback", "1.5.17", "")
         -- Test
         builder:addDependancy("mockito-core", "org.mockito", "5.12.0", "test")
         builder:addDependancy("junit-jupiter-api", "org.junit.jupiter", "5.10.3", "test")
@@ -221,6 +225,9 @@ return {
             builder:setModuleType("jar")
             if prj_type == "JEE" then
                 builder:addDependancyMin("jakarta.jakartaee-api", "jakarta.platform", "provided")
+                builder:addDependancyMin("slf4j-api", "org.slf4j", "")
+                builder:addDependancyMin("logback-core", "ch.qos.logback", "")
+                builder:addDependancyMin("logback-classic", "ch.qos.logback", "")
                 builder:addDependancyMin("h2", "com.h2database", "")
             end
             -- Add dependencies
@@ -228,9 +235,9 @@ return {
             builder:addDependancyMin("mockito-core", "org.mockito", "test")
             builder:addDependancyMin("junit-jupiter-api", "org.junit.jupiter", "test")
         end
-        if deps ~= nil  and type(deps) == "table" then
+        if deps ~= nil and type(deps) == "table" then
             for _, value in pairs(deps) do
-               if type(value) == "table" then
+                if type(value) == "table" then
                     local mname, mpkg, mscope, mversion
                     for key, v in pairs(value) do
                         if key == "name" then
@@ -242,9 +249,9 @@ return {
                         elseif key == "version" then
                             mversion = v
                         end
-                   end
+                    end
                     builder:addDependancy(mname, mpkg, mversion, mscope)
-               end
+                end
             end
         end
         return builder:build()
