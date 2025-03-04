@@ -63,6 +63,10 @@ local function write_to(filename, callback)
     return false
 end
 
+local function get_configd()
+   return vim.fs.normalize(vim.fn.stdpath("config")) 
+end
+
 local function get_cwd()
    return vim.fs.normalize(vim.fn.getcwd())
 end
@@ -194,6 +198,7 @@ M.is_file = function(filepath)
 end
 
 M.get_cwd = get_cwd
+M.get_configd = get_configd
 
 M.get_curbuf_name_without_ext = function()
     local filename = vim.fs.basename(vim.fn.bufname())

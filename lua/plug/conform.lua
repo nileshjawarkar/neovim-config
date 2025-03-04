@@ -14,22 +14,34 @@ return {
     },
     config = function()
         local registry = require("mason-registry")
+        local formatters = {
+            fmtjava = {
+                command = 'clang-format',
+                args = { "--style", "{BasedOnStyle: Google, IndentWidth: 3, TabWidth: 3, UseTab: Never}", "--assume-filename=.java" },
+            },
+            fmtcpp = {
+                command = 'clang-format',
+                args = { "--style", "{BasedOnStyle: Microsoft, IndentWidth: 3, TabWidth: 3, UseTab: Never}", },
+            },
+            fmtxml = {
+                command = 'xmlformat',
+                args = {
+                    '--preserve', 'pre,literal', '--blanks', '--selfclose',
+                    '--disable-inlineformatting', '--preserve-attributes',
+                    '--indent', '3', '--indent-char', ' ', '$FILENAME'
+                },
+            }
+        }
+
         local formatters_by_ft = {
             lua = { "stylua" },
         }
         if registry.is_installed("clang-format") then
-            local fmt = {
-                "clang-format",
-                args = { "--style=Microsoft" },
-            }
+            local fmt = { "fmtcpp", }
             formatters_by_ft.c = fmt
             formatters_by_ft.cpp = fmt
             formatters_by_ft.ino = fmt
-            formatters_by_ft.java = {
-                "clang-format",
-                lsp_format = "fallback",
-                args = { '--style="{BasedOnStyle: Google, IndentWidth: 4}"', "--assume-filename=.java" },
-            }
+            formatters_by_ft.java = { "fmtjava" }
         end
 
         if registry.is_installed("prettier") then
@@ -50,15 +62,12 @@ return {
         end
 
         if registry.is_installed("xmlformatter") then
-            local fmt = {
-                "xmlformat",
-                args = { '--preserve "pre,literal" --blanks false --selfclose false  --overwrite --disable-inlineformatting --disable-correction --eof-newline', '-', },
-            }
-            formatters_by_ft.xml = fmt
+            formatters_by_ft.xml = { "fmtxml" }
         end
 
         require("conform").setup({
             formatters_by_ft = formatters_by_ft,
+            formatters = formatters,
         })
     end
 }
