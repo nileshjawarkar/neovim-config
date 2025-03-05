@@ -14,16 +14,30 @@ return {
     },
     config = function()
         local registry = require("mason-registry")
-        local formatters = {
-            fmtjava = {
+        local formatters = {}
+        local formatters_by_ft = {
+            lua = { "stylua" },
+        }
+
+        if registry.is_installed("clang-format") then
+            formatters.fmtjava = {
                 command = 'clang-format',
-                args = { "--style", "{BasedOnStyle: Google, IndentWidth: 3, TabWidth: 3, UseTab: Never}", "--assume-filename=.java" },
-            },
-            fmtcpp = {
+                args = { "--style", "{BasedOnStyle: Google, IndentWidth: 4, TabWidth: 4, UseTab: Never}", "--assume-filename=.java" },
+            }
+            formatters.fmtcpp = {
                 command = 'clang-format',
-                args = { "--style", "{BasedOnStyle: Microsoft, IndentWidth: 3, TabWidth: 3, UseTab: Never}", },
-            },
-            fmtxml = {
+                args = { "--style", "{BasedOnStyle: Microsoft, IndentWidth: 4, TabWidth: 4, UseTab: Never}", },
+            }
+
+            local fmt = { "fmtcpp", }
+            formatters_by_ft.c = fmt
+            formatters_by_ft.cpp = fmt
+            formatters_by_ft.ino = fmt
+            formatters_by_ft.java = { "fmtjava" }
+        end
+
+        if registry.is_installed("xmlformatter") then
+            formatters.fmtxml = {
                 command = 'xmlformat',
                 args = {
                     '--preserve', 'pre,literal', '--blanks', '--selfclose',
@@ -31,17 +45,7 @@ return {
                     '--indent', '3', '--indent-char', ' ', '$FILENAME'
                 },
             }
-        }
-
-        local formatters_by_ft = {
-            lua = { "stylua" },
-        }
-        if registry.is_installed("clang-format") then
-            local fmt = { "fmtcpp", }
-            formatters_by_ft.c = fmt
-            formatters_by_ft.cpp = fmt
-            formatters_by_ft.ino = fmt
-            formatters_by_ft.java = { "fmtjava" }
+            formatters_by_ft.xml = { "fmtxml" }
         end
 
         if registry.is_installed("prettier") then
@@ -61,9 +65,6 @@ return {
             formatters_by_ft.vue = fmt
         end
 
-        if registry.is_installed("xmlformatter") then
-            formatters_by_ft.xml = { "fmtxml" }
-        end
 
         require("conform").setup({
             formatters_by_ft = formatters_by_ft,
