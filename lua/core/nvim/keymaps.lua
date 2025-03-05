@@ -7,6 +7,8 @@ keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- delete single character without copying into register
 keymap.set('n', 'x', '"_x', { noremap = true, silent = true })
 
+keymap.set({'n', 'v'}, "<leader>N", "<cmd>enew<CR>", {noremap = true, silent = true, desc = "Open un-named buffer"})
+
 -- Window management
 keymap.set("n", "<leader>wv", "<C-w>v", { noremap = true, silent = true, desc = "Split vertically" })
 keymap.set("n", "<leader>ws", "<C-w>s", { noremap = true, silent = true, desc = "Split horizontally" })
