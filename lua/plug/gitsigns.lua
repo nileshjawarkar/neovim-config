@@ -15,7 +15,7 @@ return {
         vim.keymap.set('n', '<leader>hd', gs.diffthis, { noremap = true, silent = true, desc = "Diff this", })
         vim.keymap.set('n', '<leader>hq', function() gs.setqflist('all') end,
             { noremap = true, silent = true, desc = "List modifications", })
-
+        vim.keymap.set('n', '<leader>hb', gs.blame, { noremap = true, silent = true, desc = "List commits for cur-file", })
         gs.setup()
     end,
 }
