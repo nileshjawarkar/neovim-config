@@ -24,11 +24,12 @@ for these operating systems**
 ### Windows
 
 - NodeJS : 
-    - [Download Link](https://nodejs.org/dist/v22.13.0/node-v22.13.0-win-x64.zip)
+    - [Download Link](https://nodejs.org/dist/v22.14.0/node-v22.14.0-win-x64.zip)
     - [Web side](https://nodejs.org/en)
-- GCC & G++ 
+- C, C++
     - Please check this link for details [Web link](https://code.visualstudio.com/docs/cpp/config-mingw)
-    - Also we can install [StrawberryPerl](https://strawberryperl.com/). It has gcc & g++ preinstalled. 
+    - LLVM compiler [LLVM](https://github.com/mstorsjo/llvm-mingw/releases)
+    - GNU compiler [gcc & g++](https://github.com/niXman/mingw-builds-binaries/releases). We can also install [StrawberryPerl](https://strawberryperl.com/). It has gcc & g++ preinstalled. 
 - Git
     - [Download Link](https://github.com/git-for-windows/git/releases/download/v2.47.1.windows.1/PortableGit-2.47.1-64-bit.7z.exe)
     - [Web side](https://git-scm.com/downloads/win)
