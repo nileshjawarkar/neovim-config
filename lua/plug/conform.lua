@@ -6,7 +6,11 @@ return {
         {
             '<leader>F',
             function()
-                require('conform').format { async = true, lsp_format = 'fallback' }
+                require('conform').format({
+                    lsp_fallback = true,
+                    async = false,
+                    timeout_ms = 500,
+                })
             end,
             mode = '',
             desc = 'Format buffer',
@@ -64,7 +68,6 @@ return {
             formatters_by_ft.scss = fmt
             formatters_by_ft.vue = fmt
         end
-
 
         require("conform").setup({
             formatters_by_ft = formatters_by_ft,

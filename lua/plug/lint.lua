@@ -2,8 +2,7 @@ return {
     "mfussenegger/nvim-lint",
     config = function()
         local registry = require("mason-registry")
-        local linters_by_ft = {
-        }
+        local linters_by_ft = {}
         if registry.is_installed("cpplint") then
             linters_by_ft.cpp = {"cpplint"}
         end

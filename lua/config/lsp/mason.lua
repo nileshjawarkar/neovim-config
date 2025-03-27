@@ -5,6 +5,11 @@ return {
             log_level = vim.log.levels.INFO,
             max_concurrent_installers = 8,
             ui = {
+                icons = {
+                    package_installed = "✓",
+                    package_pending = "➜",
+                    package_uninstalled = "*",
+                },
                 check_outdated_packages_on_open = true,
                 border = 'rounded',
                 width = 0.8,
