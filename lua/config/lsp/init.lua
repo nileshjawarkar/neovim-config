@@ -59,7 +59,7 @@ local setup_keymaps = function(event)
     end, "List workspace folders")
 
     local client = vim.lsp.get_client_by_id(event.data.client_id)
-    if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+    if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
         local highlight_augroup = vim.api.nvim_create_augroup('UserLspBufHighlight', { clear = false })
         vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
             buffer = event.buf,
@@ -84,7 +84,7 @@ local setup_keymaps = function(event)
 
     -- The following code creates a keymap to toggle inlay hints in your
     -- code, if the language server you are using supports them
-    if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+    if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
         keymap("n", "<leader>lh", function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
         end, 'Toggle inlay hints')
@@ -93,16 +93,32 @@ end
 
 local function configure_ui()
     -- Define the diagnostic signs.
-    local diagnostic_icons = {
-        ERROR = 'x',
-        WARN = '*',
-        HINT = '*',
-        INFO = '*',
+    vim.diagnostic.config {
+        severity_sort = true,
+        float = { border = 'rounded', source = 'if_many' },
+        underline = { severity = vim.diagnostic.severity.ERROR },
+        signs = vim.g.have_nerd_font and {
+            text = {
+                [vim.diagnostic.severity.ERROR] = 'x ',
+                [vim.diagnostic.severity.WARN] = '* ',
+                [vim.diagnostic.severity.INFO] = '> ',
+                [vim.diagnostic.severity.HINT] = '> ',
+            },
+        } or {},
+        virtual_text = {
+            source = 'if_many',
+            spacing = 2,
+            format = function(diagnostic)
+                local diagnostic_message = {
+                    [vim.diagnostic.severity.ERROR] = diagnostic.message,
+                    [vim.diagnostic.severity.WARN] = diagnostic.message,
+                    [vim.diagnostic.severity.INFO] = diagnostic.message,
+                    [vim.diagnostic.severity.HINT] = diagnostic.message,
+                }
+                return diagnostic_message[diagnostic.severity]
+            end,
+        },
     }
-    for severity, icon in pairs(diagnostic_icons) do
-        local hl = 'DiagnosticSign' .. severity:sub(1, 1) .. severity:sub(2):lower()
-        vim.fn.sign_define(hl, { text = icon, texthl = hl })
-    end
 
     -- UI setup : Added rounded border
     -- 1) Add border to lsp popup windows
@@ -176,10 +192,14 @@ return {
 
         -- Setup keymap for diagnostics
         ---------------------------------
-        local diagnostics = vim.diagnostic
-        vim.keymap.set("n", "<leader>dL", diagnostics.open_float, { desc = "Show diagnostics" })
-        vim.keymap.set("n", "<leader>dp", diagnostics.goto_prev, { desc = "Previous diagnostics" })
-        vim.keymap.set("n", "<leader>dn", diagnostics.goto_next, { desc = "Next diagnostics" })
+        vim.keymap.set("n", "<leader>dL", vim.diagnostic.open_float, { desc = "Show diagnostics" })
+        vim.keymap.set("n", "<leader>dp", function()
+            vim.diagnostic.jump({ count = -1, float = true })
+        end, { desc = "Previous diagnostics" })
+
+        vim.keymap.set("n", "<leader>dn", function()
+            vim.diagnostic.jump({ count = 1, float = true })
+        end, { desc = "Next diagnostics" })
 
         -- Use LspAttach autocommand to only map the following keys
         -- after the language server attaches to the current buffer
