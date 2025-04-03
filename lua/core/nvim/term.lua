@@ -48,6 +48,10 @@ end
 
 -- Function to check if a buffer is a terminal buffer
 local function is_buf_terminal(buf)
+    if not vim.api.nvim_buf_is_valid(buf) then
+        return false
+    end
+
     local bufname = vim.api.nvim_buf_get_name(buf)
     if bufname ~= nil then
         return bufname:find("term://") ~= nil
