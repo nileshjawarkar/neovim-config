@@ -65,7 +65,7 @@ local prepare_config = (function()
                 '-Declipse.product=org.eclipse.jdt.ls.core.product',
                 '-Dlog.protocol=true',
                 '-Dlog.level=ALL',
-                '-Xms700m',
+                '-Xms800m',
                 '-Xmx4g',
                 '--add-modules=ALL-SYSTEM',
                 '--add-opens', 'java.base/java.util=ALL-UNNAMED',
