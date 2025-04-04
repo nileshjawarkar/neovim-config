@@ -58,32 +58,17 @@ local setup_keymaps = function(event)
         vim.notify(vim.inspect(vim_lbuf.list_workspace_folders()), vim.log.levels.INFO)
     end, "List workspace folders")
 
-    local client = vim.lsp.get_client_by_id(event.data.client_id)
-    if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-        local highlight_augroup = vim.api.nvim_create_augroup('UserLspBufHighlight', { clear = false })
-        vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
-            buffer = event.buf,
-            group = highlight_augroup,
-            callback = vim.lsp.buf.document_highlight,
-        })
-
-        vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
-            buffer = event.buf,
-            group = highlight_augroup,
-            callback = vim.lsp.buf.clear_references,
-        })
-
-        vim.api.nvim_create_autocmd('LspDetach', {
-            group = vim.api.nvim_create_augroup('UserLspBufDetach', { clear = true }),
-            callback = function(event2)
-                vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds { group = 'UserLspBufHighlight', buffer = event2.buf }
-            end,
-        })
-    end
+    vim.api.nvim_create_autocmd('LspDetach', {
+        group = vim.api.nvim_create_augroup('UserLspBufDetach', { clear = true }),
+        callback = function(event2)
+            vim.lsp.buf.clear_references()
+            vim.api.nvim_clear_autocmds { group = 'UserLspBufHighlight', buffer = event2.buf }
+        end,
+    })
 
     -- The following code creates a keymap to toggle inlay hints in your
     -- code, if the language server you are using supports them
+    local client = vim.lsp.get_client_by_id(event.data.client_id)
     if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
         keymap("n", "<leader>lh", function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
