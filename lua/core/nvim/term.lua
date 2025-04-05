@@ -55,26 +55,26 @@ local function hideTerm()
     return false
 end
 
+local function setTermBuf()
+    --  Find buffer of type terminal
+    -- Do it only if term_buf is nil and not of type term_buf
+    if term_buf == nil or not is_buf_terminal(term_buf) then
+        term_buf = find_terminal_buf()
+    end
+end
+
 local function toggleTerm()
     -- exit terminal mode
     if vim.bo.buftype == 'terminal' then
         vim.api.nvim_feedkeys([[<C-\><C-n>]], 'n', true)
     end
-
-    -- Step 1 - Find buffer of type terminal
-    -- Do it only if term_buf is nil and not of type term_buf
-    if term_buf == nil or not is_buf_terminal(term_buf) then
-        term_buf = find_terminal_buf()
-    end
-
+    setTermBuf();
     -- If window active hide it
     if hideTerm() then
         return 1
     end
-
     -- if term_buf nil or hidden, create new window
     openTerm()
-
     -- Close dap windows if open
     require("core.nvim.handlers").close({ "dap" })
 end
