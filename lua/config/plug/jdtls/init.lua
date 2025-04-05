@@ -1,5 +1,5 @@
 local jdtls = require("jdtls")
-local jdtls_util = require("config.jdtls.util")
+local jdtls_util = require("config.plug.jdtls.util")
 local mvn_util = require("core.mvn")
 local sys = require("core.util.sys")
 local first_time = sys.first_time
@@ -24,7 +24,7 @@ local on_attach = function(_, bufnr)
         -- Use WS/.nvim/config.lua for defining the debug configurations
         local jdtls_dap = require('jdtls.dap')
         if jdtls_dap ~= nil then
-            require("config.dap.java").set_defaults()
+            require("config.plug.dap.java").set_defaults()
             -- Override this method to avoid serching for main classes
             -- Not working as expected so commenting it
             --[[

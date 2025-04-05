@@ -5,7 +5,7 @@ local setup_keymaps = function(event)
         -- Delayed DAP setup and snippet loading based on file type
 
         -- Setup DAP
-        local dap_conf = require("config.dap")
+        local dap_conf = require("config.plug.dap")
         if nil ~= dap_conf then
             dap_conf.setup_keys()
         end
@@ -17,7 +17,7 @@ local setup_keymaps = function(event)
         end
 
         -- Load user snippets - once for each filetype
-        require("config.cmp").load_snippets(vim.bo.filetype)
+        require("config.plug.cmp").load_snippets(vim.bo.filetype)
 
         first_time.setFalse("LspKeyInit")
     end
@@ -132,7 +132,7 @@ return {
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
-        require("config.lsp.mason").setup({
+        require("config.plug.lsp.mason").setup({
             function(server_name)
                 local conf = ws_config ~= nil and ws_config[server_name] or nil
                 local srv_config = {

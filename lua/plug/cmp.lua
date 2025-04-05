@@ -23,6 +23,6 @@ return {
         "onsails/lspkind.nvim",
     },
     config = function()
-        require("config.cmp").setup()
+        require("config.plug.cmp").setup()
     end,
 }
