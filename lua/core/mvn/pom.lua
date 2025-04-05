@@ -178,7 +178,7 @@ return {
         -- Add plugins
         local plug_config_builder = new_xmltag_builder("configuration", "\n\t\t\t\t")
         plug_config_builder:add_child("skipTests", "${skipTests}")
-        builder:addPluginMid("maven-surefire-plugin", "org.apache.maven.plugins", "3.5.2", plug_config_builder:build())
+        builder:addPluginMid("maven-surefire-plugin", "org.apache.maven.plugins", "3.5.3", plug_config_builder:build())
 
         builder:addPluginMin("maven-compiler-plugin", "org.apache.maven.plugins", "3.14.0")
         builder:addPluginMin("maven-install-plugin", "org.apache.maven.plugins", "3.1.4")
@@ -196,11 +196,11 @@ return {
 
         -- Add dependencies
         builder:addDependancy("slf4j-api", "org.slf4j", "2.0.17", "")
-        builder:addDependancy("logback-core", "ch.qos.logback", "1.5.17", "")
-        builder:addDependancy("logback-classic", "ch.qos.logback", "1.5.17", "")
+        builder:addDependancy("logback-core", "ch.qos.logback", "1.5.18", "")
+        builder:addDependancy("logback-classic", "ch.qos.logback", "1.5.18", "")
         -- Test
-        builder:addDependancy("mockito-core", "org.mockito", "5.12.0", "test")
-        builder:addDependancy("junit-jupiter-api", "org.junit.jupiter", "5.10.3", "test")
+        builder:addDependancy("mockito-core", "org.mockito", "5.16.1", "test")
+        builder:addDependancy("junit-jupiter-api", "org.junit.jupiter", "5.12.1", "test")
         -- JEE
         if prj_type == "JEE" then
             builder:addDependancy("jakarta.jakartaee-api", "jakarta.platform", "10.0.0", "provided")
