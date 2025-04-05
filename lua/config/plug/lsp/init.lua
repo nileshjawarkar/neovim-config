@@ -60,9 +60,8 @@ local setup_keymaps = function(event)
 
     vim.api.nvim_create_autocmd('LspDetach', {
         group = vim.api.nvim_create_augroup('UserLspBufDetach', { clear = true }),
-        callback = function(event2)
+        callback = function(_)
             vim.lsp.buf.clear_references()
-            vim.api.nvim_clear_autocmds { group = 'UserLspBufHighlight', buffer = event2.buf }
         end,
     })
 
