@@ -200,6 +200,7 @@ return {
         builder:addDependancy("logback-classic", "ch.qos.logback", "1.5.18", "")
         -- Test
         builder:addDependancy("mockito-core", "org.mockito", "5.16.1", "test")
+        builder:addDependancy("mockito-junit-jupiter", "org.mockito", "5.16.1", "test")
         builder:addDependancy("junit-jupiter-api", "org.junit.jupiter", "5.12.1", "test")
         -- JEE
         if prj_type == "JEE" then
@@ -233,6 +234,7 @@ return {
             -- Add dependencies
             -- Test
             builder:addDependancyMin("mockito-core", "org.mockito", "test")
+            builder:addDependancyMin("mockito-junit-jupiter", "org.mockito", "test")
             builder:addDependancyMin("junit-jupiter-api", "org.junit.jupiter", "test")
         end
         if deps ~= nil and type(deps) == "table" then
