@@ -64,7 +64,7 @@ local function write_to(filename, callback)
 end
 
 local function get_configd()
-   return vim.fs.normalize(vim.fn.stdpath("config")) 
+   return vim.fs.normalize(vim.fn.stdpath("config"))
 end
 
 local function get_cwd()
@@ -98,6 +98,7 @@ local function dir_has_any(dir, filename_list)
 end
 
 local function get_os()
+    ---@diagnostic disable-next-line: undefined-field
     local os_name = vim.loop.os_uname().sysname
     if os_name == "Linux" or string.find(os_name, "inux") then
         return "Linux"
