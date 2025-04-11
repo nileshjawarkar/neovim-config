@@ -27,7 +27,7 @@ end
 
 -- Function to split the maximum size window and open terminal
 local function openTerm()
-    local win_id = win.split_max_size_window(0.30)
+    local win_id = win.split_max_size_window(0.40)
     if win_id == nil then return end
     vim.api.nvim_set_current_win(win_id)
     -- we already has term buffer -> set it to current window
