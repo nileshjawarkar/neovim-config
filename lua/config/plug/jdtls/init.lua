@@ -25,14 +25,7 @@ local on_attach = function(_, bufnr)
         local jdtls_dap = require('jdtls.dap')
         if jdtls_dap ~= nil then
             require("config.plug.dap.java").set_defaults()
-            -- Override this method to avoid serching for main classes
-            -- Not working as expected so commenting it
-            --[[
-            ---@diagnostic disable-next-line: unused-local
-            ---@diagnostic disable-next-line: duplicate-set-field
-            jdtls_dap.fetch_main_configs = function(_, _) end
-            ]]
-            jdtls_dap.setup_dap()
+            jdtls_dap.setup_dap({ hotcodereplace = "auto" })
             first_time.setFalse("jdtls_dap_init")
         end
     end

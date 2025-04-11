@@ -100,6 +100,7 @@ local function setup_keys()
 end
 
 local function setup()
+
     require('telescope').load_extension('dap')
     require("nvim-dap-virtual-text").setup({})
     setup_dap_icons()

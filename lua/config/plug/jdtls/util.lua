@@ -12,25 +12,18 @@ local function get_jdtls_options()
         jdtls_config = "config_win"
     end
 
-    local javaagent = data_path .. "/mason/share/jdtls/lombok.jar"
-    local launcher = vim.fn.glob(data_path .. "/mason/share/jdtls/plugins/org.eclipse.equinox.launcher_*.jar")
-    local mason_pkg = data_path .. "/mason/packages"
-    local configuration = mason_pkg .. "/jdtls/" .. jdtls_config
+    local mason_share = data_path .. "/mason/share"
+    local javaagent = mason_share .. "/jdtls/lombok.jar"
+    local launcher = vim.fn.glob(mason_share .. "/jdtls/plugins/org.eclipse.equinox.launcher_*.jar")
+    local configuration = data_path .. "/mason/packages/jdtls/" .. jdtls_config
 
-    -- java dap
-    local jar_patterns = {
-        "/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar",
-        "/java-test/extension/server/*.jar",
+    -- Needed for debugging
+    local bundles = {
+        vim.fn.glob(mason_share .. "/java-debug-adapter/com.microsoft.java.debug.plugin.jar"),
     }
-    local bundles = {}
-    for _, jar_pattern in ipairs(jar_patterns) do
-        for _, bundle in ipairs(vim.split(vim.fn.glob(mason_pkg .. jar_pattern), '\n')) do
-            if not vim.endswith(bundle, 'com.microsoft.java.test.runner-jar-with-dependencies.jar')
-                and not vim.endswith(bundle, 'com.microsoft.java.test.runner.jar') then
-                table.insert(bundles, bundle)
-            end
-        end
-    end
+
+    -- Needed for running/debugging unit tests
+    vim.list_extend(bundles, vim.split(vim.fn.glob(mason_share .. "/java-test/*.jar", true), "\n"))
 
     -- require("core.util.table").dump(bundles)
     return {
