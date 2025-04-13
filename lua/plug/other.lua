@@ -9,7 +9,19 @@ return {
     {
         'LunarVim/bigfile.nvim',
         event = 'BufReadPre',
-        opts = { filesize = 2, },
+        opts = {
+            -- File size in MB
+            filesize = 2,
+            -- features to disable
+            features = {
+                "lsp",
+                "treesitter",
+                "indent_blankline",
+                "illuminate",
+                "syntax",
+                "matchparen",
+            },
+        },
         config = function(_, opts)
             require('bigfile').setup(opts)
         end
