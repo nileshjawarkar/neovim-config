@@ -1,4 +1,4 @@
-local win = require("core.nvim.win")
+local win = require("core.util.win")
 -- local/private variables
 local term_buf = nil
 
@@ -76,10 +76,10 @@ local function toggleTerm()
     -- if term_buf nil or hidden, create new window
     openTerm()
     -- Close dap windows if open
-    require("core.nvim.handlers").close({ "dap" })
+    require("core.handlers").close({ "dap" })
 end
 
-require("core.nvim.handlers").register_close_handler("term", function()
+require("core.handlers").register_close_handler("term", function()
     if vim.bo.filetype == "term" then
         hideTerm()
         return true

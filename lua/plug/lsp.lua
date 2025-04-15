@@ -8,6 +8,6 @@ return {
         "hrsh7th/cmp-nvim-lsp", -- LSP source for nvim-cmp
     },
     config = function()
-        require("config.plug.lsp").setup()
+        require("config.lsp").setup()
     end,
 }

@@ -2,7 +2,7 @@ return {
     'nvim-treesitter/nvim-treesitter',
     config = function()
         require("nvim-treesitter.configs").setup({
-            ensure_installed = require("config.plug.reqTools").treesitter_req,
+            ensure_installed = require("config.reqTools").treesitter_req,
             sync_install = false,
             auto_install = false,
             ignore_install = {},

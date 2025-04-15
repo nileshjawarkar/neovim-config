@@ -38,7 +38,7 @@ ls.add_snippets("lua", {
     }),
 
     s("dap_config_java", fmt([[
-    local dap_config = require("config.plug.dap.java")
+    local dap_config = require("config.dap.java")
     dap_config.add({{
         type = "java",
         -- classPaths = "",

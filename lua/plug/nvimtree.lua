@@ -3,6 +3,6 @@ return {
     event = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
-        require("config.plug.nvimtree").setup()
+        require("config.nvimtree").setup()
     end,
 }

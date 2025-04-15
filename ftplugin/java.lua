@@ -1,1 +1,1 @@
-require('config.plug.jdtls').setup()
+require('config.jdtls').setup()

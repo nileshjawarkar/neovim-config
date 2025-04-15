@@ -8,6 +8,6 @@ return {
         "nvim-telescope/telescope-dap.nvim",
     },
     config = function()
-        require("config.plug.dap").setup()
+        require("config.dap").setup()
     end,
 }

@@ -17,11 +17,11 @@ return {
             },
         })
         vim.keymap.set("n", "<leader>G", function()
-            require("core.nvim.handlers").close({"dap", "tree", "qf", "term"})
+            require("core.handlers").close({"dap", "tree", "qf", "term"})
             neogit.open({ kind = "replace" })
         end, { desc = "Open git view" })
 
-        require("core.nvim.handlers").register_close_handler("git", function()
+        require("core.handlers").register_close_handler("git", function()
             if vim.bo.filetype == "NeogitStatus" then
                 vim.cmd("bdelete")
                 return true

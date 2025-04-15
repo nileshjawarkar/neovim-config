@@ -40,11 +40,11 @@ M.setup = function()
 
     local api = require("nvim-tree.api")
     vim.keymap.set("n", "<leader>el", function()
-        require("core.nvim.handlers").close({ "dap", "git" })
+        require("core.handlers").close({ "dap", "git" })
         api.tree.open({ find_file = true })
     end, { desc = "Locate file" })
     vim.keymap.set("n", "<leader>ee", function()
-        require("core.nvim.handlers").close({ "dap", "git" })
+        require("core.handlers").close({ "dap", "git" })
         api.tree.toggle()
     end, { desc = "Toggle tree" })
     vim.keymap.set("n", "<leader>ek", api.tree.collapse_all, { desc = "Collapse tree" })
@@ -54,7 +54,7 @@ M.setup = function()
     vim.keymap.set("n", "<leader>ed", api.tree.change_root_to_node, { desc = "Set as root" })
 end
 
-require("core.nvim.handlers").register_close_handler("tree", function()
+require("core.handlers").register_close_handler("tree", function()
     if vim.bo.filetype == "NvimTree" then
         require("nvim-tree.api").tree.close()
         return true

@@ -28,7 +28,7 @@ return {
             },
         })
         require('mason-tool-installer').setup({
-            ensure_installed = require("config.plug.reqTools").mason_req,
+            ensure_installed = require("config.reqTools").mason_req,
         })
         vim.api.nvim_command('MasonToolsInstall')
         require("mason-lspconfig").setup_handlers(lsp_config)

@@ -1,5 +1,3 @@
-require("commands.mvn")
-
 -- Auto command to clear block cursor after exit. It help to prevent messup in terminals
 -- color theme. This is useful in alacrity teminal OR may also helful in other
 -- terminals.
@@ -31,5 +29,23 @@ vim.api.nvim_create_user_command("PrjReloadConfig", function()
     local config = require("config.ws")
     if config ~= nil then
         config.reload_config()
+    end
+end, {})
+
+vim.api.nvim_create_user_command("MvnCreateJavaProject", function()
+    local cur_dir = require("core.util.sys").get_cwd()
+    local mvn = require("core.mvn")
+    if cur_dir ~= nil and mvn ~= nil then
+        -- mvn.create_prj("java", cur_dir)
+        mvn:createMM_prj(cur_dir, "JAVA")
+    end
+end, {})
+
+vim.api.nvim_create_user_command("MvnCreateJEEProject", function()
+    local cur_dir = require("core.util.sys").get_cwd()
+    local mvn = require("core.mvn")
+    if cur_dir ~= nil and mvn ~= nil then
+        -- mvn.create_prj("jee", cur_dir)
+        mvn:createMM_prj(cur_dir, "JEE")
     end
 end, {})
