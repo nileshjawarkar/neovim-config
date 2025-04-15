@@ -61,7 +61,7 @@ return {
                 vim.notify("While in DAP, please use telescope from code buffer.", vim.log.levels.INFO)
                 return false
             end
-            require("core.handlers").close({ "term", "qf" })
+            require("config.handlers").closeThemForMe("telescope")
             return true
         end
 

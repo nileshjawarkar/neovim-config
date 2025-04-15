@@ -19,7 +19,7 @@ end
 
 local isDapOpen = false;
 local function dap_open()
-    require("core.handlers").close({"qf", "tree", "term"})
+    require("config.handlers").closeThemForMe("dap")
     require("dap").repl.close()
     require("dapui").open()
     isDapOpen = true
@@ -100,7 +100,6 @@ local function setup_keys()
 end
 
 local function setup()
-
     require('telescope').load_extension('dap')
     require("nvim-dap-virtual-text").setup({})
     setup_dap_icons()
@@ -141,15 +140,14 @@ local function setup()
     ]]
 end
 
-require("core.handlers").register_close_handler("dap", function()
-    if isDapOpen then
-        dap_close()
-        return true
-    end
-    return false
-end)
-
 return {
     setup = setup,
     setup_keys = setup_keys,
+    close = function()
+        if isDapOpen then
+            dap_close()
+            return true
+        end
+        return false
+    end,
 }
