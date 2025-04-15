@@ -29,7 +29,7 @@ local function clear_qf_list()
 end
 
 local function open_qf()
-    require("core.nvim.handlers").close({"tree", "dap"})
+    require("core.handlers").close({"tree", "dap"})
     vim.cmd("copen")
 end
 
