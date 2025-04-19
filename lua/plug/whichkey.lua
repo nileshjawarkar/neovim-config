@@ -34,7 +34,7 @@ return {
         wk.add({
             { "<leader>u",  group = "Toggle", },
             { "<leader>f",  group = "Search", },
-            { "<leader>s",  group = "Select", },
+            { "<leader>s",  group = "Lua code", },
             { "<leader>e",  group = "Tree view", },
             { "<leader>l",  group = "Lsp", },
             { "<leader>b",  group = "Buffer", },

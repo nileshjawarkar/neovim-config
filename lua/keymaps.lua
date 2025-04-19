@@ -77,3 +77,8 @@ keymap.set("t", "<C-j>", "<C-\\><C-n><C-w>j", { noremap = true, silent = true })
 keymap.set({ "n", "i", "v", "t" }, "<M-q>", function()
     require("config.handlers").closeThemForMe("any")
 end, { noremap = true, silent = true })
+
+-- code execution
+keymap.set("n", "<leader>ss", "<cmd>source %<CR>", { noremap = true, silent = true, desc = "Execute lua file" })
+keymap.set("n", "<leader>sx", ":.lua<CR>", { noremap = true, silent = true, desc = "Execute current line" })
+keymap.set("v", "<leader>sx", ":lua<CR>", { noremap = true, silent = true, desc = "Execute selected lines" })
