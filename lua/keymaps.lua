@@ -65,7 +65,7 @@ end, { noremap = true, silent = true, desc = "Copy file directory path" })
 keymap.set("n", "<leader>bq", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close" })
 keymap.set("n", "<leader>bn", ":bn<CR>", { noremap = true, silent = true, desc = "Move next" })
 keymap.set("n", "<leader>bp", ":bp<CR>", { noremap = true, silent = true, desc = "Move prev" })
-keymap.set("n", "<leader>bw", "<cmd>set wrap!<CR>", { noremap = true, silent = true, desc = "Toggle word-wrap" })
+-- keymap.set("n", "<leader>bw", "<cmd>set wrap!<CR>", { noremap = true, silent = true, desc = "Toggle word-wrap" })
 
 -- terminal management
 keymap.set("t", "<ESC><ESC>", "<C-\\><C-n>", { noremap = true, silent = true })
@@ -75,12 +75,5 @@ keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h", { noremap = true, silent = true })
 keymap.set("t", "<C-j>", "<C-\\><C-n><C-w>j", { noremap = true, silent = true })
 
 keymap.set({ "n", "i", "v", "t" }, "<M-q>", function()
-    local windows = vim.api.nvim_tabpage_list_wins(0)
-    if #windows > 1 then
-        if 0 == require("core.nvim.handlers").closeAny({ "df", "tree", "dap", "term" }) then
-            vim.api.nvim_command('q')
-        end
-    else
-        vim.api.nvim_command('bd')
-    end
+    require("config.handlers").closeThemForMe("any")
 end, { noremap = true, silent = true })

@@ -32,7 +32,9 @@ return {
             },
         })
         wk.add({
+            { "<leader>u",  group = "Toggle", },
             { "<leader>f",  group = "Search", },
+            { "<leader>s",  group = "Select", },
             { "<leader>e",  group = "Tree view", },
             { "<leader>l",  group = "Lsp", },
             { "<leader>b",  group = "Buffer", },
@@ -41,6 +43,7 @@ return {
             { "<leader>lw", group = "Workspace", },
             { "<leader>w",  group = "Window", },
             { "<leader>q",  group = "Quickfix list", },
+            { "<leader>g",  group = "Git", },
             { "<leader>d",  group = "Debug/Diagnostics", },
             { "<leader>t",  group = "Run test", },
         })

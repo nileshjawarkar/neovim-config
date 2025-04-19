@@ -12,10 +12,13 @@ return {
             end
             return {
                 nvimtree_ext = { sections = { lualine_a = { prepare_name("FILES") }, lualine_b = { "branch" }, lualine_z = { "location" }, }, filetypes = { 'NvimTree' } },
-                qf_ext = { sections = { lualine_a = { prepare_name("QUICK LIST") }, lualine_b = { }, lualine_z = { "location" }, }, filetypes = { 'qf' } },
-                lazy_ext = { sections = { lualine_a = { prepare_name("LAZY PLUGINS") }, lualine_b = { }, lualine_z = { "location" }, }, filetypes = { 'lazy' } },
-                mason_ext = { sections = { lualine_a = { prepare_name("MASON") }, lualine_b = { }, lualine_z = { "location" }, }, filetypes = { 'mason' } },
-                telescope_ext = { sections = { lualine_a = { prepare_name("TELESCOPE") }, lualine_b = { }, lualine_z = { "location" }, }, filetypes = { 'TelescopePrompt' } },
+                telescope_ext = { sections = { lualine_a = { prepare_name("TELESCOPE") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'TelescopePrompt' } },
+                qf_ext = { sections = { lualine_a = { prepare_name("QUICK LIST") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'qf' } },
+                lazy_ext = { sections = { lualine_a = { prepare_name("LAZY PLUGINS") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'lazy' } },
+                mason_ext = { sections = { lualine_a = { prepare_name("MASON") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'mason' } },
+                -- picker_ext1 = { sections = { lualine_a = { prepare_name("FILES") }, lualine_b = { "branch" }, lualine_z = { "location" }, }, filetypes = { 'snacks_picker_list' } },
+                -- picker_ext2 = { sections = { lualine_a = { prepare_name("SNACKS PICKER") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'snacks_picker_input' } },
+                noname = { sections = { lualine_a = { prepare_name("NEOVIM") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { '' } },
             }
         end)()
 

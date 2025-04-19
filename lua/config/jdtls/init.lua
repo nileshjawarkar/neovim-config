@@ -48,6 +48,10 @@ local prepare_config = (function()
         -- Modify one property called resolveAdditionalTextEditsSupport and set it to true
         local extendedClientCapabilities = jdtls.extendedClientCapabilities
         extendedClientCapabilities.resolveAdditionalTextEditsSupport = true
+
+        local capabilities = vim.lsp.protocol.make_client_capabilities()
+        capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+
         local java, _ = require("core.rt.java").get_java_path()
         return {
             on_attach = on_attach,
@@ -136,7 +140,8 @@ local prepare_config = (function()
                 },
             },
             -- Needed for auto-completion with method signatures and placeholders
-            capabilities = require('cmp_nvim_lsp').default_capabilities(),
+             capabilities = capabilities,
+            -- capabilities = require('blink.cmp').get_lsp_capabilities(),
             flags = {
                 debounce_text_changes = 110,
                 allow_incremental_sync = true,

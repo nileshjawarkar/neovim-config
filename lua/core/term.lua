@@ -82,8 +82,8 @@ local function toggleTerm()
 end
 
 
-vim.keymap.set({ "n" }, "<Leader>T", toggleTerm, { noremap = true, silent = true, desc = "Terminal (C-t)" })
-vim.keymap.set({ "n", "t" }, "<M-t>", toggleTerm, { noremap = true, silent = true })
+-- vim.keymap.set({ "n" }, "<Leader>T", toggleTerm, { noremap = true, silent = true, desc = "Terminal (C-t)" })
+-- vim.keymap.set({ "n", "t" }, "<M-t>", toggleTerm, { noremap = true, silent = true })
 
 return {
     toggleTerm = toggleTerm,

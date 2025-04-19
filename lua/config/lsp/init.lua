@@ -15,10 +15,8 @@ local setup_keymaps = function(event)
                 ws_config.dap_setup()
             end
         end
-
         -- Load user snippets - once for each filetype
         require("config.cmp").load_snippets(vim.bo.filetype)
-
         first_time.setFalse("LspKeyInit")
     end
 
@@ -29,21 +27,23 @@ local setup_keymaps = function(event)
     -- Enable completion triggered by <c-x><c-o>
     vim.bo[event.buf].omnifunc = "v:lua.vim_lsp.omnifunc"
 
-    local lsp_buildin = require("telescope.builtin")
     local function keymap(m, key, handler, desc)
         vim.keymap.set(m, key, handler, { buffer = event.buf, silent = true, desc = desc })
     end
 
-    keymap("n", "<leader>lD", vim_lbuf.declaration, "Go to declaration [<gD>]")
-    keymap("n", "gD", vim_lbuf.declaration, "Go to declaration")
-    keymap("n", "<leader>lt", vim_lbuf.type_definition, "Go to type definition [<gO>]")
-    keymap("n", "gO", vim_lbuf.type_definition, "Go to type definition")
-    keymap("n", "<leader>ld", vim_lbuf.definition, "Go to definition [<gd>]")
-    keymap("n", "gd", vim_lbuf.definition, "Go to definition")
+    local lsp_buildin = require("telescope.builtin")
     keymap("n", "<leader>lI", lsp_buildin.lsp_implementations, "Go to implementation [<gI>]")
     keymap("n", "gI", lsp_buildin.lsp_implementations, "Go to implementation")
     keymap("n", "<leader>lr", lsp_buildin.lsp_references, "List references")
     keymap("n", "<leader>ll", lsp_buildin.lsp_document_symbols, "List document symbols")
+    keymap("n", "<leader>lD", vim_lbuf.declaration, "Go to declaration [<gD>]")
+    keymap("n", "gD", vim_lbuf.declaration, "Go to declaration")
+    keymap("n", "<leader>lt", vim_lbuf.type_definition, "Go to type definition [<gO>]")
+    keymap("n", "gO", vim_lbuf.type_definition, "Go to type definition")
+
+    keymap("n", "<leader>ld", vim_lbuf.definition, "Go to definition [<gd>]")
+    keymap("n", "gd", vim_lbuf.definition, "Go to definition")
+
     keymap("n", "<leader>lg", vim_lbuf.hover, "Hover [<gK>]")
     keymap("n", "gK", vim_lbuf.hover, "Hover")
     keymap("n", "<leader>ls", vim_lbuf.signature_help, "Signature help [<gs>]")
@@ -52,9 +52,9 @@ local setup_keymaps = function(event)
     keymap({ "n", "v" }, "<leader>la", vim_lbuf.code_action, "Code actions")
     keymap("n", "<leader>lf", function() vim.lsp.buf.format({ async = true }) end, "Format code")
     keymap("n", "<leader>lL", vim.lsp.codelens.refresh, "Refresh Lsp")
-    keymap("n", "<leader>lwa", vim_lbuf.add_workspace_folder, "Add workspace folder")
-    keymap("n", "<leader>lwr", vim_lbuf.remove_workspace_folder, "Remove workspace folder")
-    keymap("n", "<leader>lwl", function()
+    keymap("n", "<leader>lWa", vim_lbuf.add_workspace_folder, "Add workspace folder")
+    keymap("n", "<leader>lWr", vim_lbuf.remove_workspace_folder, "Remove workspace folder")
+    keymap("n", "<leader>lWl", function()
         vim.notify(vim.inspect(vim_lbuf.list_workspace_folders()), vim.log.levels.INFO)
     end, "List workspace folders")
 
@@ -130,6 +130,7 @@ return {
 
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+        -- local capabilities = require('blink.cmp').get_lsp_capabilities()
 
         require("config.lsp.mason").setup({
             function(server_name)
@@ -160,7 +161,10 @@ return {
                 elseif server_name == "lua_ls" then
                     srv_config["settings"] = {
                         Lua = {
-                            diagnostics = { globals = { "vim" }, },
+                            completion = {
+                                callSnippet = 'Replace',
+                            },
+                            -- diagnostics = { globals = { "vim" }, },
                         },
                     }
                 end

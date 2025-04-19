@@ -2,6 +2,8 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 local opt = vim.opt
+
+-- vim.o.winborder = "rounded"
 opt.cmdheight = 1
 opt.relativenumber = true -- Show relative line numbers
 opt.number = true         -- Shows absolute line number on cursor line (when relative number is on)

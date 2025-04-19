@@ -76,8 +76,6 @@ local function setup_keys()
 
     -- utility ui
     vim.keymap.set("n", "<leader>dl", dap.run_last, { desc = "Run last", })
-    vim.keymap.set("n", '<leader>df', '<cmd>Telescope dap frames<cr>', { desc = "Show frames", })
-    vim.keymap.set("n", '<leader>dh', '<cmd>Telescope dap commands<cr>', { desc = "Show commands", })
     vim.keymap.set("n", '<leader>d?', function()
         local widgets = require "dap.ui.widgets"; widgets.centered_float(widgets.scopes)
     end, { desc = "Open scopes" })
@@ -95,6 +93,9 @@ local function setup_keys()
         dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))
     end, { desc = "Set breakpoint/logpoint message" })
     vim.keymap.set("n", '<leader>Br', dap.clear_breakpoints, { desc = "Clear all breakpoints" })
+
+    vim.keymap.set("n", '<leader>df', '<cmd>Telescope dap frames<cr>', { desc = "Show frames", })
+    vim.keymap.set("n", '<leader>dh', '<cmd>Telescope dap commands<cr>', { desc = "Show commands", })
     vim.keymap.set("n", '<leader>Bl', '<cmd>Telescope dap list_breakpoints<cr>',
         { desc = "List all breakpoints" })
 end

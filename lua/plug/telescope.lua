@@ -115,7 +115,7 @@ return {
         keymap("n", "<leader>ff", find_files, "Fuzzy find files [<Leader><Leader>]")
         keymap("n", "<leader><leader>", find_files, "Fuzzy find files")
         keymap("n", "<leader>fR", show_recentfile, "Find recent open files")
-        keymap("n", "<leader>fg", live_grep, "Find text")
+        keymap("n", "<leader>fg", live_grep, "Find in files")
         keymap("n", "<leader>fh", show_help, "Show help tags")
         keymap("n", "<leader>fW", fuzzy_find_tuc_in_ws, "Find text under cursor (in workspace)")
         keymap("n", "<leader>fw", fuzzy_find_tuc_in_cur_buf, "Find text under cursor (in buffer)")
