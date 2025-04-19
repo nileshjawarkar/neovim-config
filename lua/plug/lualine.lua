@@ -11,14 +11,15 @@ return {
                 end
             end
             return {
+                noname = { sections = { lualine_a = { prepare_name("UNNAMED") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { '' } },
+                lazy_ext = { sections = { lualine_a = { prepare_name("LAZY PLUGINS") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'lazy' } },
+                mason_ext = { sections = { lualine_a = { prepare_name("MASON") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'mason' } },
                 -- nvimtree_ext = { sections = { lualine_a = { prepare_name("FILES") }, lualine_b = { "branch" }, lualine_z = { "location" }, }, filetypes = { 'NvimTree' } },
                 telescope_ext = { sections = { lualine_a = { prepare_name("TELESCOPE") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'TelescopePrompt' } },
                 qf_ext = { sections = { lualine_a = { prepare_name("QUICK LIST") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'qf' } },
-                lazy_ext = { sections = { lualine_a = { prepare_name("LAZY PLUGINS") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'lazy' } },
-                mason_ext = { sections = { lualine_a = { prepare_name("MASON") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'mason' } },
                 snacks_explorer = { sections = { lualine_a = { prepare_name("FILES") }, lualine_b = { "branch" }, lualine_z = { "location" }, }, filetypes = { 'snacks_picker_list' } },
-                -- picker_ext2 = { sections = { lualine_a = { prepare_name("SNACKS PICKER") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'snacks_picker_input' } },
-                noname = { sections = { lualine_a = { prepare_name("UNNAMED") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { '' } },
+                -- snacks_picker = { sections = { lualine_a = { prepare_name("SNACKS PICKER") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'snacks_picker_input' } },
+                snacks_input = { sections = { lualine_a = { prepare_name("INPUT") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'snacks_input' } },
             }
         end)()
 
