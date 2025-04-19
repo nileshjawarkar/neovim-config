@@ -5,21 +5,16 @@ return {
     },
     config = function()
         local extensions = (function()
-            local prepare_name = function(name)
-                return function()
-                    return name
-                end
-            end
             return {
-                noname = { sections = { lualine_a = { prepare_name("UNNAMED") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { '' } },
-                lazy_ext = { sections = { lualine_a = { prepare_name("LAZY PLUGINS") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'lazy' } },
-                mason_ext = { sections = { lualine_a = { prepare_name("MASON") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'mason' } },
-                -- nvimtree_ext = { sections = { lualine_a = { prepare_name("FILES") }, lualine_b = { "branch" }, lualine_z = { "location" }, }, filetypes = { 'NvimTree' } },
-                telescope_ext = { sections = { lualine_a = { prepare_name("TELESCOPE") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'TelescopePrompt' } },
-                qf_ext = { sections = { lualine_a = { prepare_name("QUICK LIST") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'qf' } },
-                snacks_explorer = { sections = { lualine_a = { prepare_name("FILES") }, lualine_b = { "branch" }, lualine_z = { "location" }, }, filetypes = { 'snacks_picker_list' } },
-                -- snacks_picker = { sections = { lualine_a = { prepare_name("SNACKS PICKER") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'snacks_picker_input' } },
-                snacks_input = { sections = { lualine_a = { prepare_name("INPUT") }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'snacks_input' } },
+                noname = { sections = { lualine_a = { function() return "UNNAMED" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { '' } },
+                lazy_ext = { sections = { lualine_a = { function() return "LAZY PLUGINS" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'lazy' } },
+                mason_ext = { sections = { lualine_a = { function() return "MASON" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'mason' } },
+                -- nvimtree_ext = { sections = { lualine_a = { function() return "FILES" end }, lualine_b = { "branch" }, lualine_z = { "location" }, }, filetypes = { 'NvimTree' } },
+                telescope_ext = { sections = { lualine_a = { function() return "TELESCOPE" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'TelescopePrompt' } },
+                qf_ext = { sections = { lualine_a = { function() return "QUICK LIST" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'qf' } },
+                snacks_explorer = { sections = { lualine_a = { function() return "FILES" end }, lualine_b = { "branch" }, lualine_z = { "location" }, }, filetypes = { 'snacks_picker_list' } },
+                -- snacks_picker = { sections = { lualine_a = { function() return "SNACKS PICKER" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'snacks_picker_input' } },
+                snacks_input = { sections = { lualine_a = { function() return "INPUT" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'snacks_input' } },
             }
         end)()
 
