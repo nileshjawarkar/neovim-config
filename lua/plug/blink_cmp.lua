@@ -52,14 +52,14 @@ return {
         },
 
         sources = {
-            default = { 'lsp', 'snippets', 'buffer', 'path', 'lazydev', 'cmdline' },
+            default = { 'lsp', 'buffer', 'snippets', 'path', 'lazydev', 'cmdline' },
             providers = {
                 lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
             },
         },
 
         snippets = { preset = 'luasnip' },
-        fuzzy = { implementation = 'lua' },
+        fuzzy = { implementation = 'prefer_rust' },
         signature = { enabled = true },
     },
 }

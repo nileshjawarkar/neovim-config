@@ -31,6 +31,7 @@ local setup_keymaps = function(event)
         vim.keymap.set(m, key, handler, { buffer = event.buf, silent = true, desc = desc })
     end
 
+
     local lsp_buildin = require("telescope.builtin")
     keymap("n", "<leader>lI", lsp_buildin.lsp_implementations, "Go to implementation [<gI>]")
     keymap("n", "gI", lsp_buildin.lsp_implementations, "Go to implementation")
@@ -128,9 +129,9 @@ return {
         local root_dir = require("core.util.sys").find_root
         local ws_config = require("config.ws").lsp_config
 
-        local capabilities = vim.lsp.protocol.make_client_capabilities()
-        capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
-        -- local capabilities = require('blink.cmp').get_lsp_capabilities()
+        -- local capabilities = vim.lsp.protocol.make_client_capabilities()
+        -- capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+        local capabilities = require('blink.cmp').get_lsp_capabilities()
 
         require("config.lsp.mason").setup({
             function(server_name)
