@@ -5,7 +5,8 @@ return {
         "json", "yaml", "xml", "toml",
         "make", "c", "cpp", "java",     -- languages & buildtool
         "css", "html", "javascript", -- Web
-        -- "c_sharp", -- languages optional
+        "c_sharp", -- languages optional
+        "python",
     },
 
     mason_req = {
