@@ -3,7 +3,6 @@ return {
     event = 'VimEnter',
     version = '1.*',
     dependencies = {
-        -- Snippet Engine
         {
             'L3MON4D3/LuaSnip',
             version = '2.*',
@@ -37,8 +36,6 @@ return {
         },
 
         appearance = {
-            -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-            -- Adjusts spacing to ensure icons are aligned
             nerd_font_variant = 'mono',
         },
 
