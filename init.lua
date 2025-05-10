@@ -36,9 +36,8 @@ require("lazy").setup({
     require("plug.blink_cmp"),
     -- -- require("plug.cmp"),
     require("plug.lsp"),
-    require("plug.dap"),
     require("plug.jdtls"),
-    require("plug.other"),
+    require("plug.lazydev"),
 }, {
     ui = { border = 'rounded' },
     install = { colorscheme = { "tokyonight" }, },
