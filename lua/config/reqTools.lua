@@ -10,13 +10,13 @@ return {
 
     mason_req = {
         "lua_ls", "jsonls", "yamlls",
-        "bashls", "dockerls",
+        "bashls", "shfmt", "shellcheck", "dockerls",
         "jdtls", "java-debug-adapter", "java-test", -- Java
         "clangd", "codelldb", "cpptools", "cpplint",  -- C, CPP
         "clang-format", "prettier", "xmlformatter",  -- Formatting
         "codespell", -- check spells in code
-        -- "quick_lint_js", "cssls", "ts_ls", "emmet-language-server", -- Web
-        -- "pyright", -- Python
+        "quick_lint_js", "cssls", "ts_ls", "emmet-language-server", -- Web
+        "pyright", -- Python
     },
 
 }
