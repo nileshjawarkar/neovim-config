@@ -16,7 +16,7 @@ return {
                 -- snacks_picker = { sections = { lualine_a = { function() return "SNACKS PICKER" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'snacks_picker_input' } },
                 snacks_input = { sections = { lualine_a = { function() return "INPUT" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'snacks_input' } },
                 snacks_term = { sections = { lualine_a = { function() return "TERMINAL" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'snacks_terminal' } },
-                git = { sections = { lualine_a = { function() return "GIT" end }, lualine_b = { "branch" }, lualine_z = { "location" }, }, filetypes = { 'NeogitStatus' } },
+                git = { sections = { lualine_a = { function() return "GIT" end }, lualine_b = { "branch" }, lualine_z = { "location" }, }, filetypes = { 'NeogitStatus', 'NeogitConsole', 'NeogitPopup', 'gitcommit' } },
             }
         end)()
 
