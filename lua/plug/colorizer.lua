@@ -1,5 +1,13 @@
 return {
     "norcalli/nvim-colorizer.lua",
+    keys = {
+        {
+            '<leader>uC',
+            function() end,
+            mode = '',
+            desc = 'Enable colorizer',
+        },
+    },
     config = function()
         local opts = {
             RGB      = true, RRGGBB   = true,

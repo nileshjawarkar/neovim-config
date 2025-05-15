@@ -46,7 +46,6 @@ return {
 			-- doing lazy loading.
 			integrations = {
 				["mason-lspconfig"] = true,
-				["mason-null-ls"] = true,
 				["mason-nvim-dap"] = true,
 			},
 		})
