@@ -34,7 +34,6 @@ require("lazy").setup({
     require("plug.conform"),
     require("plug.lint"),
     require("plug.blink_cmp"),
-    -- -- require("plug.cmp"),
     require("plug.lsp"),
     require("plug.jdtls"),
     require("plug.lazydev"),
