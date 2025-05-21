@@ -43,7 +43,7 @@ return {
             -- By default, you may press `<c-space>` to show the documentation.
             documentation = { auto_show = false, },
             ghost_text = { enabled = true },
-            list = { selection = { preselect = true, auto_insert = true } },
+            list = { selection = { preselect = true, auto_insert = false } },
             menu = {
                 border = "rounded",
             },
@@ -61,3 +61,4 @@ return {
         signature = { enabled = true },
     },
 }
+

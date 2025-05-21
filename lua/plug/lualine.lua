@@ -7,7 +7,7 @@ return {
         local extensions = (function()
             return {
                 noname = { sections = { lualine_a = { function() return "UNNAMED" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { '' } },
-                lazy_ext = { sections = { lualine_a = { function() return "LAZY PLUGINS" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'lazy' } },
+                lazy_ext = { sections = { lualine_a = { function() return "PLUGINS" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'lazy' } },
                 mason_ext = { sections = { lualine_a = { function() return "MASON" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'mason' } },
                 -- nvimtree_ext = { sections = { lualine_a = { function() return "FILES" end }, lualine_b = { "branch" }, lualine_z = { "location" }, }, filetypes = { 'NvimTree' } },
                 telescope_ext = { sections = { lualine_a = { function() return "TELESCOPE" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'TelescopePrompt' } },
