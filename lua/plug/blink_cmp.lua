@@ -1,64 +1,73 @@
 return {
-    'saghen/blink.cmp',
-    event = 'VimEnter',
-    version = '1.*',
-    dependencies = {
-        {
-            'L3MON4D3/LuaSnip',
-            version = '2.*',
-            build = (function()
-                if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
-                    return
-                end
-                return 'make install_jsregexp'
-            end)(),
-            dependencies = {
-                {
-                    'rafamadriz/friendly-snippets',
-                    config = function()
-                        require('luasnip.loaders.from_vscode').lazy_load()
-                    end,
-                },
-            },
-            opts = {},
-        },
-        'folke/lazydev.nvim',
-    },
-    opts = {
-        keymap = {
-            -- All presets have the following mappings:
-            -- <tab>/<s-tab>: move to right/left of your snippet expansion
-            -- <c-space>: Open menu or open docs if already open
-            -- <c-n>/<c-p> or <up>/<down>: Select next/previous item
-            -- <c-e>: Hide menu
-            -- <c-k>: Toggle signature help
-            preset = 'default',
-        },
+	"saghen/blink.cmp",
+	event = "VimEnter",
+	version = "1.*",
+	dependencies = {
+		{
+			"L3MON4D3/LuaSnip",
+			version = "2.*",
+			build = (function()
+				if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
+					return
+				end
+				return "make install_jsregexp"
+			end)(),
+			dependencies = {
+				{
+					"rafamadriz/friendly-snippets",
+					config = function()
+						require("luasnip.loaders.from_vscode").lazy_load()
+					end,
+				},
+			},
+			opts = {},
+		},
+		"folke/lazydev.nvim",
+	},
+	opts = {
+		keymap = {
+			["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
+			["<C-e>"] = { "hide" },
+			["<C-y>"] = { "select_and_accept" },
 
-        appearance = {
-            nerd_font_variant = 'mono',
-        },
+			["<Up>"] = { "select_prev", "fallback" },
+			["<Down>"] = { "select_next", "fallback" },
+			["<C-p>"] = { "select_prev", "fallback_to_mappings" },
+			["<C-n>"] = { "select_next", "fallback_to_mappings" },
 
-        completion = {
-            -- By default, you may press `<c-space>` to show the documentation.
-            documentation = { auto_show = false, },
-            ghost_text = { enabled = true },
-            list = { selection = { preselect = true, auto_insert = false } },
-            menu = {
-                border = "rounded",
-            },
-        },
+			["<C-b>"] = { "scroll_documentation_up", "fallback" },
+			["<C-f>"] = { "scroll_documentation_down", "fallback" },
 
-        sources = {
-            default = { 'lsp', 'buffer', 'snippets', 'path', 'lazydev', 'cmdline' },
-            providers = {
-                lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
-            },
-        },
+			["<Tab>"] = { "snippet_forward", "fallback" },
+			["<S-Tab>"] = { "snippet_backward", "fallback" },
 
-        snippets = { preset = 'luasnip' },
-        fuzzy = { implementation = 'prefer_rust' },
-        signature = { enabled = true },
-    },
+			["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
+		},
+
+        cmdline = { enabled = true },
+
+		appearance = {
+			nerd_font_variant = "mono",
+		},
+
+		completion = {
+			documentation = { auto_show = false },
+			ghost_text = { enabled = true },
+			list = { selection = { preselect = false, auto_insert = true } },
+			menu = {
+				border = "rounded",
+			},
+		},
+
+		sources = {
+			default = { "lsp", "buffer", "snippets", "path", "lazydev", "cmdline" },
+			providers = {
+				lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
+			},
+		},
+
+		snippets = { preset = "luasnip" },
+		fuzzy = { implementation = "prefer_rust" },
+		signature = { enabled = true },
+	},
 }
-
