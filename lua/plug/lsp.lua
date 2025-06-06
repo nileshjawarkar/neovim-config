@@ -3,7 +3,7 @@ return {
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            "williamboman/mason-lspconfig.nvim",
+            "mason-org/mason-lspconfig.nvim",
             -- completion
             -- "hrsh7th/cmp-nvim-lsp", -- LSP source for nvim-cmp
             "saghen/blink.cmp",

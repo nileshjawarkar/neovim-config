@@ -133,46 +133,50 @@ return {
         -- capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
         local capabilities = require('blink.cmp').get_lsp_capabilities()
         require("mason-lspconfig").setup({
-            function(server_name)
-                local conf = ws_config ~= nil and ws_config[server_name] or nil
-                local srv_config = {
-                    capabilities = capabilities,
-                    root_dir = root_dir,
-                }
+            ensure_installed = {}, -- installs via mason-tool-installer
+            automatic_installation = false,
+            handlers = {
+                function(server_name)
+                    local conf = ws_config ~= nil and ws_config[server_name] or nil
+                    local srv_config = {
+                        capabilities = capabilities,
+                        root_dir = root_dir,
+                    }
 
-                if conf ~= nil then
-                    if conf["cmd"] ~= nil then
-                        srv_config["cmd"] = conf["cmd"]
+                    if conf ~= nil then
+                        if conf["cmd"] ~= nil then
+                            srv_config["cmd"] = conf["cmd"]
+                        end
                     end
-                end
 
-                if server_name == "yamlls" then
-                    srv_config["settings"] = {
-                        yaml = {
-                            format = {
-                                enable = true,
-                                singleQuote = false,
-                                bracketSpacing = true
+                    if server_name == "yamlls" then
+                        srv_config["settings"] = {
+                            yaml = {
+                                format = {
+                                    enable = true,
+                                    singleQuote = false,
+                                    bracketSpacing = true
+                                },
+                                validate = false,
+                                completion = true,
                             },
-                            validate = false,
-                            completion = true,
-                        },
-                    }
-                elseif server_name == "lua_ls" then
-                    srv_config["settings"] = {
-                        Lua = {
-                            completion = {
-                                callSnippet = 'Replace',
+                        }
+                    elseif server_name == "lua_ls" then
+                        srv_config["settings"] = {
+                            Lua = {
+                                completion = {
+                                    callSnippet = 'Replace',
+                                },
+                                -- diagnostics = { globals = { "vim" }, },
                             },
-                            -- diagnostics = { globals = { "vim" }, },
-                        },
-                    }
-                end
+                        }
+                    end
 
-                if server_name ~= "jdtls" then
-                    lsp_config[server_name].setup(srv_config)
-                end
-            end,
+                    if server_name ~= "jdtls" then
+                        lsp_config[server_name].setup(srv_config)
+                    end
+                end,
+            }
         })
 
         configure_ui()
