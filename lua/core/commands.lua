@@ -18,34 +18,32 @@ vim.api.nvim_create_user_command("JavaVersion", function()
     end
 end, {})
 
-vim.api.nvim_create_user_command("PrjInitConfig", function()
+vim.keymap.set("n", "<leader>Mi", function()
     local sys = require("core.util.sys")
     if sys ~= nil then
         sys.create_project_config(sys.get_cwd())
     end
-end, {})
+end, { desc = "Init project with .nvim/init.lua" })
 
-vim.api.nvim_create_user_command("PrjReloadConfig", function()
+vim.keymap.set("n", "<leader>ML", function()
     local config = require("config.ws")
     if config ~= nil then
         config.reload_config()
     end
-end, {})
+end, { desc = "Reload project config" })
 
-vim.api.nvim_create_user_command("MvnCreateJavaProject", function()
+vim.keymap.set("n", "<leader>Mp", function()
     local cur_dir = require("core.util.sys").get_cwd()
     local mvn = require("core.mvn")
     if cur_dir ~= nil and mvn ~= nil then
-        -- mvn.create_prj("java", cur_dir)
         mvn:createMM_prj(cur_dir, "JAVA")
     end
-end, {})
+end, { desc = "Create java project" })
 
-vim.api.nvim_create_user_command("MvnCreateJEEProject", function()
+vim.keymap.set("n", "<leader>MP", function()
     local cur_dir = require("core.util.sys").get_cwd()
     local mvn = require("core.mvn")
     if cur_dir ~= nil and mvn ~= nil then
-        -- mvn.create_prj("jee", cur_dir)
         mvn:createMM_prj(cur_dir, "JEE")
     end
-end, {})
+end, { desc = "Create JavaEE project" })
