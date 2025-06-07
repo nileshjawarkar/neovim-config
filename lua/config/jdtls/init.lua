@@ -35,8 +35,9 @@ end
 local prepare_config = (function()
     -- Things that need to executed only once
     ----------------------------------------
-    local jdtls_options = jdtls_util.get_jdtls_options()
     jdtls_util.rm_jdtls_ws()
+
+    local jdtls_options = jdtls_util.get_jdtls_options()
     local root_dir = sys.find_root()
     mvn_util.find_src_paths(root_dir, false, false)
 
@@ -141,7 +142,7 @@ local prepare_config = (function()
                 },
             },
             -- Needed for auto-completion with method signatures and placeholders
-             capabilities = capabilities,
+            capabilities = capabilities,
             -- capabilities = require('blink.cmp').get_lsp_capabilities(),
             flags = {
                 debounce_text_changes = 110,
