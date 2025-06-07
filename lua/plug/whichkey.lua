@@ -40,7 +40,7 @@ return {
             { "<leader>b",  group = "Buffer", },
             { "<leader>ba", group = "Add to selected list", },
             { "<leader>B",  group = "Breakpoint", },
-            { "<leader>M", group = "Maven", },
+            { "<leader>M", group = "Project/Maven", },
             { "<leader>lW", group = "Workspace-dir", },
             { "<leader>w",  group = "Window", },
             { "<leader>q",  group = "Quickfix list", },
