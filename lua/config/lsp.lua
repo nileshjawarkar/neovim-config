@@ -161,7 +161,7 @@ return {
                                 completion = true,
                             },
                         }
-                    elseif server_name == "lua_ls" then
+                    elseif server_name == "lua-language-server" then
                         srv_config["settings"] = {
                             Lua = {
                                 completion = {

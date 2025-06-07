@@ -10,7 +10,7 @@ return {
     },
 
     mason_req = {
-        "lua_ls", "jsonls", "yamlls",
+        "lua-language-server", "jsonls", "yamlls",
         "bashls", "shfmt", "shellcheck", "dockerls",
         "jdtls", "java-debug-adapter", "java-test", -- Java
         "clangd", "codelldb", "cpptools", "cpplint",  -- C, CPP
