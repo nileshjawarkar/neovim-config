@@ -183,12 +183,12 @@ return {
         builder:addPluginMin("maven-compiler-plugin", "org.apache.maven.plugins", "3.14.0")
         builder:addPluginMin("maven-install-plugin", "org.apache.maven.plugins", "3.1.4")
         builder:addPluginMin("maven-jar-plugin", "org.apache.maven.plugins", "3.4.2")
-        builder:addPluginMin("maven-clean-plugin", "org.apache.maven.plugins", "3.4.1")
+        builder:addPluginMin("maven-clean-plugin", "org.apache.maven.plugins", "3.5.0")
         builder:addPluginMin("maven-release-plugin", "org.apache.maven.plugins", "3.1.1")
 
         local owasp_config = new_xmltag_builder("configuration", "\n\t\t\t\t")
         owasp_config:add_child("skip", "${skipChecks}")
-        builder:addPlugin("dependency-check-maven", "org.owasp", "12.1.0", owasp_config:build(), "check")
+        builder:addPlugin("dependency-check-maven", "org.owasp", "12.1.1", owasp_config:build(), "check")
 
         if prj_type == "JEE" then
             builder:addPlugin("maven-war-plugin", "org.apache.maven.plugins", "3.4.0", "")
