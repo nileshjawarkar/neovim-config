@@ -129,44 +129,6 @@ return {
         local ws_config = require("config.ws").lsp_config
         local capabilities = require('blink.cmp').get_lsp_capabilities()
 
-        for _, server_name in ipairs(require("config.reqTools").lspExt) do
-            local conf = ws_config ~= nil and ws_config[server_name] or nil
-            local srv_config = {
-                capabilities = capabilities,
-                root_dir = root_dir,
-            }
-
-            if conf ~= nil then
-                if conf["cmd"] ~= nil then
-                    srv_config["cmd"] = conf["cmd"]
-                end
-            end
-            if server_name == "yamlls" then
-                srv_config["settings"] = {
-                    yaml = {
-                        format = {
-                            enable = true,
-                            singleQuote = false,
-                            bracketSpacing = true
-                        },
-                        validate = false,
-                        completion = true,
-                    },
-                }
-            elseif server_name == "lua_ls" then
-                srv_config["settings"] = {
-                    Lua = {
-                        completion = {
-                            callSnippet = 'Replace',
-                        },
-                    },
-                }
-            end
-            if server_name ~= "jdtls" then
-                lsp_config[server_name].setup(srv_config)
-            end
-        end
-
         require("mason-lspconfig").setup({
             ensure_installed = {}, -- installs via mason-tool-installer
             automatic_installation = false,
@@ -174,6 +136,46 @@ return {
                 exclude = {
                     "jdtls",
                 },
+            },
+            handlers = {
+                function(server_name)
+                    local conf = ws_config ~= nil and ws_config[server_name] or nil
+                    local srv_config = {
+                        capabilities = capabilities,
+                        root_dir = root_dir,
+                    }
+
+                    if conf ~= nil then
+                        if conf["cmd"] ~= nil then
+                            srv_config["cmd"] = conf["cmd"]
+                        end
+                    end
+                    if server_name == "yamlls" then
+                        srv_config["settings"] = {
+                            yaml = {
+                                format = {
+                                    enable = true,
+                                    singleQuote = false,
+                                    bracketSpacing = true
+                                },
+                                validate = false,
+                                completion = true,
+                            },
+                        }
+                    elseif server_name == "lua_ls" then
+                        srv_config["settings"] = {
+                            Lua = {
+                                completion = {
+                                    callSnippet = 'Replace',
+                                },
+                            },
+                        }
+                    end
+
+                    if server_name ~= "jdtls" then
+                        lsp_config[server_name].setup(srv_config)
+                    end
+                end,
             },
         })
 
