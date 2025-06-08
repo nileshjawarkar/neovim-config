@@ -100,7 +100,9 @@ m.get_persistence_xml = function()
 	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
-	<persistence-unit name="prod" transaction-type="JTA">
+	<persistence-unit name="development" transaction-type="JTA">
+	    <!-- <jta-data-source>jdbc/yourds1</jta-data-source>
+        <non-jta-data-source>jdbc/yourds2</non-jta-data-source> -->
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 			<property
@@ -116,10 +118,11 @@ end
 m.get_beans_xml = function()
     local xml = [[
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
-    bean-discovery-mode="all">
+<beans xmlns="https://jakarta.ee/xml/ns/jakartaee"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                           https://jakarta.ee/xml/ns/jakartaee/beans_3_0.xsd"
+       version="3.0" bean-discovery-mode="all">
 </beans>
     ]]
     return xml
