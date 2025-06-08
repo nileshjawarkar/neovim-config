@@ -124,10 +124,37 @@ end
 
 return {
     setup = function()
-        local lsp_config = require("lspconfig")
-        local root_dir = require("core.util.sys").find_root
-        local ws_config = require("config.ws").lsp_config
         local capabilities = require('blink.cmp').get_lsp_capabilities()
+        vim.lsp.config('*', {
+            capabilities = capabilities,
+        })
+
+        vim.lsp.config('lua_ls', {
+            filetypes = { 'lua' },
+            root_markers = { { '.luarc.json', '.luarc.jsonc' }, '.git' },
+            settings = {
+                Lua = {
+                    completion = {
+                        callSnippet = 'Replace',
+                    },
+                },
+            }
+        })
+
+        vim.lsp.config('yamlls', {
+            filetypes = { 'yml', 'yaml' },
+            settings = {
+                yaml = {
+                    format = {
+                        enable = true,
+                        singleQuote = false,
+                        bracketSpacing = true
+                    },
+                    validate = false,
+                    completion = true,
+                },
+            }
+        })
 
         require("mason-lspconfig").setup({
             ensure_installed = {}, -- installs via mason-tool-installer
@@ -137,49 +164,9 @@ return {
                     "jdtls",
                 },
             },
-            handlers = {
-                function(server_name)
-                    local conf = ws_config ~= nil and ws_config[server_name] or nil
-                    local srv_config = {
-                        capabilities = capabilities,
-                        root_dir = root_dir,
-                    }
-
-                    if conf ~= nil then
-                        if conf["cmd"] ~= nil then
-                            srv_config["cmd"] = conf["cmd"]
-                        end
-                    end
-                    if server_name == "yamlls" then
-                        srv_config["settings"] = {
-                            yaml = {
-                                format = {
-                                    enable = true,
-                                    singleQuote = false,
-                                    bracketSpacing = true
-                                },
-                                validate = false,
-                                completion = true,
-                            },
-                        }
-                    elseif server_name == "lua_ls" then
-                        srv_config["settings"] = {
-                            Lua = {
-                                completion = {
-                                    callSnippet = 'Replace',
-                                },
-                            },
-                        }
-                    end
-                    if server_name ~= "jdtls" then
-                        lsp_config[server_name].setup(srv_config)
-                    end
-                end,
-            },
         })
 
         configure_ui()
-
         -- Setup keymap for diagnostics
         ---------------------------------
         vim.keymap.set("n", "<leader>dL", vim.diagnostic.open_float, { desc = "Show diagnostics" })
