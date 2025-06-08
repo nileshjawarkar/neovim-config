@@ -171,7 +171,6 @@ return {
                             },
                         }
                     end
-
                     if server_name ~= "jdtls" then
                         lsp_config[server_name].setup(srv_config)
                     end
