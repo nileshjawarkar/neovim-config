@@ -125,36 +125,37 @@ end
 return {
     setup = function()
         local capabilities = require('blink.cmp').get_lsp_capabilities()
-        vim.lsp.config('*', {
-            capabilities = capabilities,
-        })
-
-        vim.lsp.config('lua_ls', {
-            filetypes = { 'lua' },
-            root_markers = { { '.luarc.json', '.luarc.jsonc' }, '.git' },
-            settings = {
-                Lua = {
-                    completion = {
-                        callSnippet = 'Replace',
-                    },
-                },
+        local servers = require("mason-lspconfig").get_installed_servers()
+        for _, server_name in ipairs(servers) do
+            local srv_settings = {
+                capabilities = capabilities,
             }
-        })
 
-        vim.lsp.config('yamlls', {
-            filetypes = { 'yml', 'yaml' },
-            settings = {
-                yaml = {
-                    format = {
-                        enable = true,
-                        singleQuote = false,
-                        bracketSpacing = true
+            if server_name == "yamlls" then
+                srv_settings.settings = {
+                    yaml = {
+                        format = {
+                            enable = true,
+                            singleQuote = false,
+                            bracketSpacing = true
+                        },
+                        validate = false,
+                        completion = true,
                     },
-                    validate = false,
-                    completion = true,
-                },
-            }
-        })
+                }
+            elseif server_name == "lua_ls" then
+                srv_settings.settings = {
+                    Lua = {
+                        completion = {
+                            callSnippet = 'Replace',
+                        },
+                    },
+                }
+            end
+            if server_name ~= "jdtls" then
+                vim.lsp.config(server_name, srv_settings)
+            end
+        end
 
         require("mason-lspconfig").setup({
             ensure_installed = {}, -- installs via mason-tool-installer
