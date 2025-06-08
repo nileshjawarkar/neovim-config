@@ -1,5 +1,5 @@
 return {
-    treesitter_req = {
+    treesitterExt = {
         "lua", "vim", "vimdoc", -- Basic/Tools
         "markdown", "markdown_inline", -- Notes
         "json", "yaml", "xml", "toml",
@@ -9,15 +9,21 @@ return {
         "python",
     },
 
-    mason_req = {
-        "lua-language-server", "jsonls", "yamlls",
-        "bashls", "shfmt", "shellcheck", "dockerls",
-        "jdtls", "java-debug-adapter", "java-test", -- Java
-        "clangd", "codelldb", "cpptools", "cpplint",  -- C, CPP
+    lspExt = {
+        "lua_ls", "jsonls", "yamlls",
+        "bashls", "dockerls",
+        "jdtls", "clangd",
+        "cssls", "ts_ls", "emmet_ls", -- Web
+        "pyright", -- Python
+    },
+
+    toolExt = {
+        "shfmt", "shellcheck",
+        "java-debug-adapter", "java-test", -- Java
+        "codelldb", "cpptools", "cpplint",  -- C, CPP
         "clang-format", "prettier", "xmlformatter",  -- Formatting
         "codespell", -- check spells in code
-        "quick_lint_js", "cssls", "ts_ls", "emmet-language-server", -- Web
-        "pyright", -- Python
+        "quick_lint_js", 
     },
 
 }
