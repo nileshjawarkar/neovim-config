@@ -16,8 +16,10 @@ return {
             linters_by_ft.yaml = { "yamllint" }
         end
 
+        -- add pmd to the path
         if vim.fn.executable('pmd') == 1 then
             linters_by_ft.java = { "pmd" }
+            linters_by_ft.xml = { "pmd" }
         end
 
         vim.keymap.set("n", "<Leader>Lc", function()
