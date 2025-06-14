@@ -39,6 +39,15 @@ m.createMM_prj = function(self, root_dir, prj_type)
         return
     end
 
+    -- create PMD rule file
+    local pmdRules = require("core/mvn/pmd").get_rules()
+    st = sys.write_to(root_dir .. "/pmd-rules.xml", function(file)
+        file.write(pmdRules)
+    end)
+    if not st then
+        vim.notify("Failed to create - " .. root_dir .. "/pmd-rules.xml", vim.log.levels.INFO)
+        return
+    end
     -- create modules
     -- lib module
     local mod_deps = nil
@@ -130,6 +139,7 @@ m.createWar_module = function(self, root_dir, prj_type, name, pkg, version, pare
             vim.notify("Failed to create - " .. mod_path .. "/src/main/webapp/WEB-INF/web.xml", vim.log.levels.INFO)
             return false
         end
+
         st = sys.write_to(mod_path .. "/src/main/webapp/WEB-INF/beans.xml", function(file)
             file.write(util.get_beans_xml())
         end)
@@ -137,6 +147,15 @@ m.createWar_module = function(self, root_dir, prj_type, name, pkg, version, pare
             vim.notify("Failed to create - " .. mod_path .. "/src/main/webapp/WEB-INF/beans.xml", vim.log.levels.INFO)
             return false
         end
+
+        st = sys.write_to(mod_path .. "/src/main/webapp/WEB-INF/resources.xml", function(file)
+            file.write(util.get_tomee_resource_xml())
+        end)
+        if not st then
+            vim.notify("Failed to create - " .. mod_path .. "/src/main/webapp/WEB-INF/resources.xml", vim.log.levels.INFO)
+            return false
+        end
+
         st = sys.write_to(mod_path .. "/src/main/resources/application.properties", function(file)
             file.write(util.get_application_props())
         end)

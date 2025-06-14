@@ -171,6 +171,7 @@ return {
         builder:addProp("project.build.sourceEncoding", "UTF-8")
         builder:addProp("skipTests", "true")
         builder:addProp("skipChecks", "true")
+        builder:addProp("rootBase", "${session.executionRootDirectory}")
         builder:addProp("maven.compiler.source", "21")
         builder:addProp("maven.compiler.target", "21")
         builder:setModuleType("pom")
@@ -190,6 +191,13 @@ return {
         owasp_config:add_child("skip", "${skipChecks}")
         builder:addPlugin("dependency-check-maven", "org.owasp", "12.1.1", owasp_config:build(), "check")
 
+        local pmd_config = new_xmltag_builder("configuration", "\n\t\t\t\t")
+        pmd_config:add_child("failOnViolation", "false")
+        pmd_config:add_child("printFailingErrors", "true")
+        pmd_config:add_child("targetJdk", "17")
+        pmd_config:add_child("rulesets", "<ruleset>${rootBase}/pmd-rules.xml</ruleset>")
+        builder:addPlugin("maven-pmd-plugin", "org.apache.maven.plugins", "3.26.0", pmd_config:build(), "check")
+
         if prj_type == "JEE" then
             builder:addPlugin("maven-war-plugin", "org.apache.maven.plugins", "3.4.0", "")
         end
@@ -207,7 +215,8 @@ return {
             builder:addDependancy("jakarta.jakartaee-api", "jakarta.platform", "10.0.0", "provided")
         end
         -- DB
-        builder:addDependancy("h2", "com.h2database", "2.3.232", "")
+        builder:addDependancy("sqlite-jdbc", "org.xerial", "3.49.1.0", "")
+        -- builder:addDependancy("h2", "com.h2database", "2.3.232", "")
         if type(modules) == "table" then
             for _, value in pairs(modules) do
                 builder:addModule(value)
@@ -229,7 +238,8 @@ return {
                 builder:addDependancyMin("slf4j-api", "org.slf4j", "")
                 builder:addDependancyMin("logback-core", "ch.qos.logback", "")
                 builder:addDependancyMin("logback-classic", "ch.qos.logback", "")
-                builder:addDependancyMin("h2", "com.h2database", "")
+                builder:addDependancyMin("sqlite-jdbc", "org.xerial", "")
+                -- builder:addDependancyMin("h2", "com.h2database", "")
             end
             -- Add dependencies
             -- Test

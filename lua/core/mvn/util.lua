@@ -101,13 +101,20 @@ m.get_persistence_xml = function()
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 	<persistence-unit name="development" transaction-type="JTA">
-	    <!-- <jta-data-source>jdbc/yourds1</jta-data-source>
-        <non-jta-data-source>jdbc/yourds2</non-jta-data-source> -->
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>myapp/managed</jta-data-source>
+	    <!-- 
+        <jta-data-source>jdbc/yourds1</jta-data-source>
+        <non-jta-data-source>jdbc/yourds2</non-jta-data-source> 
+        <class>valide class-name</class> 
+        -->
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 			<property
                 name="jakarta.persistence.schema-generation.database.action"
 			    value="drop-and-create" />
+            <property name="eclipselink.logging.level" value="FINE"/>
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
 		</properties>		
 	</persistence-unit>
 </persistence>
@@ -124,6 +131,22 @@ m.get_beans_xml = function()
                            https://jakarta.ee/xml/ns/jakartaee/beans_3_0.xsd"
        version="3.0" bean-discovery-mode="all">
 </beans>
+    ]]
+    return xml
+end
+
+m.get_tomee_resource_xml = function()
+    local xml = [[
+<?xml version="1.0" encoding="UTF-8"?>
+<tomee>
+    <Resource id="myapp/managed" type="DataSource">
+        JdbcDriver = org.sqlite.JDBC
+        JdbcUrl = jdbc:sqlite:./myapp
+        UserName = sa
+        Password = sa
+        jtaManaged = true
+    </Resource>
+</tomee>
     ]]
     return xml
 end
