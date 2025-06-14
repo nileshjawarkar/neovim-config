@@ -19,7 +19,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
     <groupId>%s</groupId>
     <artifactId>%s</artifactId>
     <version>%s</version>
-    <packaging>%s</packaging>%s%s%s%s%s%s%s
+    <packaging>%s</packaging>%s%s%s%s%s%s%s%s
 </project>
 ]]
 
@@ -49,6 +49,7 @@ local new_pom_builder = function()
     -- local _plugins = ""
     local _properties_builder = nil
     local _plugins_builder = nil
+    local _report_plugins_builder = nil
     local _modules_builder = nil
     local _deps = ""
     local _dm = ""
@@ -133,6 +134,32 @@ local new_pom_builder = function()
         _plugins_builder:add_child_tag(str)
         return self
     end
+    m.addReportPlugin = function(self, name, grp, version, config, goal)
+        if _report_plugins_builder == nil then
+            _report_plugins_builder = new_xmltag_builder("plugins", "\n\t\t")
+        end
+        local hasGoal = (goal ~= nil and goal ~= "")
+        local hasConfig = (config ~= nil and config ~= "")
+        if hasConfig == true then
+            -- Adjust indentetion if goal is provided
+            if hasGoal == true then
+                config = config .. "\n\t\t\t"
+            end
+        end
+
+        -- Indent last end tag
+        local gg = "\n\t\t\t"
+        if hasGoal == true then
+            gg = string.format(str_goal, goal) .. "\n\t\t\t"
+            -- Adjust indentetion if config is empty
+            if hasConfig == false then
+                gg = "\n\t\t\t" .. gg
+            end
+        end
+        local str = string.format(str_plugin, name, grp, version, config, gg)
+        _report_plugins_builder:add_child_tag(str)
+        return self
+    end
     m.addPluginMid = function(self, name, grp, version, config)
         self:addPlugin(name, grp, version, config, "")
         return self
@@ -148,17 +175,21 @@ local new_pom_builder = function()
     m.build = function(_)
         local props = ""
         local plugins = ""
+        local reportPlug = ""
         local modules = ""
         local deps = new_xmltag_builder("dependencies", "\n\t"):add_child_tag(_deps):build()
         if _properties_builder ~= nil then props = _properties_builder:build() end
         if _plugins_builder ~= nil then
             plugins = new_xmltag_builder("build", "\n\t"):add_child_tag(_plugins_builder:build()):build()
         end
+        if _report_plugins_builder ~= nil then
+            reportPlug = new_xmltag_builder("reporting", "\n\t"):add_child_tag(_report_plugins_builder:build()):build()
+        end
         if _modules_builder ~= nil then
             modules = _modules_builder:build()
         end
         return string.format(str_pom, _name, _pkg, _name, _version, _bt, _parent, props, _dm, deps, _dm_end, plugins,
-            modules);
+            reportPlug, modules);
     end
     return m
 end
@@ -197,6 +228,7 @@ return {
         pmd_config:add_child("targetJdk", "17")
         pmd_config:add_child("rulesets", "<ruleset>${rootBase}/pmd-rules.xml</ruleset>")
         builder:addPlugin("maven-pmd-plugin", "org.apache.maven.plugins", "3.26.0", pmd_config:build(), "check")
+        builder:addReportPlugin("maven-jxr-plugin", "org.apache.maven.plugins", "3.6.0", "", "")
 
         if prj_type == "JEE" then
             builder:addPlugin("maven-war-plugin", "org.apache.maven.plugins", "3.4.0", "")
