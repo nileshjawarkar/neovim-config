@@ -47,6 +47,7 @@ return {
             { "<leader>g",  group = "Git", },
             { "<leader>d",  group = "Debug/Diagnostics", },
             { "<leader>t",  group = "Run test", },
+            { "<leader>L",  group = "Lint", },
         })
     end
 }

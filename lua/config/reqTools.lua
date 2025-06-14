@@ -26,8 +26,7 @@ return {
         "java-debug-adapter", "java-test",          -- Java
         "codelldb", "cpptools", "cpplint",          -- C, CPP
         "clang-format", "prettier", "xmlformatter", -- Formatting
-        "codespell", "typos",                       -- check spells in code 
-        "quick-lint-js",
-        "yamllint"
+        "quick-lint-js", "yamllint",
+        "cspell"
     },
 }

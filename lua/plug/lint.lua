@@ -16,13 +16,15 @@ return {
             linters_by_ft.yaml = { "yamllint" }
         end
 
-        local isCS = registry.is_installed("codespell")
-        local isTupo = registry.is_installed("tupos")
+        if vim.fn.executable('pmd') == 1 then
+            linters_by_ft.java = { "pmd" }
+        end
 
-        vim.keymap.set("n", "<Leader>L", function()
+        vim.keymap.set("n", "<Leader>Lc", function()
             require("lint").try_lint();
-            if isCS == true then require("lint").try_lint("codespell") end
-            if isTupo == true then require("lint").try_lint("typos") end
         end, { desc = "Code lint" })
+        vim.keymap.set("n", "<Leader>Ls", function()
+            require("lint").try_lint("cspell");
+        end, { desc = "Spell check" })
     end
 }
