@@ -10,11 +10,15 @@ return {
     },
 
     lspExt = {
-        "lua_ls", "jsonls", "yamlls",
-        "bashls", "dockerls",
+        "bash-language-server",
+        "dockerfile-language-server",
+        "emmet-language-server",
+        "json-lsp", "css-lsp",
+        "lua-language-server",
+        "typescript-language-server",
+        "yaml-language-server",
         "jdtls", "clangd",
-        "cssls", "ts_ls", "emmet_ls", -- Web
-        "pyright",                    -- Python
+        "pyright", -- Python
     },
 
     toolExt = {
@@ -22,7 +26,8 @@ return {
         "java-debug-adapter", "java-test",          -- Java
         "codelldb", "cpptools", "cpplint",          -- C, CPP
         "clang-format", "prettier", "xmlformatter", -- Formatting
-        "codespell",                                -- check spells in code
-        "quick_lint_js",
+        "codespell", "typos",                       -- check spells in code 
+        "quick-lint-js",
+        "yamllint"
     },
 }

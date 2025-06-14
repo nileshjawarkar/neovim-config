@@ -41,9 +41,9 @@ return {
             auto_update = false,
             run_on_start = true,
             start_delay = 3000, -- 3 second delay
-            debounce_hours = 5, -- at least 5 hours between attempts to install/update
+            -- debounce_hours = 5, -- at least 5 hours between attempts to install/update
             -- By default all integrations are enabled. If you turn on an integration
-            -- and you have the required module(s) installed this means you can use
+            -- and you have the required module(s) installed this means you can use nnote
             -- alternative names, supplied by the modules, for the thing that you want
             -- to install. If you turn off the integration (by setting it to false) you
             -- cannot use these alternative names. It also suppresses loading of those
