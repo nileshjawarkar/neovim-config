@@ -58,12 +58,28 @@ return {
         sources = {
             default = { "lsp", "buffer", "snippets", "path", "lazydev", "cmdline" },
             providers = {
+                lsp = {
+                    min_keyword_length = 0, -- Number of characters to trigger porvider
+                    score_offset = 0, -- Boost/penalize the score of the items
+                },
+                path = {
+                    min_keyword_length = 1,
+                },
+                snippets = {
+                    min_keyword_length = 1,
+                },
+                buffer = {
+                    min_keyword_length = 1,
+                    max_items = 5,
+                },
                 lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
             },
         },
         snippets = { preset = "luasnip" },
-        fuzzy = { implementation = "prefer_rust" },
-        -- fuzzy = { implementation = "lua" },
-        signature = { enabled = true },
+        fuzzy = { implementation = "lua" },
+        signature = {
+            enabled = true,
+            window = { border = "rounded" },
+        },
     },
 }
