@@ -2,7 +2,6 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 local opt = vim.opt
-
 -- vim.o.winborder = "rounded"
 opt.cmdheight = 1
 opt.relativenumber = true -- Show relative line numbers
@@ -128,3 +127,4 @@ vim.api.nvim_create_autocmd("WinLeave", {
         vim.wo.cursorline = false
     end,
 })
+
