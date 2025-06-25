@@ -22,10 +22,10 @@ return {
             linters_by_ft.xml = { "pmd" }
         end
 
-        vim.keymap.set("n", "<Leader>Lc", function()
+        vim.keymap.set("n", "<Leader>L", function()
             require("lint").try_lint();
         end, { desc = "Code lint" })
-        vim.keymap.set("n", "<Leader>Ls", function()
+        vim.keymap.set("n", "<Leader>S", function()
             require("lint").try_lint("cspell");
         end, { desc = "Spell check" })
     end
