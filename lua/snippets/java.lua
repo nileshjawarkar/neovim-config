@@ -119,4 +119,10 @@ ls.add_snippets("java", {
         i(0)
     }),
 
+    s("logger", {
+        t("private static final Logger LOGGER = LoggerFactory.getLogger("),
+        i(1, "class-name"),
+        t(");"),
+        i(0)
+    }),
 })

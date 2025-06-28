@@ -35,7 +35,7 @@ end
 local prepare_config = (function()
     -- Things that need to executed only once
     ----------------------------------------
-    jdtls_util.rm_jdtls_ws()
+    -- jdtls_util.rm_jdtls_ws()
 
     local jdtls_options = jdtls_util.get_jdtls_options()
     local root_dir = sys.find_root()
