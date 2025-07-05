@@ -126,8 +126,8 @@ ls.add_snippets("java", {
         i(0)
     }),
 
-    s("serialv", {
-        t("static final long serialVersionUID = "),
+    s("serversion", {
+        t("private static final long serialVersionUID = "),
         i(1, "11111"),
         t("L;"),
         i(0)
