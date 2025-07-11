@@ -141,7 +141,7 @@ m.get_tomee_resource_xml = function()
 <tomee>
     <Resource id="myapp/managed" type="DataSource">
         JdbcDriver = org.sqlite.JDBC
-        JdbcUrl = jdbc:sqlite:./myapp
+        JdbcUrl = jdbc:sqlite:./myapp.db
         UserName = sa
         Password = sa
         jtaManaged = true

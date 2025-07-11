@@ -201,7 +201,8 @@ return {
         builder:setName(name):setPkg(grp):setVersion(version)
         builder:addProp("project.build.sourceEncoding", "UTF-8")
         builder:addProp("skipTests", "true")
-        builder:addProp("skipChecks", "true")
+        builder:addProp("skipOwasp", "true")
+        builder:addProp("skipPmd", "true")
         builder:addProp("rootBase", "${session.executionRootDirectory}")
         builder:addProp("maven.compiler.source", "21")
         builder:addProp("maven.compiler.target", "21")
@@ -219,10 +220,11 @@ return {
         builder:addPluginMin("maven-release-plugin", "org.apache.maven.plugins", "3.1.1")
 
         local owasp_config = new_xmltag_builder("configuration", "\n\t\t\t\t")
-        owasp_config:add_child("skip", "${skipChecks}")
+        owasp_config:add_child("skip", "${skipOwasp}")
         builder:addPlugin("dependency-check-maven", "org.owasp", "12.1.1", owasp_config:build(), "check")
 
         local pmd_config = new_xmltag_builder("configuration", "\n\t\t\t\t")
+        pmd_config:add_child("skip", "${skipPmd}")
         pmd_config:add_child("failOnViolation", "false")
         pmd_config:add_child("printFailingErrors", "true")
         pmd_config:add_child("targetJdk", "17")
