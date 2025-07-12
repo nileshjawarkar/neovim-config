@@ -104,15 +104,14 @@ m.get_persistence_xml = function()
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <jta-data-source>myapp/managed</jta-data-source>
 	    <!-- 
-        <jta-data-source>jdbc/yourds1</jta-data-source>
-        <non-jta-data-source>jdbc/yourds2</non-jta-data-source> 
+        <non-jta-data-source>myapp/unmanaged</non-jta-data-source> 
         <class>valide class-name</class> 
         -->
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
-			<property
+			<!-- <property
                 name="jakarta.persistence.schema-generation.database.action"
-			    value="drop-and-create" />
+			    value="drop-and-create" /> -->
             <property name="eclipselink.logging.level" value="FINE"/>
             <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
 		</properties>		

@@ -8,6 +8,8 @@ local str_parent =
 "\n\t<parent>\n\t\t<artifactId>%s</artifactId>\n\t\t<groupId>%s</groupId>\n\t\t<version>%s</version>\n\t</parent>"
 local str_goal =
 "\t<executions>\n\t\t\t\t\t<execution>\n\t\t\t\t\t\t<goals>\n\t\t\t\t\t\t\t<goal>%s</goal>\n\t\t\t\t\t\t</goals>\n\t\t\t\t\t</execution>\n\t\t\t\t</executions>"
+local str_multigoal =
+"\t<executions>\n\t\t\t\t\t<execution>\n\t\t\t\t\t\t<goals>%s\n\t\t\t\t\t\t</goals>\n\t\t\t\t\t</execution>\n\t\t\t\t</executions>"
 
 local str_pom = [[
 <?xml version="1.0" encoding="UTF-8"?>
@@ -122,16 +124,26 @@ local new_pom_builder = function()
         end
 
         -- Indent last end tag
-        local gg = "\n\t\t\t"
+        local goal_xml = "\n\t\t\t"
         if hasGoal == true then
-            gg = string.format(str_goal, goal) .. "\n\t\t\t"
-            -- Adjust indentetion if config is empty
-            if hasConfig == false then
-                gg = "\n\t\t\t" .. gg
+            if type(goal) == "table" then
+                local mutigoal_xml = ""
+                for _, goal_item in pairs(goal) do
+                    mutigoal_xml = mutigoal_xml .. string.format("\n\t\t\t\t\t\t\t<goal>%s</goal>", goal_item)
+                end
+                if mutigoal_xml ~= "" then
+                    goal_xml = string.format(str_multigoal, mutigoal_xml)
+                end
+            else
+                goal_xml = string.format(str_goal, goal) .. "\n\t\t\t"
+                -- Adjust indentetion if config is empty
+                if hasConfig == false then
+                    goal_xml = "\n\t\t\t" .. goal_xml
+                end
             end
         end
-        local str = string.format(str_plugin, name, grp, version, config, gg)
-        _plugins_builder:add_child_tag(str)
+        local plug_xml = string.format(str_plugin, name, grp, version, config, goal_xml)
+        _plugins_builder:add_child_tag(plug_xml)
         return self
     end
     m.addReportPlugin = function(self, name, grp, version, config, goal)
@@ -229,7 +241,8 @@ return {
         pmd_config:add_child("printFailingErrors", "true")
         pmd_config:add_child("targetJdk", "17")
         pmd_config:add_child("rulesets", "<ruleset>${rootBase}/pmd-rules.xml</ruleset>")
-        builder:addPlugin("maven-pmd-plugin", "org.apache.maven.plugins", "3.26.0", pmd_config:build(), "check")
+        builder:addPlugin("maven-pmd-plugin", "org.apache.maven.plugins", "3.26.0", pmd_config:build(),
+            { "check", "cpd-check" })
         builder:addReportPlugin("maven-jxr-plugin", "org.apache.maven.plugins", "3.6.0", "", "")
 
         if prj_type == "JEE" then
