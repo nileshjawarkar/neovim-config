@@ -132,14 +132,14 @@ local new_pom_builder = function()
                     mutigoal_xml = mutigoal_xml .. string.format("\n\t\t\t\t\t\t\t<goal>%s</goal>", goal_item)
                 end
                 if mutigoal_xml ~= "" then
-                    goal_xml = string.format(str_multigoal, mutigoal_xml)
+                    goal_xml = string.format(str_multigoal, mutigoal_xml) .. "\n\t\t\t"
                 end
             else
                 goal_xml = string.format(str_goal, goal) .. "\n\t\t\t"
-                -- Adjust indentetion if config is empty
-                if hasConfig == false then
-                    goal_xml = "\n\t\t\t" .. goal_xml
-                end
+            end
+            -- Adjust indentetion if config is empty
+            if hasConfig == false then
+                goal_xml = "\n\t\t\t" .. goal_xml
             end
         end
         local plug_xml = string.format(str_plugin, name, grp, version, config, goal_xml)
