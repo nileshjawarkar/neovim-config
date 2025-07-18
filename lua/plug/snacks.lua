@@ -34,12 +34,19 @@ return {
                                 Tree:toggle(node.path)
                                 Actions.update(picker, { refresh = true })
                                 vim.schedule(function()
+                                    -- Expand if current node has only one child.
+                                    local child = nil
                                     for _, c in pairs(node.children) do
-                                        -- Expand only 1 child
-                                        if c.dir then
-                                            toggle_recursive(c)
+                                        -- if child is not nil, it means current node 
+                                        -- has multiple children, so nothing to do... return.
+                                        if child ~= nil then
+                                            return
                                         end
-                                        break
+                                        child = c
+                                    end
+                                    if child == nil then return end
+                                    if child.dir then
+                                        toggle_recursive(child)
                                     end
                                 end)
                             end
