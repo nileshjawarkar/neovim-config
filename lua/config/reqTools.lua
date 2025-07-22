@@ -12,6 +12,7 @@ return {
     lspExt = {
         "bash-language-server",
         "dockerfile-language-server",
+        "html-lsp",
         "emmet-language-server",
         "json-lsp", "css-lsp",
         "lua-language-server",
@@ -27,6 +28,6 @@ return {
         "codelldb", "cpptools", "cpplint",          -- C, CPP
         "clang-format", "prettier", "xmlformatter", -- Formatting
         "quick-lint-js", "yamllint",
-        "cspell"
+        "cspell", "htmlhint"
     },
 }

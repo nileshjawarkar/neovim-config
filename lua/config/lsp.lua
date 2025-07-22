@@ -146,6 +146,17 @@ return {
                         completion = true,
                     },
                 }
+            elseif server_name == "emmet-language-server" then
+                srv_settings.filetypes = {
+                    'css', 'html', 'less', 'sass', 'scss',
+                    'astro', 'eruby', 'htmlangular', 'htmldjango',
+                    'javascriptreact', 'pug', 'svelte', 'templ',
+                    'typescriptreact', 'vue', 'heex'
+                }
+            elseif server_name == "html" then
+                srv_settings.filetypes = {
+                    'html', 'templ', 'heex'
+                }
             elseif server_name == "lua_ls" then
                 srv_settings.settings = {
                     Lua = {
