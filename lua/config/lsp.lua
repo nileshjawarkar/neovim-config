@@ -146,7 +146,7 @@ return {
                         completion = true,
                     },
                 }
-            elseif server_name == "emmet-language-server" then
+            elseif server_name == "emmet_language_server" then
                 srv_settings.filetypes = {
                     'css', 'html', 'less', 'sass', 'scss',
                     'astro', 'eruby', 'htmlangular', 'htmldjango',
