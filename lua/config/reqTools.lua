@@ -12,14 +12,12 @@ return {
     lspExt = {
         "bash-language-server",
         "dockerfile-language-server",
-        "html-lsp",
+        "html-lsp", "json-lsp", "css-lsp",    -- From same package
         "emmet-language-server",
-        "json-lsp", "css-lsp",
         "lua-language-server",
         "typescript-language-server",
         "yaml-language-server",
-        "jdtls", "clangd",
-        "pyright", -- Python
+        "jdtls", "clangd", "pyright"
     },
 
     toolExt = {
