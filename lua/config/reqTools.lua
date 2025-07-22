@@ -6,7 +6,7 @@ return {
         "make", "c", "cpp", "java",    -- languages & buildtool
         "css", "html", "javascript",   -- Web
         "c_sharp",                     -- languages optional
-        "python",
+        "python", "elixir"
     },
 
     lspExt = {

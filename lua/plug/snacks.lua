@@ -27,42 +27,40 @@ return {
                     layout = { preview = false, fullscreen = true, hidden = { "input" } },
                     actions = {
                         recursive_toggle = function(picker, item)
-                            local Actions = require("snacks.explorer.actions")
                             local Tree = require("snacks.explorer.tree")
+                            local node = Tree:node(item.file)
+                            -- If not dir, then perform default action
+                            -- and return
+                            if not node or not node.dir then
+                                picker:action("confirm")
+                                return
+                            end
 
-                            local function toggle_recursive(node)
-                                Tree:toggle(node.path)
+                            -- If node and its pointing to dir, then
+                            -- recursively expand it.
+                            -- else, open it
+                            local Actions = require("snacks.explorer.actions")
+                            local function toggle_recursive(curNode)
+                                Tree:open(Tree:dir(curNode.path))
                                 Actions.update(picker, { refresh = true })
                                 vim.schedule(function()
                                     -- Expand if current node has only one child.
                                     local child = nil
-                                    for _, c in pairs(node.children) do
-                                        -- if child is not nil, it means current node 
-                                        -- has multiple children, so nothing to do... return.
+                                    for _, c in pairs(curNode.children) do
+                                        -- *Recursive expand should work, if node has only one child.
+                                        -- if child is not nil, it means current node
+                                        -- has children > 1, so nothing to do... return.
                                         if child ~= nil then
                                             return
                                         end
                                         child = c
                                     end
-                                    if child == nil then return end
-                                    if child.dir then
+                                    if child ~= nil and child.dir then
                                         toggle_recursive(child)
                                     end
                                 end)
                             end
-                            -- Select and check if current select item is node
-                            -- If not node, return
-                            local node = Tree:node(item.file)
-                            if not node then return end
-
-                            -- If node and its pointing to dir, then
-                            -- recursively expand it.
-                            -- else, open it
-                            if node.dir then
-                                toggle_recursive(node)
-                            else
-                                picker:action("confirm")
-                            end
+                            toggle_recursive(node)
                         end,
                     },
                     win = {
