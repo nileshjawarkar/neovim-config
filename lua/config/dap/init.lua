@@ -134,8 +134,8 @@ local function setup()
     -- setup an event listener for when the debugger is launched
     dap.listeners.before.attach.dapui_config = dap_open
     dap.listeners.before.launch.dapui_config = dap_open
-    dap.listeners.before.event_exited.dapui_config = dap_close
-    dap.listeners.before.event_terminated.dapui_config = dap_close
+    -- dap.listeners.before.event_exited.dapui_config = dap_close
+    -- dap.listeners.before.event_terminated.dapui_config = dap_close
 end
 
 return {
