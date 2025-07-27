@@ -17,6 +17,17 @@ return {
                 snacks_input = { sections = { lualine_a = { function() return "INPUT" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'snacks_input' } },
                 snacks_term = { sections = { lualine_a = { function() return "TERMINAL" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'snacks_terminal' } },
                 git = { sections = { lualine_a = { function() return "GIT" end }, lualine_b = { "branch" }, lualine_z = { "location" }, }, filetypes = { 'NeogitStatus', 'NeogitConsole', 'NeogitPopup', 'gitcommit' } },
+                dap = {
+                    sections = {
+                        lualine_a = { function() return "DAP" end },
+                        lualine_b = {},
+                        lualine_z = { "location" },
+                    },
+                    filetypes = {
+                        "dapui_watches", "dapui_scopes",
+                        "dapui_stacks", "dapui_console"
+                    }
+                },
             }
         end)()
 
