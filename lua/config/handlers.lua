@@ -64,4 +64,16 @@ M.closeThemForMe = function(forMe)
     end
 end
 
+local function new_close()
+    if not require("config.dap").close() then
+        vim.cmd("q")
+    end
+end
+local function new_close_all()
+    vim.cmd("qa")
+end
+-- Map :q to the function
+vim.keymap.set("n", ":q", new_close, { noremap = true, silent = true })
+vim.keymap.set("n", ":qa", new_close_all, { noremap = true, silent = true })
+
 return M
