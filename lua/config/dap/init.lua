@@ -136,14 +136,15 @@ local function setup()
     vim.api.nvim_create_autocmd("BufWinLeave", {
         group = vim.api.nvim_create_augroup("DapBufWinLeaveGrp", { clear = true }),
         callback = function(_)
-            local buftype = vim.bo.filetype
-            if buftype == "dapui_watches" or buftype == "dapui_scopes"
-                or buftype == "dapui_stacks" or buftype == "dapui_console" then
-                dap_close()
+            if isDapOpen then
+                local buftype = vim.bo.filetype
+                if buftype == "dapui_watches" or buftype == "dapui_scopes"
+                    or buftype == "dapui_stacks" or buftype == "dapui_console" then
+                    dap_close()
+                end
             end
         end,
     })
-
 end
 
 return {
