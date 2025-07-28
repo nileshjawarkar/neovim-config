@@ -131,6 +131,19 @@ local function setup()
     dap.listeners.before.launch.dapui_config = dap_open
     -- dap.listeners.before.event_exited.dapui_config = dap_close
     -- dap.listeners.before.event_terminated.dapui_config = dap_close
+
+    -- close Dap, if clossing any DAP window.
+    vim.api.nvim_create_autocmd("BufWinLeave", {
+        group = vim.api.nvim_create_augroup("DapBufWinLeaveGrp", { clear = true }),
+        callback = function(_)
+            local buftype = vim.bo.filetype
+            if buftype == "dapui_watches" or buftype == "dapui_scopes"
+                or buftype == "dapui_stacks" or buftype == "dapui_console" then
+                dap_close()
+            end
+        end,
+    })
+
 end
 
 return {
