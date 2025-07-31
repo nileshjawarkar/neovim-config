@@ -7,7 +7,7 @@ keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- delete single character without copying into register
 keymap.set('n', 'x', '"_x', { noremap = true, silent = true })
 
-keymap.set({'n', 'v'}, "<leader>N", "<cmd>enew<CR>", {noremap = true, silent = true, desc = "Open un-named buffer"})
+keymap.set({ 'n', 'v' }, "<leader>N", "<cmd>enew<CR>", { noremap = true, silent = true, desc = "Open un-named buffer" })
 
 -- Window management
 keymap.set("n", "<leader>wv", "<C-w>v", { noremap = true, silent = true, desc = "Split vertically" })
@@ -62,7 +62,10 @@ keymap.set("n", "<leader>bP", function()
 end, { noremap = true, silent = true, desc = "Copy file directory path" })
 
 -- Buffer management
-keymap.set("n", "<leader>bq", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close" })
+-- keymap.set("n", "<leader>bq", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close" })
+keymap.set("n", "<leader>bq", function()
+    require("config.handlers").closeThemForMe("buf")
+end, { noremap = true, silent = true, desc = "Close" })
 keymap.set("n", "<leader>bn", ":bn<CR>", { noremap = true, silent = true, desc = "Move next" })
 keymap.set("n", "<leader>bp", ":bp<CR>", { noremap = true, silent = true, desc = "Move prev" })
 -- keymap.set("n", "<leader>bw", "<cmd>set wrap!<CR>", { noremap = true, silent = true, desc = "Toggle word-wrap" })
@@ -75,7 +78,7 @@ keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h", { noremap = true, silent = true })
 keymap.set("t", "<C-j>", "<C-\\><C-n><C-w>j", { noremap = true, silent = true })
 
 keymap.set({ "n", "i", "v", "t" }, "<M-q>", function()
-    require("config.handlers").closeThemForMe("any")
+    require("config.handlers").closeThemForMe("win")
 end, { noremap = true, silent = true })
 
 -- code execution

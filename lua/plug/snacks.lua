@@ -99,7 +99,7 @@ return {
             function()
                 Snacks.terminal()
             end,
-            desc = "Toggle Terminal",
+            desc = "Toggle Terminal [M-t]",
             mode = { "n", "t" },
         },
         {
