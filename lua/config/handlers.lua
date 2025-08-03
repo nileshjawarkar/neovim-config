@@ -23,9 +23,6 @@ local non_code_filetypes = {
     dapui_scopes = true,
     dapui_console = true,
     Outline = true,
-    aerial = true,
-    alpha = true,
-    starter = true,
     dashboard = true,
     nofile = true,
     prompt = true
@@ -37,7 +34,7 @@ local function isCodeBuffer(buf_id)
     if not buf_id then
         buf_id = vim.api.nvim_win_get_buf(vim.api.nvim_get_current_win())
     end
-    
+
     -- Use modern vim.bo API instead of deprecated nvim_buf_get_option
     local buf_type = vim.bo[buf_id].buftype
     local file_type = vim.bo[buf_id].filetype
@@ -69,24 +66,21 @@ end
 -- Close all non-code windows (using modern APIs)
 M.closeNonCodeWindows = function(preserve_current)
     local all_wins = vim.api.nvim_tabpage_list_wins(0)
-    
     -- Only execute if more than one window is open
     if #all_wins <= 1 then
         return 0
     end
-    
+
     local current_win = vim.api.nvim_get_current_win()
-    local current_buf = vim.api.nvim_win_get_buf(current_win)
     local closed_count = 0
     local code_windows = {}
 
     -- Single pass: identify code windows and close non-code windows
     for _, win_id in ipairs(all_wins) do
         local buf_id = vim.api.nvim_win_get_buf(win_id)
-
         -- Check if this should be preserved (code buffer OR current window if preserve_current is true)
         local should_preserve = isCodeBuffer(buf_id) or (preserve_current and win_id == current_win)
-        
+
         if should_preserve then
             code_windows[#code_windows + 1] = win_id
         else
