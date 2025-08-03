@@ -19,7 +19,7 @@ end
 
 local isDapOpen = false;
 local function dap_open()
-    require("config.handlers").closeThemForMe("dap")
+    require("config.handlers").closeNonCodeWindows()
     require("dap").repl.close()
     require("dapui").open()
     isDapOpen = true

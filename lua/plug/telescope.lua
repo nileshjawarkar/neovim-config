@@ -50,26 +50,14 @@ return {
         pcall(require('telescope').load_extension, 'live_grep_args')
         pcall(require('telescope').load_extension, 'fzf')
 
-        -- This function will close terminal, quick list, mason and lazy buffers
-        -- before starting telescope.
-        local function execute_checks_and_preqs()
-            local buftype = vim.bo.filetype
-            if buftype == "mason" or vim.bo.filetype == "lazy" then
-                vim.cmd("bdelete")
-            elseif buftype == "dapui_watches" or buftype == "dapui_scopes"
-                or buftype == "dapui_stacks" or buftype == "dapui_console" then
-                vim.notify("While in DAP, please use telescope from code buffer.", vim.log.levels.INFO)
-                return false
-            end
-            require("config.handlers").closeThemForMe("telescope")
-            return true
-        end
-
         -- This function will build the handlers function will call
         -- preq-check-exec function before calling telescope specific function.
         local function prepare_handler(fun, args)
             return function()
-                if not execute_checks_and_preqs() then return end
+                local handler = require("config.handlers")
+                if not handler.isCodeBuffer() then
+                    handler.closeNonCodeWindows()
+                end
                 if args ~= nil then
                     fun(args())
                     return

@@ -75,7 +75,7 @@ local function toggleTerm()
     end
     -- If we want to close some plugin window, befor staring term..
     -- we need to do it here...befor setTermBuf.
-    require("config.handlers").closeThemForMe("term")
+    require("config.handlers").closeNonCodeWindows()
     -- if term_buf nil or hidden, create new window
     setTermBuf();
     openTerm()

@@ -29,7 +29,7 @@ local function clear_qf_list()
 end
 
 local function open_qf()
-    require("config.handlers").closeThemForMe("qf")
+    require("config.handlers").closeNonCodeWindows()
     vim.cmd("copen")
 end
 
