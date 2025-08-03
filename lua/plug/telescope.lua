@@ -54,7 +54,7 @@ return {
         -- preq-check-exec function before calling telescope specific function.
         local function prepare_handler(fun, args)
             return function()
-                local handler = require("config.handlers")
+                local handler = require("config.winhandlers")
                 if not handler.isCodeBuffer() then
                     handler.closeNonCodeWindows()
                 end

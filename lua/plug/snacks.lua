@@ -90,7 +90,7 @@ return {
             "<M-t>",
             function()
                 -- Close non-code windows before opening terminal
-                require("config.handlers").closeNonCodeWindowsExceptCurrent()
+                require("config.winhandlers").closeNonCodeWindowsExceptCurrent()
                 Snacks.terminal()
             end,
             desc = "Toggle Terminal",
@@ -100,7 +100,7 @@ return {
             "<leader>T",
             function()
                 -- Close non-code windows before opening terminal
-                require("config.handlers").closeNonCodeWindowsExceptCurrent()
+                require("config.winhandlers").closeNonCodeWindowsExceptCurrent()
                 Snacks.terminal()
             end,
             desc = "Toggle Terminal [M-t]",

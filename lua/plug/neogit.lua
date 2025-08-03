@@ -4,7 +4,7 @@ return {
         {
             '<leader>G',
             function()
-                require("config.handlers").closeNonCodeWindows()
+                require("config.winhandlers").closeNonCodeWindows()
                 require('neogit').open({ kind = "replace" })
             end,
             mode = '',
@@ -28,7 +28,7 @@ return {
         })
         --[[
         vim.keymap.set("n", "<leader>G", function()
-            require("config.handlers").closeNonCodeWindows()
+            require("config.winhandlers").closeNonCodeWindows()
             neogit.open({ kind = "replace" })
         end, { desc = "Open git view" })
         ]]

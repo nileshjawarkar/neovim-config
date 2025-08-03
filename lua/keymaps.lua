@@ -64,7 +64,7 @@ end, { noremap = true, silent = true, desc = "Copy file directory path" })
 -- Buffer management
 -- keymap.set("n", "<leader>bq", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close" })
 keymap.set("n", "<leader>bq", function()
-    local handler = require("config.handlers")
+    local handler = require("config.winhandlers")
     if handler.isCodeBuffer() then
         handler.closeNonCodeWindows()
         vim.cmd("bdelete")
@@ -82,7 +82,7 @@ keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h", { noremap = true, silent = true })
 keymap.set("t", "<C-j>", "<C-\\><C-n><C-w>j", { noremap = true, silent = true })
 
 keymap.set({ "n", "i", "v", "t" }, "<M-q>", function()
-    local numClosed = require("config.handlers").closeNonCodeWindows()
+    local numClosed = require("config.winhandlers").closeNonCodeWindows()
     if numClosed == 0 then
         vim.cmd("q")
     end
