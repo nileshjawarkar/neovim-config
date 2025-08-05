@@ -62,17 +62,16 @@ keymap.set("n", "<leader>bP", function()
 end, { noremap = true, silent = true, desc = "Copy file directory path" })
 
 -- Buffer management
--- keymap.set("n", "<leader>bq", ":bdelete<CR>", { noremap = true, silent = true, desc = "Close" })
 keymap.set("n", "<leader>bq", function()
     local handler = require("config.winhandlers")
     if handler.isCodeBuffer() then
         handler.closeNonCodeWindows()
-        vim.cmd("bdelete")
     end
+    vim.cmd("bdelete")
 end, { noremap = true, silent = true, desc = "Close" })
+
 keymap.set("n", "<leader>bn", ":bn<CR>", { noremap = true, silent = true, desc = "Move next" })
 keymap.set("n", "<leader>bp", ":bp<CR>", { noremap = true, silent = true, desc = "Move prev" })
--- keymap.set("n", "<leader>bw", "<cmd>set wrap!<CR>", { noremap = true, silent = true, desc = "Toggle word-wrap" })
 
 -- terminal management
 keymap.set("t", "<ESC><ESC>", "<C-\\><C-n>", { noremap = true, silent = true })
