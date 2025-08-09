@@ -4,41 +4,37 @@ return {
         "nvim-tree/nvim-web-devicons",
     },
     config = function()
-        local extensions = (function()
-            return {
-                noname = { sections = { lualine_a = { function() return "UNNAMED" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { '' } },
-                lazy_ext = { sections = { lualine_a = { function() return "PLUGINS" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'lazy' } },
-                mason_ext = { sections = { lualine_a = { function() return "MASON" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'mason' } },
-                -- nvimtree_ext = { sections = { lualine_a = { function() return "FILES" end }, lualine_b = { "branch" }, lualine_z = { "location" }, }, filetypes = { 'NvimTree' } },
-                telescope_ext = { sections = { lualine_a = { function() return "TELESCOPE" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'TelescopePrompt' } },
-                qf_ext = { sections = { lualine_a = { function() return "QUICK LIST" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'qf' } },
-                snacks_explorer = { sections = { lualine_a = { function() return "FILES" end }, lualine_b = { "branch" }, lualine_z = { "location" }, }, filetypes = { 'snacks_picker_list' } },
-                -- snacks_picker = { sections = { lualine_a = { function() return "SNACKS PICKER" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'snacks_picker_input' } },
-                snacks_input = { sections = { lualine_a = { function() return "INPUT" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'snacks_input' } },
-                snacks_term = { sections = { lualine_a = { function() return "TERMINAL" end }, lualine_b = {}, lualine_z = { "location" }, }, filetypes = { 'snacks_terminal' } },
-                git = { sections = { lualine_a = { function() return "GIT" end }, lualine_b = { "branch" }, lualine_z = { "location" }, }, filetypes = { 'NeogitStatus', 'NeogitConsole', 'NeogitPopup', 'gitcommit' } },
-                dap = {
-                    sections = {
-                        lualine_a = { function() return "DAP" end },
-                        lualine_b = {},
-                        lualine_z = { "location" },
-                    },
-                    filetypes = {
-                        "dapui_watches", "dapui_scopes",
-                        "dapui_stacks", "dapui_console"
-                    }
-                },
+        -- Helper function to create simple extensions
+        local function create_extension(name, filetypes, with_branch)
+            local sections = {
+                lualine_a = { function() return name end },
+                lualine_z = { "location" },
             }
-        end)()
+            if with_branch then
+                sections.lualine_b = { "branch" }
+            end
+            return { sections = sections, filetypes = filetypes }
+        end
+
+        local extensions = {
+            create_extension("UNNAMED", { '' }),
+            create_extension("PLUGINS", { 'lazy' }),
+            create_extension("MASON", { 'mason' }),
+            create_extension("TELESCOPE", { 'TelescopePrompt' }),
+            create_extension("QUICK LIST", { 'qf' }),
+            create_extension("FILES", { 'snacks_picker_list' }, true),
+            create_extension("INPUT", { 'snacks_input' }),
+            create_extension("TERMINAL", { 'snacks_terminal' }),
+            create_extension("GIT", { 'NeogitStatus', 'NeogitConsole', 'NeogitPopup', 'gitcommit' }, true),
+            create_extension("DAP", { "dapui_watches", "dapui_scopes", "dapui_stacks", "dapui_console" }),
+        }
 
         require("lualine").setup({
             options = {
                 icons_enabled = false,
                 theme = "auto",
-                component_separators = { left = "", right = "" },
-                section_separators = { left = "", right = "" },
-                ignore_focus = {},
-                always_divide_middle = true,
+                component_separators = "",
+                section_separators = "",
                 globalstatus = true,
                 refresh = {
                     statusline = 100,
@@ -51,20 +47,12 @@ return {
                 lualine_b = { "filename" },
                 lualine_c = { "diff", "diagnostics" },
                 lualine_x = { "encoding", "filetype" },
-                lualine_y = {},
                 lualine_z = { "location" },
             },
             inactive_sections = {
-                lualine_a = {},
-                lualine_b = {},
                 lualine_c = { "filename" },
                 lualine_x = { "location" },
-                lualine_y = {},
-                lualine_z = {},
             },
-            tabline = {},
-            winbar = {},
-            inactive_winbar = {},
             extensions = extensions,
         })
     end,
