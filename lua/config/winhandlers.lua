@@ -1,12 +1,21 @@
 local M = {}
 
+
 -- Cache for non-code file types (using hash table for O(1) lookup)
 local non_code_filetypes = {
     qf = true,
     help = true,
     man = true,
     fugitive = true,
+    lazy = true,
+    mason = true,
+    snacks_picker_list = true,
+    snacks_picker_input = true,
+    snacks_input = true,
+    snacks_terminal = true,
     gitcommit = true,
+    NeogitConsole = true,
+    NeogitPopup = true,
     NeogitStatus = true,
     NvimTree = true,
     ["neo-tree"] = true,
