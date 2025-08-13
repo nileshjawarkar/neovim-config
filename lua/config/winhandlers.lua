@@ -33,7 +33,6 @@ local non_code_filetypes = {
     dapui_console = true,
     Outline = true,
     dashboard = true,
-    nofile = true,
     prompt = true
 }
 
@@ -48,6 +47,10 @@ local function isCodeBuffer(buf_id)
     local buf_type = vim.bo[buf_id].buftype
     local file_type = vim.bo[buf_id].filetype
     local buf_name = vim.api.nvim_buf_get_name(buf_id)
+
+    if buf_type == "nofile" and file_type ~= "" then
+        return true
+    end
 
     -- Skip special buffer types (only allow empty or acwrite)
     if buf_type ~= "" and buf_type ~= "acwrite" then

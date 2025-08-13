@@ -25,7 +25,7 @@ return {
             create_extension("FILES", { 'snacks_picker_list' }, true),
             create_extension("INPUT", { 'snacks_input' }),
             create_extension("TERMINAL", { 'snacks_terminal' }),
-            create_extension("GIT", { 'NeogitStatus', 'NeogitConsole', 'NeogitPopup', 'gitcommit' }, true),
+            create_extension("GIT", { 'NeogitStatus', 'NeogitConsole', 'NeogitPopup', 'gitcommit', 'NeogitCommitView' }, true),
             create_extension("DAP", { "dapui_watches", "dapui_scopes", "dapui_stacks", "dapui_console" }),
         }
 
