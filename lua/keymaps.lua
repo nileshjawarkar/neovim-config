@@ -63,13 +63,13 @@ end, { noremap = true, silent = true, desc = "Copy file directory path" })
 
 local function smartBufDelete()
     local winhandlers = require("config.winhandlers")
-    winhandlers.closeNonCodeWindowsExceptCurrent()
     -- Get list of all buffers
     local buffers = vim.api.nvim_list_bufs()
     local numBufs = 0
     -- Filter out invalid buffers (hidden, unloaded, etc.)
     for _, buf in ipairs(buffers) do
         if vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_is_valid(buf)
+            and winhandlers.isCodeBuffer(buf)
             and not winhandlers.isEmptyBuffer(buf) then
             numBufs = numBufs + 1
             if numBufs > 1 then
@@ -80,6 +80,7 @@ local function smartBufDelete()
 
     -- If more than one buffer exists, just delete current buffer
     if numBufs > 1 then
+        winhandlers.closeNonCodeWindowsExceptCurrent()
         vim.cmd("bdelete")
     end
 end
