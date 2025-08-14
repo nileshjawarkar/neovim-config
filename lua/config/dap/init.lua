@@ -39,9 +39,6 @@ local function setup_keys()
         if not require("config.winhandlers").isCodeBuffer() then
             return
         end
-        if isDapOpen then
-            dap_close();
-        end
         dap.continue()
     end
 
