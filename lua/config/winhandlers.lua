@@ -33,7 +33,15 @@ local non_code_filetypes = {
     dapui_console = true,
     Outline = true,
     dashboard = true,
-    prompt = true
+    prompt = true,
+    nofile = true
+}
+
+local code_filetypes = {
+    java = true,
+    c = true,
+    cpp = true,
+    py = true
 }
 
 -- Check if a buffer is a code file (using modern APIs)
@@ -48,7 +56,7 @@ local function isCodeBuffer(buf_id)
     local file_type = vim.bo[buf_id].filetype
     local buf_name = vim.api.nvim_buf_get_name(buf_id)
 
-    if buf_type == "nofile" and file_type ~= "" then
+    if buf_name ~= "" and code_filetypes[file_type] then
         return true
     end
 
@@ -138,6 +146,19 @@ end
 -- Close all non-code windows except current window (preserves current window regardless of type)
 M.closeNonCodeWindowsExceptCurrent = function()
     return M.closeNonCodeWindows(true)
+end
+
+M.isEmptyBuffer = function(buf_id)
+    if not buf_id then
+        buf_id = vim.api.nvim_win_get_buf(vim.api.nvim_get_current_win())
+    end
+    local buf_type = vim.bo[buf_id].buftype
+    local file_type = vim.bo[buf_id].filetype
+    local buf_name = vim.api.nvim_buf_get_name(buf_id)
+    if buf_name == "" and buf_type == "" and file_type == "" then
+        return true
+    end
+    return false
 end
 
 -- Export isCodeBuffer function for external use
