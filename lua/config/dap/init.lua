@@ -20,7 +20,6 @@ end
 local isDapOpen = false;
 local function dap_open()
     require("config.winhandlers").closeNonCodeWindows()
-    require("dap").repl.close()
     require("dapui").open()
     isDapOpen = true
 end
@@ -37,13 +36,11 @@ end
 local function setup_keys()
     local dap = require("dap")
     local function continue()
-        local buftype = vim.bo.filetype
-        if buftype == "mason" or buftype == "lazy" or buftype == "NeogitStatus"
-            or buftype == "dapui_watches" or buftype == "dapui_scopes"
-            or buftype == "dapui_stacks" or buftype == "dapui_console"
-            or buftype == "NvimTree" or buftype == "qf" then
-            vim.notify("Current buffer not supported [" .. buftype .. "]", vim.log.levels.INFO)
+        if not require("config.winhandlers").isCodeBuffer() then
             return
+        end
+        if isDapOpen then
+            dap_close();
         end
         dap.continue()
     end
@@ -131,16 +128,6 @@ local function setup()
     dap.listeners.before.launch.dapui_config = dap_open
     -- dap.listeners.before.event_exited.dapui_config = dap_close
     -- dap.listeners.before.event_terminated.dapui_config = dap_close
-
-    -- When dap is running, terminate dap if closing any dap or non-dap window 
-    vim.api.nvim_create_autocmd("QuitPre", {
-        group = vim.api.nvim_create_augroup("DapQuitPreGrp", { clear = true }),
-        callback = function()
-            if isDapOpen then
-                dap_close()
-            end
-        end,
-    })
 end
 
 return {
