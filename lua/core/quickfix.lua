@@ -39,6 +39,5 @@ keymap.set("n", "<leader>qf", ":cfirst<CR>", { noremap = true, silent = true, de
 keymap.set("n", "<leader>qn", ":cnext<CR>", { noremap = true, silent = true, desc = "Jump to next" })
 keymap.set("n", "<leader>qp", ":cprev<CR>", { noremap = true, silent = true, desc = "Jump to prev" })
 keymap.set("n", "<leader>ql", ":clast<CR>", { noremap = true, silent = true, desc = "Jump to last" })
-keymap.set("n", "<leader>qr", remove_from_qf_list, { noremap = true, silent = true, desc = "Delete line" })
-keymap.set("n", "<leader>qR", clear_qf_list, { noremap = true, silent = true, desc = "Delete all lines" })
--- keymap.set('n', '<leader>qd', vim.diagnostic.setloclist, { desc = 'Open diagnostic' })
+keymap.set("n", "<leader>qr", remove_from_qf_list, { noremap = true, silent = true, desc = "Remove line" })
+keymap.set("n", "<leader>qd", clear_qf_list, { noremap = true, silent = true, desc = "Delete all lines" })
