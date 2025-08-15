@@ -84,6 +84,11 @@ return {
             }
         end)
 
+        local find_files_with_world = prepare_handler(function()
+            local word = vim.fn.expand('<cword>')
+            builtin.find_files { default_text = word }
+        end)
+
         -- This need tobe a function not table to feed runtime value
         -- of current buffer.
         local function buf_search_op()
@@ -100,13 +105,14 @@ return {
             vim.keymap.set(m, key, handler, { noremap = true, silent = true, desc = desc })
         end
 
-        keymap("n", "<leader>ff", find_files, "Fuzzy find files [<Leader><Leader>]")
+        keymap("n", "<leader>ff", find_files, "Find files [<Leader><Leader>]")
+        keymap("n", "<leader>fF", find_files_with_world, "Find files with text under-cursor")
         keymap("n", "<leader><leader>", find_files, "Fuzzy find files")
         keymap("n", "<leader>fR", show_recentfile, "Find recent open files")
         keymap("n", "<leader>fg", live_grep, "Find in files")
         keymap("n", "<leader>fh", show_help, "Show help tags")
         keymap("n", "<leader>fW", fuzzy_find_tuc_in_ws, "Find text under cursor (in workspace)")
-        keymap("n", "<leader>fw", fuzzy_find_tuc_in_cur_buf, "Find text under cursor (in buffer)")
+        keymap("n", "<leader>fw", fuzzy_find_tuc_in_cur_buf, "Find text under-cursor (in buffer)")
         keymap("n", "<leader>fb", show_buffers, "List open files [<Leader>,]")
         keymap("n", "<leader>,", show_buffers, "List open files")
         keymap('n', '<leader>fd', find_diagnostics, 'List diagnostics')
