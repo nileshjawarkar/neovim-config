@@ -60,35 +60,35 @@ keymap.set("n", "<leader>bP", function()
         vim.notify("Copied - " .. bufdir, vim.log.levels.INFO)
     end
 end, { noremap = true, silent = true, desc = "Copy file directory path" })
-
-local function smartBufDelete()
-    local winhandlers = require("config.winhandlers")
-    -- Get list of all buffers
-    local buffers = vim.api.nvim_list_bufs()
-    local numBufs = 0
-    -- Filter out invalid buffers (hidden, unloaded, etc.)
-    for _, buf in ipairs(buffers) do
-        if vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_is_valid(buf)
-            and winhandlers.isCodeBuffer(buf)
-            and not winhandlers.isEmptyBuffer(buf) then
-            numBufs = numBufs + 1
-            if numBufs > 1 then
-                break
-            end
-        end
-    end
-
-    -- If more than one buffer exists, just delete current buffer
-    if numBufs > 1 then
-        winhandlers.closeNonCodeWindowsExceptCurrent()
-        vim.cmd("bdelete")
-    end
-end
-
-keymap.set("n", "<leader>bq", smartBufDelete, { noremap = true, silent = true, desc = "Close buffer [bd]" })
-keymap.set("n", "<leader>bd", smartBufDelete, { noremap = true, silent = true, desc = "Close buffer [bq]" })
 keymap.set("n", "<leader>bn", ":bn<CR>", { noremap = true, silent = true, desc = "Move next" })
 keymap.set("n", "<leader>bp", ":bp<CR>", { noremap = true, silent = true, desc = "Move prev" })
+
+-- local function smartBufDelete()
+--     local winhandlers = require("config.winhandlers")
+--     -- Get list of all buffers
+--     local buffers = vim.api.nvim_list_bufs()
+--     local numBufs = 0
+--     -- Filter out invalid buffers (hidden, unloaded, etc.)
+--     for _, buf in ipairs(buffers) do
+--         if vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_is_valid(buf)
+--             and winhandlers.isCodeBuffer(buf)
+--             and not winhandlers.isEmptyBuffer(buf) then
+--             numBufs = numBufs + 1
+--             if numBufs > 1 then
+--                 break
+--             end
+--         end
+--     end
+-- 
+--     -- If more than one buffer exists, just delete current buffer
+--     if numBufs > 1 then
+--         winhandlers.closeNonCodeWindowsExceptCurrent()
+--         vim.cmd("bdelete")
+--     end
+-- end
+-- 
+-- keymap.set("n", "<leader>bq", smartBufDelete, { noremap = true, silent = true, desc = "Close buffer [bd]" })
+-- keymap.set("n", "<leader>bd", smartBufDelete, { noremap = true, silent = true, desc = "Close buffer [bq]" })
 
 -- terminal management
 keymap.set("t", "<ESC><ESC>", "<C-\\><C-n>", { noremap = true, silent = true })

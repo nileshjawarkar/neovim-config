@@ -86,6 +86,8 @@ return {
         },
     },
     keys = {
+        { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
+        { "<leader>bo", function() Snacks.bufdelete.other() end, desc = "Delete Other Buffers" },
         {
             "<M-t>",
             function()
