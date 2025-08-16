@@ -45,6 +45,32 @@ local new_xmltag_builder = function(root, tag_level)
     return m1
 end
 
+-- Detect prj_type from pom.xml: if any module has packaging war, treat as JEE, else JAVA
+local function detect_prj_type(pom_path)
+    local file = io.open(pom_path, "r")
+    if not file then return "JAVA" end
+    local content = file:read("*a")
+    file:close()
+    -- Get module names from <modules>
+    local modules = {}
+    for mod in content:gmatch("<module>(.-)</module>") do
+        table.insert(modules, mod)
+    end
+    local dir = pom_path:match("(.+)/pom.xml$")
+    for _, mod in ipairs(modules) do
+        local mod_pom = dir .. "/" .. mod .. "/pom.xml"
+        local f = io.open(mod_pom, "r")
+        if f then
+            local mod_content = f:read("*a")
+            f:close()
+            if mod_content:find("<packaging>%s*war%s*</packaging>") then
+                return "JEE"
+            end
+        end
+    end
+    return "JAVA"
+end
+
 local new_pom_builder = function()
     local _name, _pkg, _version, _bt
     -- local _props = ""
@@ -206,113 +232,132 @@ local new_pom_builder = function()
     return m
 end
 
+-- Utility: parse_pom_info
+local function parse_pom_info(pom_path)
+    local info = {}
+    local file = io.open(pom_path, "r")
+    if not file then return nil end
+    local content = file:read("*a")
+    file:close()
+    info.groupId = content:match("<groupId>(.-)</groupId>")
+    info.artifactId = content:match("<artifactId>(.-)</artifactId>")
+    info.version = content:match("<version>(.-)</version>")
+    return info
+end
+
+local function build_main_pom(name, grp, version, prj_type, modules)
+    local builder = new_pom_builder()
+    builder:setName(name):setPkg(grp):setVersion(version)
+    builder:addProp("project.build.sourceEncoding", "UTF-8")
+    builder:addProp("skipTests", "true")
+    builder:addProp("skipOwasp", "true")
+    builder:addProp("skipPmd", "true")
+    builder:addProp("rootBase", "${session.executionRootDirectory}")
+    builder:addProp("maven.compiler.source", "21")
+    builder:addProp("maven.compiler.target", "21")
+    builder:setModuleType("pom")
+
+    -- Add plugins
+    local plug_config_builder = new_xmltag_builder("configuration", "\n\t\t\t\t")
+    plug_config_builder:add_child("skipTests", "${skipTests}")
+    builder:addPluginMid("maven-surefire-plugin", "org.apache.maven.plugins", "3.5.3", plug_config_builder:build())
+
+    builder:addPluginMin("maven-compiler-plugin", "org.apache.maven.plugins", "3.14.0")
+    builder:addPluginMin("maven-install-plugin", "org.apache.maven.plugins", "3.1.4")
+    builder:addPluginMin("maven-jar-plugin", "org.apache.maven.plugins", "3.4.2")
+    builder:addPluginMin("maven-clean-plugin", "org.apache.maven.plugins", "3.5.0")
+    builder:addPluginMin("maven-release-plugin", "org.apache.maven.plugins", "3.1.1")
+
+    local owasp_config = new_xmltag_builder("configuration", "\n\t\t\t\t")
+    owasp_config:add_child("skip", "${skipOwasp}")
+    builder:addPlugin("dependency-check-maven", "org.owasp", "12.1.1", owasp_config:build(), "check")
+
+    local pmd_config = new_xmltag_builder("configuration", "\n\t\t\t\t")
+    pmd_config:add_child("skip", "${skipPmd}")
+    pmd_config:add_child("failOnViolation", "false")
+    pmd_config:add_child("printFailingErrors", "true")
+    pmd_config:add_child("targetJdk", "17")
+    pmd_config:add_child("rulesets", "<ruleset>${rootBase}/pmd-rules.xml</ruleset>")
+    builder:addPlugin("maven-pmd-plugin", "org.apache.maven.plugins", "3.26.0", pmd_config:build(),
+        { "check", "cpd-check" })
+    builder:addReportPlugin("maven-jxr-plugin", "org.apache.maven.plugins", "3.6.0", "", "")
+    -- removed stray tag_level line
+    if prj_type == "JEE" then
+        builder:addPlugin("maven-war-plugin", "org.apache.maven.plugins", "3.4.0", "")
+    end
+
+    -- Add dependencies
+    builder:addDependancy("slf4j-api", "org.slf4j", "2.0.17", "")
+    builder:addDependancy("logback-core", "ch.qos.logback", "1.5.18", "")
+    builder:addDependancy("logback-classic", "ch.qos.logback", "1.5.18", "")
+    -- Test
+    builder:addDependancy("mockito-core", "org.mockito", "5.16.1", "test")
+    builder:addDependancy("mockito-junit-jupiter", "org.mockito", "5.16.1", "test")
+    builder:addDependancy("junit-jupiter-api", "org.junit.jupiter", "5.12.1", "test")
+    -- JEE
+    if prj_type == "JEE" then
+        builder:addDependancy("jakarta.jakartaee-api", "jakarta.platform", "10.0.0", "provided")
+    end
+
+    -- DB
+    builder:addDependancy("sqlite-jdbc", "org.xerial", "3.49.1.0", "")
+    -- builder:addDependancy("h2", "com.h2database", "2.3.232", "")
+    if type(modules) == "table" then
+        for _, value in pairs(modules) do
+            builder:addModule(value)
+        end
+    end
+    return builder:build()
+end
+
+local function build_module_pom(prj_type, module_type, name, grp, version, parent_name, parent_pkg, parent_version, deps)
+    local builder = new_pom_builder()
+    builder:setName(name):setPkg(grp):setVersion(version)
+    builder:setParent(parent_name, parent_pkg, parent_version)
+    if module_type == "war" then
+        builder:setModuleType("war")
+        builder:addProp("failOnMissingWebXml", "false")
+    else
+        builder:setModuleType("jar")
+        if prj_type == "JEE" then
+            builder:addDependancyMin("jakarta.jakartaee-api", "jakarta.platform", "provided")
+            builder:addDependancyMin("slf4j-api", "org.slf4j", "")
+            builder:addDependancyMin("logback-core", "ch.qos.logback", "")
+            builder:addDependancyMin("logback-classic", "ch.qos.logback", "")
+            builder:addDependancyMin("sqlite-jdbc", "org.xerial", "")
+            -- builder:addDependancyMin("h2", "com.h2database", "")
+        end
+        -- Add dependencies
+        -- Test
+        builder:addDependancyMin("mockito-core", "org.mockito", "test")
+        builder:addDependancyMin("mockito-junit-jupiter", "org.mockito", "test")
+        builder:addDependancyMin("junit-jupiter-api", "org.junit.jupiter", "test")
+    end
+    if deps ~= nil and type(deps) == "table" then
+        for _, value in pairs(deps) do
+            if type(value) == "table" then
+                local mname, mpkg, mscope, mversion
+                for key, v in pairs(value) do
+                    if key == "name" then
+                        mname = v
+                    elseif key == "scope" then
+                        mscope = v
+                    elseif key == "pkg" then
+                        mpkg = v
+                    elseif key == "version" then
+                        mversion = v
+                    end
+                end
+                builder:addDependancy(mname, mpkg, mversion, mscope)
+            end
+        end
+    end
+    return builder:build()
+end
 
 return {
-    build_main_pom = function(name, grp, version, prj_type, modules)
-        local builder = new_pom_builder()
-        builder:setName(name):setPkg(grp):setVersion(version)
-        builder:addProp("project.build.sourceEncoding", "UTF-8")
-        builder:addProp("skipTests", "true")
-        builder:addProp("skipOwasp", "true")
-        builder:addProp("skipPmd", "true")
-        builder:addProp("rootBase", "${session.executionRootDirectory}")
-        builder:addProp("maven.compiler.source", "21")
-        builder:addProp("maven.compiler.target", "21")
-        builder:setModuleType("pom")
-
-        -- Add plugins
-        local plug_config_builder = new_xmltag_builder("configuration", "\n\t\t\t\t")
-        plug_config_builder:add_child("skipTests", "${skipTests}")
-        builder:addPluginMid("maven-surefire-plugin", "org.apache.maven.plugins", "3.5.3", plug_config_builder:build())
-
-        builder:addPluginMin("maven-compiler-plugin", "org.apache.maven.plugins", "3.14.0")
-        builder:addPluginMin("maven-install-plugin", "org.apache.maven.plugins", "3.1.4")
-        builder:addPluginMin("maven-jar-plugin", "org.apache.maven.plugins", "3.4.2")
-        builder:addPluginMin("maven-clean-plugin", "org.apache.maven.plugins", "3.5.0")
-        builder:addPluginMin("maven-release-plugin", "org.apache.maven.plugins", "3.1.1")
-
-        local owasp_config = new_xmltag_builder("configuration", "\n\t\t\t\t")
-        owasp_config:add_child("skip", "${skipOwasp}")
-        builder:addPlugin("dependency-check-maven", "org.owasp", "12.1.1", owasp_config:build(), "check")
-
-        local pmd_config = new_xmltag_builder("configuration", "\n\t\t\t\t")
-        pmd_config:add_child("skip", "${skipPmd}")
-        pmd_config:add_child("failOnViolation", "false")
-        pmd_config:add_child("printFailingErrors", "true")
-        pmd_config:add_child("targetJdk", "17")
-        pmd_config:add_child("rulesets", "<ruleset>${rootBase}/pmd-rules.xml</ruleset>")
-        builder:addPlugin("maven-pmd-plugin", "org.apache.maven.plugins", "3.26.0", pmd_config:build(),
-            { "check", "cpd-check" })
-        builder:addReportPlugin("maven-jxr-plugin", "org.apache.maven.plugins", "3.6.0", "", "")
-
-        if prj_type == "JEE" then
-            builder:addPlugin("maven-war-plugin", "org.apache.maven.plugins", "3.4.0", "")
-        end
-
-        -- Add dependencies
-        builder:addDependancy("slf4j-api", "org.slf4j", "2.0.17", "")
-        builder:addDependancy("logback-core", "ch.qos.logback", "1.5.18", "")
-        builder:addDependancy("logback-classic", "ch.qos.logback", "1.5.18", "")
-        -- Test
-        builder:addDependancy("mockito-core", "org.mockito", "5.16.1", "test")
-        builder:addDependancy("mockito-junit-jupiter", "org.mockito", "5.16.1", "test")
-        builder:addDependancy("junit-jupiter-api", "org.junit.jupiter", "5.12.1", "test")
-        -- JEE
-        if prj_type == "JEE" then
-            builder:addDependancy("jakarta.jakartaee-api", "jakarta.platform", "10.0.0", "provided")
-        end
-        -- DB
-        builder:addDependancy("sqlite-jdbc", "org.xerial", "3.49.1.0", "")
-        -- builder:addDependancy("h2", "com.h2database", "2.3.232", "")
-        if type(modules) == "table" then
-            for _, value in pairs(modules) do
-                builder:addModule(value)
-            end
-        end
-        return builder:build()
-    end,
-    build_module_pom = function(prj_type, module_type, name, grp, version, parent_name, parent_pkg, parent_version, deps)
-        local builder = new_pom_builder()
-        builder:setName(name):setPkg(grp):setVersion(version)
-        builder:setParent(parent_name, parent_pkg, parent_version)
-        if module_type == "war" then
-            builder:setModuleType("war")
-            builder:addProp("failOnMissingWebXml", "false")
-        else
-            builder:setModuleType("jar")
-            if prj_type == "JEE" then
-                builder:addDependancyMin("jakarta.jakartaee-api", "jakarta.platform", "provided")
-                builder:addDependancyMin("slf4j-api", "org.slf4j", "")
-                builder:addDependancyMin("logback-core", "ch.qos.logback", "")
-                builder:addDependancyMin("logback-classic", "ch.qos.logback", "")
-                builder:addDependancyMin("sqlite-jdbc", "org.xerial", "")
-                -- builder:addDependancyMin("h2", "com.h2database", "")
-            end
-            -- Add dependencies
-            -- Test
-            builder:addDependancyMin("mockito-core", "org.mockito", "test")
-            builder:addDependancyMin("mockito-junit-jupiter", "org.mockito", "test")
-            builder:addDependancyMin("junit-jupiter-api", "org.junit.jupiter", "test")
-        end
-        if deps ~= nil and type(deps) == "table" then
-            for _, value in pairs(deps) do
-                if type(value) == "table" then
-                    local mname, mpkg, mscope, mversion
-                    for key, v in pairs(value) do
-                        if key == "name" then
-                            mname = v
-                        elseif key == "scope" then
-                            mscope = v
-                        elseif key == "pkg" then
-                            mpkg = v
-                        elseif key == "version" then
-                            mversion = v
-                        end
-                    end
-                    builder:addDependancy(mname, mpkg, mversion, mscope)
-                end
-            end
-        end
-        return builder:build()
-    end
+    build_main_pom = build_main_pom,
+    build_module_pom = build_module_pom,
+    parse_pom_info = parse_pom_info,
+    detect_prj_type = detect_prj_type
 }

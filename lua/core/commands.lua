@@ -47,3 +47,44 @@ vim.keymap.set("n", "<leader>MP", function()
         mvn:createMM_prj(cur_dir, "JEE")
     end
 end, { desc = "Create JavaEE project" })
+
+vim.keymap.set("n", "<leader>Mm", function()
+    local sys = require("core.util.sys")
+    local mvn = require("core.mvn")
+    local pom_util = require("core.mvn.pom")
+    local cwd = sys.get_cwd()
+    local pom_path = cwd .. "/pom.xml"
+    if not sys.is_file(pom_path) then
+        vim.notify("No pom.xml found in current directory", vim.log.levels.ERROR)
+        return
+    end
+
+    vim.ui.input({ prompt = "Enter new module name: " }, function(mod_name)
+        if not mod_name or mod_name == "" then
+            vim.notify("Module name required", vim.log.levels.ERROR)
+            return
+        end
+
+        local parent_info = pom_util.parse_pom_info(pom_path)
+        if not parent_info or not parent_info.groupId or not parent_info.artifactId or not parent_info.version then
+            vim.notify("Failed to read parent info from pom.xml", vim.log.levels.ERROR)
+            return
+        end
+
+        local prj_type = pom_util.detect_prj_type(pom_path)
+        local ok = mvn and mvn.createLib_module and mvn:createLib_module(
+            cwd,
+            prj_type,
+            mod_name,
+            parent_info.groupId,
+            parent_info.version,
+            parent_info.artifactId,
+            parent_info.groupId,
+            parent_info.version,
+            nil
+        )
+        if ok then
+            vim.notify("Created module: " .. mod_name, vim.log.levels.INFO)
+        end
+    end)
+end, { desc = "Create module" })
