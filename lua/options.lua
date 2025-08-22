@@ -93,38 +93,6 @@ if vim.g.neovide then
     vim.g.neovide_text_gamma = 0.0
     vim.g.neovide_text_contrast = 0.5
 end
-
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.hl.on_yank()`
-
-local ui_elem_group = vim.api.nvim_create_augroup('custom-ui-onevent-modif', { clear = true })
-vim.api.nvim_create_autocmd('TextYankPost', {
-    desc = 'Highlight when yanking (copying) text',
-    group = ui_elem_group,
-    callback = function()
-        vim.hl.on_yank()
-    end,
-})
-
 -- Disable cursorline globally
 vim.opt.cursorline = false
-
--- Automatically enable cursorline only in the active window
-vim.api.nvim_create_autocmd("WinEnter", {
-    pattern = "*",
-    group = ui_elem_group,
-    callback = function()
-        vim.wo.cursorline = true
-    end,
-})
-
--- Disable cursorline when switching away from a window
-vim.api.nvim_create_autocmd("WinLeave", {
-    pattern = "*",
-    group = ui_elem_group,
-    callback = function()
-        vim.wo.cursorline = false
-    end,
-})
 
