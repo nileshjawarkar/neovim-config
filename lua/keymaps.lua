@@ -7,7 +7,6 @@ keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- delete single character without copying into register
 keymap.set('n', 'x', '"_x', { noremap = true, silent = true })
 
-keymap.set({ 'n', 'v' }, "<leader>N", "<cmd>enew<CR>", { noremap = true, silent = true, desc = "Open un-named buffer" })
 
 -- Window management
 keymap.set("n", "<leader>wv", "<C-w>v", { noremap = true, silent = true, desc = "Split vertically" })
@@ -20,6 +19,14 @@ keymap.set("n", "<leader>w=", "<cmd>vertical resize +10<cr>",
     { noremap = true, silent = true, desc = "Increase width" })
 keymap.set("n", "<leader>w-", "<cmd>vertical resize -10<cr>",
     { noremap = true, silent = true, desc = "Decrease width" })
+local closeWin = function()
+    local numClosed = require("config.winhandlers").closeNonCodeWindows()
+    if numClosed == 0 then
+        vim.cmd("q")
+    end
+end
+keymap.set({ "n", "i", "v", "t" }, "<leader>wq", closeWin, { noremap = true, silent = true, desc = "Close window [M-q]" })
+keymap.set({ "n", "i", "v", "t" }, "<M-q>", closeWin, { noremap = true, silent = true })
 
 -- Shortcuts
 keymap.set("n", "<C-h>", "<C-w>h", { noremap = true, silent = true })
@@ -62,33 +69,7 @@ keymap.set("n", "<leader>bP", function()
 end, { noremap = true, silent = true, desc = "Copy file directory path" })
 keymap.set("n", "<leader>bn", ":bn<CR>", { noremap = true, silent = true, desc = "Move next" })
 keymap.set("n", "<leader>bp", ":bp<CR>", { noremap = true, silent = true, desc = "Move prev" })
-
--- local function smartBufDelete()
---     local winhandlers = require("config.winhandlers")
---     -- Get list of all buffers
---     local buffers = vim.api.nvim_list_bufs()
---     local numBufs = 0
---     -- Filter out invalid buffers (hidden, unloaded, etc.)
---     for _, buf in ipairs(buffers) do
---         if vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_buf_is_valid(buf)
---             and winhandlers.isCodeBuffer(buf)
---             and not winhandlers.isEmptyBuffer(buf) then
---             numBufs = numBufs + 1
---             if numBufs > 1 then
---                 break
---             end
---         end
---     end
--- 
---     -- If more than one buffer exists, just delete current buffer
---     if numBufs > 1 then
---         winhandlers.closeNonCodeWindowsExceptCurrent()
---         vim.cmd("bdelete")
---     end
--- end
--- 
--- keymap.set("n", "<leader>bq", smartBufDelete, { noremap = true, silent = true, desc = "Close buffer [bd]" })
--- keymap.set("n", "<leader>bd", smartBufDelete, { noremap = true, silent = true, desc = "Close buffer [bq]" })
+keymap.set({ 'n', 'v' }, "<leader>bN", "<cmd>enew<CR>", { noremap = true, silent = true, desc = "Open un-named buffer" })
 
 -- terminal management
 keymap.set("t", "<ESC><ESC>", "<C-\\><C-n>", { noremap = true, silent = true })
@@ -96,13 +77,6 @@ keymap.set("t", "<C-k>", "<C-\\><C-n><C-w>k", { noremap = true, silent = true })
 keymap.set("t", "<C-l>", "<C-\\><C-n><C-w>l", { noremap = true, silent = true })
 keymap.set("t", "<C-h>", "<C-\\><C-n><C-w>h", { noremap = true, silent = true })
 keymap.set("t", "<C-j>", "<C-\\><C-n><C-w>j", { noremap = true, silent = true })
-
-keymap.set({ "n", "i", "v", "t" }, "<M-q>", function()
-    local numClosed = require("config.winhandlers").closeNonCodeWindows()
-    if numClosed == 0 then
-        vim.cmd("q")
-    end
-end, { noremap = true, silent = true })
 
 -- code execution
 keymap.set("n", "<leader>ss", "<cmd>source %<CR>", { noremap = true, silent = true, desc = "Execute lua file" })
