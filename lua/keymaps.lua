@@ -25,7 +25,7 @@ local closeWin = function()
         vim.cmd("q")
     end
 end
-keymap.set({ "n", "i", "v", "t" }, "<leader>wq", closeWin, { noremap = true, silent = true, desc = "Close window [M-q]" })
+keymap.set({ "n", "v", "t" }, "<leader>wq", closeWin, { noremap = true, silent = true, desc = "Close window [M-q]" })
 keymap.set({ "n", "i", "v", "t" }, "<M-q>", closeWin, { noremap = true, silent = true })
 
 -- Shortcuts
