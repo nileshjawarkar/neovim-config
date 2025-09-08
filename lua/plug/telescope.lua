@@ -15,6 +15,23 @@ return {
     },
     config = function()
         local actions = require("telescope.actions")
+        -- Shorten displayed paths: keep last 3 components and prepend ".../" when longer
+        local function path_formater(_, path)
+            if not path or path == "" then
+                return path
+            end
+            local parts = {}
+            for part in path:gmatch("[^/]+") do
+                table.insert(parts, part)
+            end
+            local n = #parts
+            if n <= 5 then
+                return path
+            end
+            local last3 = table.concat({ parts[n - 2], parts[n - 1], parts[n] }, "/")
+            return ".../" .. last3
+        end
+
         require("telescope").setup({
             defaults = {
                 prompt_prefix = " > ",
@@ -25,7 +42,7 @@ return {
                     },
                 },
                 set_env = { ["COLORTERM"] = "truecolor" },
-                path_display = { truncate = 1 },
+                path_display = path_formater,
             },
             pickers = {
                 find_files = {
