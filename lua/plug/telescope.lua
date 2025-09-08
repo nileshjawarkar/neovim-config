@@ -25,10 +25,10 @@ return {
                 table.insert(parts, part)
             end
             local n = #parts
-            if n <= 5 then
+            if n < 5 then
                 return path
             end
-            local last3 = table.concat({ parts[n - 2], parts[n - 1], parts[n] }, "/")
+            local last3 = table.concat({ parts[n - 4], parts[n - 3], parts[n - 2], parts[n - 1], parts[n] }, "/")
             return ".../" .. last3
         end
 
