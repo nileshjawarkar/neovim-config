@@ -22,6 +22,7 @@ return {
             create_extension("MASON", { 'mason' }),
             create_extension("TELESCOPE", { 'TelescopePrompt' }),
             create_extension("QUICK LIST", { 'qf' }),
+            create_extension("PICKER", { 'snacks_picker_input' }),
             create_extension("FILES", { 'snacks_picker_list' }, true),
             create_extension("INPUT", { 'snacks_input' }),
             create_extension("TERMINAL", { 'snacks_terminal' }),

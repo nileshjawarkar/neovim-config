@@ -30,23 +30,43 @@ local setup_keymaps = function(event)
         vim.keymap.set(m, key, handler, { buffer = event.buf, silent = true, desc = desc })
     end
 
+    --[[
+    -- LSP
+    { "gI", function() Snacks.picker.lsp_implementations() end, desc = "Goto Implementation" },
+    { "gd", function() Snacks.picker.lsp_definitions() end, desc = "Goto Definition" },
+    { "gD", function() Snacks.picker.lsp_declarations() end, desc = "Goto Declaration" },
+    { "gr", function() Snacks.picker.lsp_references() end, nowait = true, desc = "References" },
+    { "gy", function() Snacks.picker.lsp_type_definitions() end, desc = "Goto T[y]pe Definition" },
+    { "<leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
+    { "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
+    ]]
 
-    local lsp_buildin = require("telescope.builtin")
+    --[[ local lsp_buildin = require("telescope.builtin")
     keymap("n", "<leader>lI", lsp_buildin.lsp_implementations, "Go to implementation [<gI>]")
     keymap("n", "gI", lsp_buildin.lsp_implementations, "Go to implementation")
     keymap("n", "<leader>lr", lsp_buildin.lsp_references, "List references")
     keymap("n", "<leader>ll", lsp_buildin.lsp_document_symbols, "List document symbols")
-    keymap("n", "<leader>lD", vim_lbuf.declaration, "Go to declaration [<gD>]")
+    ]]
+
+
+    local picker = require("snacks.picker")
+    keymap("n", "<leader>lI", picker.lsp_implementations, "Go to implementation [<gI>]")
+    keymap("n", "gI", picker.lsp_implementations, "Go to implementation")
+    keymap("n", "<leader>lr", picker.lsp_references, "List references")
+    keymap("n", "<leader>ls", picker.lsp_symbols, "List symbols")
+    keymap("n", "<leader>lS", picker.lsp_workspace_symbols, "List workspace symbols")
+
+    keymap("n", "<leader>lD", picker.lsp_declarations, "Go to declaration [<gD>]")
     keymap("n", "gD", vim_lbuf.declaration, "Go to declaration")
-    keymap("n", "<leader>lt", vim_lbuf.type_definition, "Go to type definition [<gO>]")
+    keymap("n", "<leader>lt", picker.lsp_type_definitions, "Go to type definition [<gO>]")
     keymap("n", "gO", vim_lbuf.type_definition, "Go to type definition")
 
-    keymap("n", "<leader>ld", vim_lbuf.definition, "Go to definition [<gd>]")
+    keymap("n", "<leader>ld", picker.lsp_definitions, "Go to definition [<gd>]")
     keymap("n", "gd", vim_lbuf.definition, "Go to definition")
 
     keymap("n", "<leader>lg", vim_lbuf.hover, "Hover [<gK>]")
     keymap("n", "gK", vim_lbuf.hover, "Hover")
-    keymap("n", "<leader>ls", vim_lbuf.signature_help, "Signature help [<gs>]")
+    keymap("n", "<leader>lh", vim_lbuf.signature_help, "Signature help [<gs>]")
     keymap("n", "gs", vim_lbuf.signature_help, "Signature help")
     keymap("n", "<leader>lR", vim_lbuf.rename, "Rename")
     keymap({ "n", "v" }, "<leader>la", vim_lbuf.code_action, "Code actions")
@@ -69,7 +89,7 @@ local setup_keymaps = function(event)
     -- code, if the language server you are using supports them
     local client = vim.lsp.get_client_by_id(event.data.client_id)
     if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-        keymap("n", "<leader>lh", function()
+        keymap("n", "<leader>lH", function()
             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
         end, 'Toggle inlay hints')
     end
