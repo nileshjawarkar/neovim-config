@@ -29,7 +29,7 @@ require("lazy").setup({
     require("plug.mason"),
     require("plug.treesitter"),
     require("plug.harpoon"),
-    require("plug.telescope"),
+    -- require("plug.telescope"),
     require("plug.neogit"),
     require("plug.markdown"),
     require("plug.conform"),

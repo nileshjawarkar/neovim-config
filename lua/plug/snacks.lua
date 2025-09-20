@@ -86,8 +86,27 @@ return {
         },
     },
     keys = {
-        { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
-        { "<leader>bo", function() Snacks.bufdelete.other() end, desc = "Delete Other Buffers" },
+        -- search
+        { '<leader>s"', function() Snacks.picker.registers() end,       desc = "Registers" },
+        { '<leader>s/', function() Snacks.picker.search_history() end,  desc = "Search History" },
+        { "<leader>sa", function() Snacks.picker.autocmds() end,        desc = "Autocmds" },
+        { "<leader>sc", function() Snacks.picker.command_history() end, desc = "Command History" },
+        { "<leader>sC", function() Snacks.picker.commands() end,        desc = "Commands" },
+        { "<leader>sH", function() Snacks.picker.highlights() end,      desc = "Highlights" },
+        { "<leader>si", function() Snacks.picker.icons() end,           desc = "Icons" },
+        { "<leader>sj", function() Snacks.picker.jumps() end,           desc = "Jumps" },
+        { "<leader>sk", function() Snacks.picker.keymaps() end,         desc = "Keymaps" },
+        { "<leader>sl", function() Snacks.picker.loclist() end,         desc = "Location List" },
+        { "<leader>sm", function() Snacks.picker.marks() end,           desc = "Marks" },
+        { "<leader>sM", function() Snacks.picker.man() end,             desc = "Man Pages" },
+        { "<leader>sp", function() Snacks.picker.lazy() end,            desc = "Search for Plugin Spec" },
+        { "<leader>sq", function() Snacks.picker.qflist() end,          desc = "Quickfix List" },
+        { "<leader>sR", function() Snacks.picker.resume() end,          desc = "Resume" },
+        { "<leader>su", function() Snacks.picker.undo() end,            desc = "Undo History" },
+
+        { "<leader>uC", function() Snacks.picker.colorschemes() end,    desc = "Colorschemes" },
+        { "<leader>bd", function() Snacks.bufdelete() end,              desc = "Delete Buffer" },
+        { "<leader>bo", function() Snacks.bufdelete.other() end,        desc = "Delete Other Buffers" },
         {
             "<M-t>",
             function()
@@ -165,5 +184,65 @@ return {
                 Snacks.toggle.dim():map("<leader>uD")
             end,
         })
+
+        local function prepare_handler(fun, args)
+            return function()
+                local handler = require("config.winhandlers")
+                if not handler.isCodeBuffer() then
+                    handler.closeNonCodeWindows()
+                end
+                if args ~= nil then
+                    fun(args())
+                    return
+                end
+                fun()
+            end
+        end
+        local keymap = require("core.util.sys").keymap
+        local picker = require("snacks.picker")
+        local find_files = prepare_handler(picker.files)
+        local live_grep = prepare_handler(picker.grep)
+        local show_buffers = prepare_handler(picker.buffers)
+        local find_in_cur_buf = prepare_handler(picker.lines)
+        local find_in_open_bufs = prepare_handler(picker.grep_buffers)
+        local fuzzy_find_tuc_in_ws = prepare_handler(picker.grep_word)
+        local show_recent = prepare_handler(picker.recent)
+        local show_help = prepare_handler(picker.help)
+        local show_diag = prepare_handler(picker.diagnostics)
+        local show_buf_diag = prepare_handler(picker.diagnostics_buffer)
+        local show_cmd_history = prepare_handler(picker.command_history)
+        local show_notif = prepare_handler(picker.notifications)
+
+        keymap("n", "<leader>ff", find_files, "Find files [<Leader><Leader>]")
+        keymap("n", "<leader><leader>", find_files, "Fuzzy find files")
+        keymap("n", "<leader>fg", live_grep, "Find in files")
+        keymap("n", "<leader>fb", show_buffers, "List open files [<Leader>,]")
+        keymap("n", "<leader>,", show_buffers, "List open files")
+        keymap('n', '<leader>f.', find_in_cur_buf, 'Find in buffer')
+        keymap('n', '<leader>.', find_in_cur_buf, 'Find in buffer')
+        keymap('n', '<leader>f/', find_in_open_bufs, 'Find in open files')
+        keymap('n', '<leader>/', find_in_open_bufs, 'Find in open files')
+        keymap("n", "<leader>fW", fuzzy_find_tuc_in_ws, "Find text under cursor (in workspace)")
+        keymap("n", "<leader>fR", show_recent, "Find recent open files")
+        keymap("n", "<leader>fh", show_help, "Show help tags")
+        keymap('n', '<leader>fd', show_buf_diag, 'Show buffer diagnostics')
+        keymap('n', '<leader>fD', show_diag, 'Show diagnostics')
+        keymap('n', '<leader>f:', show_cmd_history, 'Show command history')
+        keymap('n', '<leader>fn', show_notif, 'Show notifications')
+
+        -- Shortcut for searching your Neovim configuration files
+        keymap('n', '<leader>fc', function()
+            Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
+        end, 'Search in neovim config')
+
+        --[[
+        local find_files_with_world = prepare_handler(function()
+            local word = vim.fn.expand('<cword>')
+            picker.files({ prompt = word })
+        end)
+        keymap("n", "<leader>fF", find_files_with_world, "Find files with text under-cursor")
+
+        keymap("n", "<leader>fw", fuzzy_find_tuc_in_cur_buf, "Find text under-cursor (in buffer)")
+        ]]
     end,
 }

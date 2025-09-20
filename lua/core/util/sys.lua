@@ -64,11 +64,11 @@ local function write_to(filename, callback)
 end
 
 local function get_configd()
-   return vim.fs.normalize(vim.fn.stdpath("config"))
+    return vim.fs.normalize(vim.fn.stdpath("config"))
 end
 
 local function get_cwd()
-   return vim.fs.normalize(vim.fn.getcwd())
+    return vim.fs.normalize(vim.fn.getcwd())
 end
 
 local function dir_has_file_with_ext(dir, filename_list, fileext_list)
@@ -321,5 +321,10 @@ M.first_time = (function()
         end
     }
 end)()
+
+
+M.keymap = function(m, key, handler, desc)
+    vim.keymap.set(m, key, handler, { noremap = true, silent = true, desc = desc })
+end
 
 return M
