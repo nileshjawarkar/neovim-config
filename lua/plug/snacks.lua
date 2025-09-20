@@ -75,6 +75,7 @@ return {
                 },
                 files = {
                     layout = { preview = false },
+                    cmd = "rg",
                 },
                 buffers = {
                     layout = { preview = false },
