@@ -9,28 +9,39 @@ return {
         local harpoon = require("harpoon")
         harpoon:setup({})
 
-        -- basic telescope configuration
-        --[[
-        local conf = require("telescope.config").values
-        local function toggle_telescope(harpoon_files)
-            local file_paths = {}
-            for _, item in ipairs(harpoon_files.items) do
-                table.insert(file_paths, item.value)
+        local function show_files()
+            local items = harpoon:list().items or {}
+            if #items == 0 then
+                vim.notify("Harpoon list is empty", vim.log.levels.INFO)
+                return
+            end
+            local entries = {}
+            for idx, item in ipairs(items) do
+                local path = item.value or item
+                local label = vim.fn.fnamemodify(path, ':~:.')
+                table.insert(entries, { idx = idx, path = path, label = label })
             end
 
-            require("telescope.pickers").new({}, {
-                prompt_title = "Selected files",
-                finder = require("telescope.finders").new_table({
-                    results = file_paths,
-                }),
-                -- previewer = conf.file_previewer({}),
-                previewer = false,
-                sorter = conf.generic_sorter({}),
-            }):find()
+            local opts = {
+                prompt = "Harpoon files:",
+                format_item = function(entry) return entry.label end,
+            }
+
+            vim.ui.select(entries, opts, function(choice)
+                if not choice then return end
+                local ok, list = pcall(function() return harpoon:list() end)
+                if ok and list and list.select then
+                    pcall(function() list:select(choice.idx) end)
+                else
+                    -- Fallback: open file directly
+                    pcall(vim.cmd, 'edit ' .. vim.fn.fnameescape(choice.path))
+                end
+            end)
         end
-        vim.keymap.set("n", "<leader>fl", function() toggle_telescope(harpoon:list()) end,
-            { desc = "Show selected list" })
-        ]]
+
+        vim.keymap.set("n", "<leader>bl", function() show_files() end,
+            { desc = "Show selected files" })
+
 
         vim.keymap.set("n", "<leader>bA", function() harpoon:list():add() end, { desc = "Add to selected list" })
 

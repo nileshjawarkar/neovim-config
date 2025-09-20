@@ -35,6 +35,8 @@ end
 
 local function setup_keys()
     local dap = require("dap")
+    local api, fn, cmd, notify, log = vim.api, vim.fn, vim.cmd, vim.notify, vim.log
+
     local function continue()
         if not require("config.winhandlers").isCodeBuffer() then
             return
@@ -82,6 +84,69 @@ local function setup_keys()
         dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))
     end, { desc = "Set breakpoint/logpoint message" })
     vim.keymap.set("n", '<leader>Br', dap.clear_breakpoints, { desc = "Clear all breakpoints" })
+
+    -- Show breakpoints using Snacks / vim.ui.select (fallback to built-in UI)
+    local function show_breakpoints_snacks()
+        -- Try to get breakpoints from dap if available
+        local bps = {}
+        -- prefer using the cached `dap` from outer scope; some adapters expose list_breakpoints
+        if dap and dap.list_breakpoints then
+            local status, res = pcall(dap.list_breakpoints)
+            if status and type(res) == 'table' then
+                bps = res
+            end
+        end
+
+        -- Fallback: collect signs placed with group 'DapBreakpoint*' across all buffers
+        if #bps == 0 then
+            local bufs = api.nvim_list_bufs()
+            for _, bufnr in ipairs(bufs) do
+                local file = api.nvim_buf_get_name(bufnr) or ''
+                if file ~= '' then
+                    local placed = fn.sign_getplaced(bufnr, { group = '*' }) or {}
+                    for _, bufinfo in ipairs(placed) do
+                        for _, sign in ipairs(bufinfo.signs or {}) do
+                            if sign.name and sign.name:match('DapBreakpoint') then
+                                table.insert(bps, { file = file, line = sign.lnum, text = sign.name })
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        if #bps == 0 then
+            vim.notify('No breakpoints found', vim.log.levels.INFO)
+            return
+        end
+
+        local entries = {}
+
+        for i, bp in ipairs(bps) do
+            local file = bp.file or (bp.source and bp.source.path) or bp.filename
+            if file and file ~= '' then
+                local line = tonumber(bp.line or bp.lineNumber or (bp.start and bp.start.line) or 0) or 0
+                local label = (fn.fnamemodify(file, ':~:.') or '<unknown>') .. ':' .. tostring(line)
+                table.insert(entries, { idx = i, file = file, line = line, label = label })
+            end
+        end
+        vim.ui.select(entries, { prompt = 'Breakpoints', format_item = function(e) return e.label end }, function(choice)
+            if not choice then return end
+            if choice.file and choice.file ~= '' and choice.line and choice.line > 0 then
+                local cmd_str = string.format('edit +%d %s', choice.line, fn.fnameescape(choice.file))
+                local ok, err = pcall(cmd, cmd_str)
+                if not ok then
+                    -- fallback: try to open file normally
+                    pcall(cmd, 'edit ' .. fn.fnameescape(choice.file))
+                    pcall(api.nvim_win_set_cursor, 0, { choice.line, 0 })
+                else
+                    pcall(cmd, 'normal! zz')
+                end
+            end
+        end)
+    end
+
+    vim.keymap.set('n', '<leader>Bl', show_breakpoints_snacks, { desc = 'List breakpoints' })
 
     --[[
     vim.keymap.set("n", '<leader>df', '<cmd>Telescope dap frames<cr>', { desc = "Show frames", })
