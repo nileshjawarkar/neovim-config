@@ -86,7 +86,7 @@ local function setup_keys()
     vim.keymap.set("n", '<leader>Br', dap.clear_breakpoints, { desc = "Clear all breakpoints" })
 
     -- Show breakpoints using Snacks / vim.ui.select (fallback to built-in UI)
-    local function show_breakpoints_snacks()
+    local function show_breakpoints()
         -- Try to get breakpoints from dap if available
         local bps = {}
         -- prefer using the cached `dap` from outer scope; some adapters expose list_breakpoints
@@ -121,7 +121,6 @@ local function setup_keys()
         end
 
         local entries = {}
-
         for i, bp in ipairs(bps) do
             local file = bp.file or (bp.source and bp.source.path) or bp.filename
             if file and file ~= '' then
@@ -136,7 +135,6 @@ local function setup_keys()
                 local cmd_str = string.format('edit +%d %s', choice.line, fn.fnameescape(choice.file))
                 local ok, err = pcall(cmd, cmd_str)
                 if not ok then
-                    -- fallback: try to open file normally
                     pcall(cmd, 'edit ' .. fn.fnameescape(choice.file))
                     pcall(api.nvim_win_set_cursor, 0, { choice.line, 0 })
                 else
@@ -146,7 +144,7 @@ local function setup_keys()
         end)
     end
 
-    vim.keymap.set('n', '<leader>Bl', show_breakpoints_snacks, { desc = 'List breakpoints' })
+    vim.keymap.set('n', '<leader>Bl', show_breakpoints, { desc = 'List breakpoints' })
 
     --[[
     vim.keymap.set("n", '<leader>df', '<cmd>Telescope dap frames<cr>', { desc = "Show frames", })
