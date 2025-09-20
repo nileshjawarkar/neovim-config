@@ -24,7 +24,7 @@ require("lazy").setup({
     require("plug.lualine"),
     require("plug.snacks"),
     require("plug.colorizer"),
-    require("plug.dressing"),
+    -- require("plug.dressing"),
     require("plug.whichkey"),
     require("plug.mason"),
     require("plug.treesitter"),

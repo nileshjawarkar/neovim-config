@@ -83,14 +83,16 @@ local function setup_keys()
     end, { desc = "Set breakpoint/logpoint message" })
     vim.keymap.set("n", '<leader>Br', dap.clear_breakpoints, { desc = "Clear all breakpoints" })
 
+    --[[
     vim.keymap.set("n", '<leader>df', '<cmd>Telescope dap frames<cr>', { desc = "Show frames", })
     vim.keymap.set("n", '<leader>dh', '<cmd>Telescope dap commands<cr>', { desc = "Show commands", })
     vim.keymap.set("n", '<leader>Bl', '<cmd>Telescope dap list_breakpoints<cr>',
         { desc = "List all breakpoints" })
+    ]]
 end
 
 local function setup()
-    require('telescope').load_extension('dap')
+    -- require('telescope').load_extension('dap')
     require("nvim-dap-virtual-text").setup({})
     setup_dap_icons()
     -- gain access to the dap plugin and its functions

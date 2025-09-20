@@ -3,13 +3,14 @@ return {
     branch = "harpoon2",
     dependencies = {
         "nvim-lua/plenary.nvim",
-        "nvim-telescope/telescope.nvim",
+        -- "nvim-telescope/telescope.nvim",
     },
     config = function()
         local harpoon = require("harpoon")
         harpoon:setup({})
 
         -- basic telescope configuration
+        --[[
         local conf = require("telescope.config").values
         local function toggle_telescope(harpoon_files)
             local file_paths = {}
@@ -27,9 +28,10 @@ return {
                 sorter = conf.generic_sorter({}),
             }):find()
         end
-
         vim.keymap.set("n", "<leader>fl", function() toggle_telescope(harpoon:list()) end,
             { desc = "Show selected list" })
+        ]]
+
         vim.keymap.set("n", "<leader>bA", function() harpoon:list():add() end, { desc = "Add to selected list" })
 
         local replace_or_add = (function()

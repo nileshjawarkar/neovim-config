@@ -22,7 +22,7 @@ return {
         },
         select = {
             enabled = true,
-            backend = { 'telescope', 'fzf_lua', 'fzf', 'nui', 'builtin' },
+            backend = { 'snacks', 'telescope', 'fzf_lua', 'fzf', 'nui', 'builtin' },
             trim_prompt = true,
         },
     }
