@@ -227,18 +227,20 @@ return {
             picker.files({ cwd = vim.fn.stdpath("config") })
         end, 'Search in neovim config')
 
-        --[[
-        local find_files_with_world = prepare_handler(function()
-            local word = vim.fn.expand('<cword>')
-            picker.files({ prompt = word, live = false, supports_live = false, })
+        -- create a finder for files prefilled with word under cursor
+        local find_files_with_word = prepare_handler(function()
+            local word = vim.fn.expand('<cword>') or ''
+            picker.files({ search = "*" .. word .. "*", live = false, supports_live = false })
         end)
-        keymap("n", "<leader>fF", find_files_with_world, "Find files (sel-text)")
+        keymap('n', '<leader>fF', find_files_with_word, 'Find files (word under cursor)')
 
-        local find_world_in_curbuf = prepare_handler(function()
-            local word = vim.fn.expand('<cword>')
-            picker.lines({prompt = word, live = false, supports_live = false, need_search = true,})
+        -- create a finder for the current buffer prefilled with word under cursor
+        --[[
+        local find_word_in_curbuf = prepare_handler(function()
+            local word = vim.fn.expand('<cword>') or ''
+            picker.lines({ prompt = word, live = false, supports_live = false, need_search = true })
         end)
-        keymap("n", "<leader>fw", find_world_in_curbuf, "Find sel-text in buffer")
+        keymap('n', '<leader>fw', find_word_in_curbuf, 'Find word in buffer')
         ]]
     end,
 }
