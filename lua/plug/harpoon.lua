@@ -33,7 +33,6 @@ return {
                 if ok and list and list.select then
                     pcall(function() list:select(choice.idx) end)
                 else
-                    -- Fallback: open file directly
                     pcall(vim.cmd, 'edit ' .. vim.fn.fnameescape(choice.path))
                 end
             end)
@@ -41,8 +40,6 @@ return {
 
         vim.keymap.set("n", "<leader>bl", function() show_files() end,
             { desc = "Show selected files" })
-
-
         vim.keymap.set("n", "<leader>bA", function() harpoon:list():add() end, { desc = "Add to selected list" })
 
         local replace_or_add = (function()

@@ -211,7 +211,7 @@ return {
         keymap("n", "<leader>fb", show_buffers, "List open files [<Leader>,]")
         keymap("n", "<leader>,", show_buffers, "List open files")
         keymap('n', '<leader>f.', find_in_cur_buf, 'Find in buffer [/]')
-        keymap('n', '/', find_in_cur_buf, 'Find in buffer')
+        -- keymap('n', '/', find_in_cur_buf, 'Find in buffer')
         keymap('n', '<leader>f/', find_in_open_bufs, 'Find in open files [<Leader>/]')
         keymap('n', '<leader>/', find_in_open_bufs, 'Find in open files')
         keymap("n", "<leader>fW", fuzzy_find_tuc_in_ws, "Find sel-text in workspace")
