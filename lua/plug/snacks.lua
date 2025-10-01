@@ -210,8 +210,8 @@ return {
         keymap("n", "<leader>fg", live_grep, "Find in files")
         keymap("n", "<leader>fb", show_buffers, "List open files [<Leader>,]")
         keymap("n", "<leader>,", show_buffers, "List open files")
-        keymap('n', '<leader>f.', find_in_cur_buf, 'Find in buffer [/]')
-        -- keymap('n', '/', find_in_cur_buf, 'Find in buffer')
+        keymap('n', '<leader>f.', find_in_cur_buf, 'Find in buffer [<Leader>.]')
+        keymap('n', '<leader>.', find_in_cur_buf, 'Find in buffer')
         keymap('n', '<leader>f/', find_in_open_bufs, 'Find in open files [<Leader>/]')
         keymap('n', '<leader>/', find_in_open_bufs, 'Find in open files')
         keymap("n", "<leader>fW", fuzzy_find_tuc_in_ws, "Find sel-text in workspace")
@@ -233,14 +233,5 @@ return {
             picker.files({ search = "*" .. word .. "*", live = false, supports_live = false })
         end)
         keymap('n', '<leader>fF', find_files_with_word, 'Find files (word under cursor)')
-
-        -- create a finder for the current buffer prefilled with word under cursor
-        --[[
-        local find_word_in_curbuf = prepare_handler(function()
-            local word = vim.fn.expand('<cword>') or ''
-            picker.lines({ prompt = word, live = false, supports_live = false, need_search = true })
-        end)
-        keymap('n', '<leader>fw', find_word_in_curbuf, 'Find word in buffer')
-        ]]
     end,
 }
